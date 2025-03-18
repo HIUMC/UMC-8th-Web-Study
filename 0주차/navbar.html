@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .navbar{
+            padding: 1.5rem;
+            align-items: center;
+            width: 100%;
+            display: flex;
+            z-index: 50;
+            position: fixed;
+        }
+        .logo{
+           column-gap: 0.5rem;
+           align-items: center;
+           box-sizing: border-box;
+           border: 0 solid #e5e7eb;
+        }
+        p{
+            font-weight: 600;
+            font-family:__Poppins_36e2ef, __Poppins_Fallback_36e2ef; 
+            font-style: normal;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            unicode-bidi: isolate;
+        }
+        
+        .menu{
+            column-gap: .5rem;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            display: flex;
+            box-sizing: border-box;
+            border: 0 solid #e5e7eb;
+        }
+        .button{
+            font-weight: 500;
+            font-size: 10px;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            justify-content: center;
+            align-items: center;
+            height: 2.5rem;
+            display: inline-flex;
+            text-transform: none;
+            padding-block: 1px;
+            padding-inline: 6px;
+        }
+     
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo"><img src="https://www.smumc.co.kr/_next/image?url=%2Fimages%2Fmain-light-logo.webp&w=96&q=75" width="40" height="40"> 
+        <p>SMUMC</p>
+        </div>
+        <div class="menu">
+            <button class="button"><a href="/projects">PROJECTS</a></button>
+            <button class="button"><a href="/members">MEMBERS</a></button>
+            <button class="button"><a href="/notice">NOTICE</a></button>
+            <button></button>
+        </div>
+    </div>
+</body>
+</html>
