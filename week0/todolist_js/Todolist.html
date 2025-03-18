@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMC Study Plan</title>
+    <link rel="stylesheet" href="Todolist.css" />
+  </head>
+  <body>
+    <h1>UMC Study Plan</h1>
+    <div class="divider"></div>
+    <!-- 회색 줄 추가 -->
+
+    <div class="input-wrapper">
+      <input
+        type="text"
+        id="taskInput"
+        placeholder="스터디 계획을 작성해보세요!"
+      />
+    </div>
+
+    <div class="todo-container">
+      <div class="todo-column">
+        <h2>해야 할 일</h2>
+        <div class="column-divider"></div>
+        <!-- 하늘색 줄 -->
+        <ul id="todoList"></ul>
+      </div>
+      <div class="todo-column">
+        <h2>해낸 일</h2>
+        <div class="column-divider"></div>
+        <!-- 하늘색 줄 -->
+        <ul id="doneList"></ul>
+      </div>
+    </div>
+
+    <script src="Todolist.js"></script>
+  </body>
+</html>
