@@ -1,0 +1,116 @@
+/* 전체 화면 설정 */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+/* 중앙 컨테이너 */
+.todo-container {
+    background: white;
+    padding: 28px 24px 28px 24px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+/* 제목 */
+h1 {
+    margin: 0;
+    padding: 1rem 0 1rem 0;
+
+    font-size: 28px;
+}
+
+/* 입력 필드 & 버튼 컨테이너 */
+.input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* 입력 필드 */
+input {
+    flex: 1; /* 버튼과 공간 나눔 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 추가 버튼 (완료 버튼과 동일한 스타일) */
+#add-todo {
+    background: rgb(6, 183, 6);
+    color: white;
+    border: none;
+    padding: 10px 15px 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 추가 버튼 hover 효과 */
+#add-todo:hover {
+    background: rgb(6, 183, 6);
+}
+
+/* 섹션 정렬 */
+.todo-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* 각 섹션 스타일 */
+.todo-section {
+    flex: 1;
+    text-align: center;
+}
+
+.todo-section h2 {
+    font-size: 1.5rem;
+}
+
+/* 리스트 스타일 */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+/* 리스트 아이템 스타일 */
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 스타일 */
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+/* 완료 버튼 스타일 */
+.complete-btn {
+    background: rgb(6, 183, 6);
+}
+
+/* 삭제 버튼 스타일 */
+.delete-btn {
+    background: rgb(205, 56, 56);
+}
