@@ -1,3 +1,6 @@
 # UMC-8th-Web-Study
-
-## Web Study Leader 경호호의 스터디 브랜치
+## 경호호/엄경호
+- week0✅
+- week1✅
+- week2
+- week3
