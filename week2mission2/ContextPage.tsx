@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import Navbar from "./Navbar";
 import ThemeContent from "./ThemeContent";
 import { ThemeProvider } from "./context/ThemeProvider";
+import React from "react";
 
 export default function ContextPage(): ReactElement {
   return (
