@@ -1,23 +1,17 @@
-import { FormEvent, ReactElement, useState } from "react";
+import { ReactElement, useState, FormEvent } from "react";
+import TodoForm from "./TodoForm";
 import { TTodo } from "../types/todo";
+import TodoList from "./TodoList";
 
 const Todo = (): ReactElement => {
-  // 입력 받을 변수
   const [input, setInput] = useState<string>("");
-
-  // 할 일을 넣는 배열
   const [todos, setTodos] = useState<TTodo[]>([]);
-
-  // 할 일에서 완료에 넣는 배열
   const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
 
-  // input 에 넣은 값 저장하기
   const handleInput = (e) => {
     setInput(e.target.value);
   };
 
-  // Form 은 무조건 네트워크 요청을 감 => 무조건 새로고침이 발생함.
-  // Form 태그를 통신에 사용하기
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const text = input.trim();
@@ -29,13 +23,11 @@ const Todo = (): ReactElement => {
     }
   };
 
-  // 할 일에서 완료 버튼을 누르면 삭제로 옮겨지게 하기기
   const completeTodo = (todo: TTodo): void => {
     setTodos((prevTodos): TTodo[] => prevTodos.filter((t) => t.id !== todo.id));
     setDoneTodos((prevDoneTodos) => [...prevDoneTodos, todo]);
   };
 
-  // 완료에서 삭제 버튼을 누르면 없애기
   const deleteTodo = (todo: TTodo): void => {
     setDoneTodos((prevTodos): TTodo[] =>
       prevTodos.filter((t) => t.id !== todo.id)
@@ -45,68 +37,24 @@ const Todo = (): ReactElement => {
   return (
     <div className="todo-container">
       <h1 className="todo-container__header">YONG TODO</h1>
-      <form
-        id="todo-form"
-        className="todo-container__form"
-        onSubmit={handleSubmit}
-      >
-        <input
-          value={input}
-          onChange={handleInput}
-          type="text"
-          id="todo-input"
-          className="todo-container__input"
-          placeholder="할 일 입력"
-          required
-        />
-        <button type="submit" className="todo-container__button">
-          할 일 추가
-        </button>
-      </form>
-
+      <TodoForm
+        handleSubmit={handleSubmit}
+        handleInput={handleInput}
+        input={input}
+      />
       <div className="render-container">
-        <div className="render-container__section">
-          <h2 className="render-container__title">할 일</h2>
-          <ul id="todo-list" className="render-container__list">
-            {todos.map((todo): any => {
-              return (
-                <li key={todo.id} className="render-container__item">
-                  <span className="render-container__item-text">
-                    {todo.text}
-                  </span>
-                  <button
-                    className="render-container__item-button"
-                    style={{ backgroundColor: "#28a745" }}
-                    onClick={(): void => completeTodo(todo)}
-                  >
-                    완료
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="render-container__section">
-          <h2 className="render-container__title">완료</h2>
-          <ul id="todo-list" className="render-container__list">
-            {doneTodos.map((doneTodo): any => {
-              return (
-                <li key={doneTodo.id} className="render-container__item">
-                  <span className="render-container__item-text">
-                    {doneTodo.text}
-                  </span>
-                  <button
-                    className="render-container__item-button"
-                    style={{ backgroundColor: "#dc3545" }}
-                    onClick={() => deleteTodo(doneTodo)}
-                  >
-                    삭제
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <TodoList
+          todos={todos}
+          completeTodo={completeTodo}
+          text="완료"
+          isDone={true}
+        />
+        <TodoList
+          todos={doneTodos}
+          completeTodo={deleteTodo}
+          text="삭제"
+          isDone={false}
+        />
       </div>
     </div>
   );
