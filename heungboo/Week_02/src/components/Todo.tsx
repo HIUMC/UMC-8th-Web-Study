@@ -1,4 +1,4 @@
-import { ReactElement, useState, FormEvent } from "react";
+import { ReactElement, useState, FormEvent, ChangeEvent } from "react";
 import TodoForm from "./TodoForm";
 import { TTodo } from "../types/todo";
 import TodoList from "./TodoList";
@@ -8,7 +8,7 @@ const Todo = (): ReactElement => {
   const [todos, setTodos] = useState<TTodo[]>([]);
   const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
 
-  const handleInput = (e) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
@@ -46,12 +46,14 @@ const Todo = (): ReactElement => {
         <TodoList
           todos={todos}
           completeTodo={completeTodo}
+          title="할 일"
           text="완료"
           isDone={true}
         />
         <TodoList
           todos={doneTodos}
           completeTodo={deleteTodo}
+          title="완료"
           text="삭제"
           isDone={false}
         />

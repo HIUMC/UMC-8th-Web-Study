@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, useState } from "react";
+import { ChangeEvent, FormEvent, ReactElement, useState } from "react";
 import { TTodo } from "../types/todo";
 
 const TodoBefore = (): ReactElement => {
@@ -12,7 +12,7 @@ const TodoBefore = (): ReactElement => {
   const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
 
   // input 에 넣은 값 저장하기
-  const handleInput = (e) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
@@ -68,7 +68,7 @@ const TodoBefore = (): ReactElement => {
         <div className="render-container__section">
           <h2 className="render-container__title">할 일</h2>
           <ul id="todo-list" className="render-container__list">
-            {todos.map((todo): any => {
+            {todos.map((todo: TTodo) => {
               return (
                 <li key={todo.id} className="render-container__item">
                   <span className="render-container__item-text">
@@ -89,7 +89,7 @@ const TodoBefore = (): ReactElement => {
         <div className="render-container__section">
           <h2 className="render-container__title">완료</h2>
           <ul id="todo-list" className="render-container__list">
-            {doneTodos.map((doneTodo): any => {
+            {doneTodos.map((doneTodo: TTodo) => {
               return (
                 <li key={doneTodo.id} className="render-container__item">
                   <span className="render-container__item-text">

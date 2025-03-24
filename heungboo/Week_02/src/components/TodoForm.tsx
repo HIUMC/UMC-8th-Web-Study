@@ -1,4 +1,12 @@
-const TodoForm = ({ handleSubmit, handleInput, input }) => {
+import { FormEvent, ChangeEvent } from "react";
+
+interface TodoFormProps {
+  input: string;
+  handleInput: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+}
+
+const TodoForm = ({ input, handleSubmit, handleInput }: TodoFormProps) => {
   return (
     <form
       id="todo-form"
