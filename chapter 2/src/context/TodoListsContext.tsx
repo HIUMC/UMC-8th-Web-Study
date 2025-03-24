@@ -12,7 +12,9 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
   const [todos, setTodos] = useState<string[]>([]);
 
   return (
-    <TodoContext.Provider value={{ todos, setTodos }}></TodoContext.Provider>
+    <TodoContext.Provider value={{ todos, setTodos }}>
+      {children}
+    </TodoContext.Provider>
   );
 };
 
@@ -35,8 +37,16 @@ export const TodoneProvider = ({ children }: { children: ReactNode }) => {
   const [todones, setTodones] = useState<string[]>([]);
 
   return (
-    <TodoneContext.Provider
-      value={{ todones, setTodones }}
-    ></TodoneContext.Provider>
+    <TodoneContext.Provider value={{ todones, setTodones }}>
+      {children}
+    </TodoneContext.Provider>
   );
+};
+
+//TodonesContext전용 훅
+export const useTodonesContext = () => {
+  const context = useContext(TodoneContext);
+  if (!context)
+    throw new Error("TodoneContext must be used with in a Provider");
+  return context;
 };

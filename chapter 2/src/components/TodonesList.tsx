@@ -1,12 +1,9 @@
 import styled from "styled-components";
 import { Button_Todelete } from "../context/Buttons";
+import { useTodonesContext } from "../context/TodoListsContext";
 
-interface TodonesListisProps {
-  todones: string[];
-  setTodones: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-function TodonesList({ todones, setTodones }: TodonesListisProps) {
+function TodonesList() {
+  const { todones, setTodones } = useTodonesContext();
   const handleDelete = (index: number) => {
     setTodones(todones.filter((_, i) => i !== index));
   };

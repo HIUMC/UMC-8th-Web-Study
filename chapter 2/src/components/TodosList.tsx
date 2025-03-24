@@ -2,34 +2,21 @@ import { useState } from "react";
 import styled from "styled-components";
 import TodonesList from "./TodonesList";
 import { Button_Todones } from "../context/Buttons";
-import { useTodoContext } from "./../context/TodoListsContext";
+import {
+  useTodoContext,
+  useTodonesContext,
+} from "./../context/TodoListsContext";
 
-type Propstype = {
-  newTodo: string;
-  setNewTodo: React.Dispatch<React.SetStateAction<string>>;
-};
-function TodosList({ newTodo, setNewTodo }: Propstype) {
-  const [todones, setTodones] = useState<string[]>([]);
+function TodosList() {
   const [newTodones, setNewTodones] = useState<string>("");
   const { todos, setTodos } = useTodoContext();
-
+  const { todones, setTodones } = useTodonesContext();
   //todones로 목록을 옮기기 위한 handler
   const handleTodones = (index: number) => {
     const complete: string = todos[index];
     setTodos(todos.filter((_, i) => i !== index)); // filter이용 방법을 정확하게 알지 못해서 이 부분 또한 gpt로 해결함.
     console.log(newTodones);
     setTodones([...todones, complete]);
-  };
-  //todos로 목록을 넘기기 위한 handler
-  const handleTodos = () => {
-    if (!newTodo.trim()) {
-      // 조건문에 (!setNewtodo)를 작성했었는데 이건 함수를 체크하는 것이므로 제대로 작동하지 않았던 것임.
-      alert("값을 입력하세요!");
-      return; // return을 적지 않았었는데 그려면 if문장이 실행된 후에 그대로 다음 내용들이 실행되기 때문임.
-    }
-    setTodos([...todos, newTodo]);
-    setNewTodo("");
-    console.log(todos);
   };
 
   return (
@@ -44,9 +31,7 @@ function TodosList({ newTodo, setNewTodo }: Propstype) {
               <li key={index}>
                 {todos}
                 <Button_Todones
-                  onClick={() => {
-                    handleTodones(index);
-                  }}
+                  onClick={handleTodones}
                   value={index}
                   label="완료"
                 />
@@ -55,7 +40,7 @@ function TodosList({ newTodo, setNewTodo }: Propstype) {
           </ul>
         </Wrapper_Todos>
       </Wrapper>
-      <TodonesList todones={todones} setTodones={setTodones}></TodonesList>
+      <TodonesList></TodonesList>
     </>
   );
 }

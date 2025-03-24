@@ -1,14 +1,16 @@
 import styled from "styled-components";
 import Todolist from "./components/Todolist";
 import "./App.css";
-import { TodoProvider } from "./context/TodoListsContext";
+import { TodoProvider, TodoneProvider } from "./context/TodoListsContext";
 
 function App() {
   return (
     <>
       <Wrapper>Todolist by React</Wrapper>
       <TodoProvider>
-        <Todolist></Todolist>
+        <TodoneProvider>
+          <Todolist></Todolist>
+        </TodoneProvider>
       </TodoProvider>
     </>
   );

@@ -7,10 +7,12 @@ import { useTodoContext } from "../context/TodoListsContext";
 function Todolist() {
   const [newTodo, setNewtodo] = useState<string>("");
   const { todos, setTodos } = useTodoContext();
+
   const handleTodos = () => {
     if (!newTodo.trim()) {
+      // 조건문에 (!setNewtodo)를 작성했었는데 이건 함수를 체크하는 것이므로 제대로 작동하지 않았던 것임.
       alert("값을 입력하세요!");
-      return;
+      return; // return을 적지 않았었는데 그려면 if문장이 실행된 후에 그대로 다음 내용들이 실행되기 때문임.
     }
     setTodos([...todos, newTodo]);
     setNewtodo("");
@@ -27,7 +29,7 @@ function Todolist() {
       </InputWrapper>
 
       <ListWrapper>
-        <TodosList newTodo={newTodo} setNewTodo={setNewtodo} />
+        <TodosList />
       </ListWrapper>
     </Wrapper>
   );
