@@ -24,6 +24,7 @@ function Todolist() {
         <CustomInput
           value={newTodo}
           onChange={(e) => setNewtodo(e.target.value)}
+          placeholder="할 일을 입력하세요!"
         />
         <Button_handleTodos onClick={handleTodos} label="추가" />
       </InputWrapper>
