@@ -1,12 +1,24 @@
-import { FormEvent, ChangeEvent } from "react";
+import { FormEvent, ChangeEvent, useState } from "react";
+import { useTodo } from "../context/todoContext";
 
-interface TodoFormProps {
-  input: string;
-  handleInput: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-}
+const TodoForm = () => {
+  const [input, setInput] = useState<string>("");
+  const { addTodo } = useTodo();
 
-const TodoForm = ({ input, handleSubmit, handleInput }: TodoFormProps) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const text = input.trim();
+
+    if (text) {
+      addTodo(text);
+      setInput("");
+    }
+  };
+
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
   return (
     <form
       id="todo-form"

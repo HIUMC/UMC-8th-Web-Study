@@ -1,14 +1,14 @@
 import { ReactElement } from "react";
 import "./App.css";
-import TodoBefore from "./components/TodoBefore";
 import Todo from "./components/Todo";
+import { TodoProvider } from "./context/todoContext";
 
 function App(): ReactElement {
   return (
-    <>
+    <TodoProvider>
       <Todo />
-      <TodoBefore />
-    </>
+      {/* <TodoBefore /> */}
+    </TodoProvider>
   );
 }
 
