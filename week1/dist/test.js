@@ -17,4 +17,8 @@ var A;
     const a = 1;
     A.b = a + 10;
 })(A || (A = {}));
+(function (A) {
+    A.c = 2;
+    A.b = 20;
+})(A || (A = {}));
 console.log(A.b);
