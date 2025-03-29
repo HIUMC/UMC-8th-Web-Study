@@ -1,9 +1,10 @@
 import { THEME, useTheme } from "../context/ThemeProvider";
 import ThemeToggleButton from "./ThemeToggleButton";
 import clsx from "clsx";
+import { ReactElement } from "react";
 
-export default function Navbar(): JSX.Element {
-  const { theme, toggleTheme } = useTheme();
+export default function Navbar(): ReactElement {
+  const { theme } = useTheme();
 
   const isLightMode = theme === THEME.LIGHT;
   return (

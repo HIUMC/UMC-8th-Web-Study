@@ -1,4 +1,5 @@
 import { createContext, useContext, PropsWithChildren, useState } from "react";
+import { ReactElement } from "react";
 
 export enum THEME {
   LIGHT = "LIGHT",
@@ -14,7 +15,9 @@ interface IThemeContext {
 
 export const ThemeContext = createContext<IThemeContext | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: PropsWithChildren): JSX.Element => {
+export const ThemeProvider = ({
+  children,
+}: PropsWithChildren): ReactElement => {
   const [theme, setTheme] = useState<TTheme>(THEME.LIGHT);
 
   const toggleTheme = (): void => {

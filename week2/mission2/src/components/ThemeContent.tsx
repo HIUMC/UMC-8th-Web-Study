@@ -1,8 +1,9 @@
 import { THEME, useTheme } from "../context/ThemeProvider";
 import clsx from "clsx";
+import { ReactElement } from "react";
 
-export default function ThemeContent(): JSX.Element {
-  const { theme, toggleTheme } = useTheme();
+export default function ThemeContent(): ReactElement {
+  const { theme } = useTheme();
 
   const isLightMode = theme === THEME.LIGHT;
   return (
