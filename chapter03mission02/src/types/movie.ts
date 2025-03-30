@@ -17,7 +17,7 @@ export type Movie = {
 
 export type MovieResponse = {
   page: number;
-  results: Movie[]; // 실제로 들어오는거는 여러개의 영화 데이터니 Movie의 배열로 표현
+  results: Movie[];
   total_pages: number;
   total_results: number;
 };
