@@ -6,10 +6,10 @@ import { ThemeProvider, THEME, useTheme } from "./context/ThemeProvider";
 import ThemeToggleButton from "./context/ThemeToggleButton";
 import clsx from "clsx";
 import { ThemeContext } from "./context/ThemeContext";
+import { useState } from "react";
 
 function App() {
   const { theme, toggleTheme } = useTheme();
-
   const isLightMode = theme === THEME.LIGHT;
 
   return (
