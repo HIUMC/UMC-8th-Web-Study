@@ -1,19 +1,16 @@
 import React from 'react';
-import { Task } from '../types';
 import CompletedItem from './CompletedItem';
+import { useTodoContext } from '../contexts/TodoContext';
 
-interface CompletedListProps {
-  tasks: Task[];
-  onDelete: (task: Task) => void;
-}
-
-const CompletedList: React.FC<CompletedListProps> = ({ tasks, onDelete }) => {
+const CompletedList: React.FC = () => {
+  const { doneTasks, deleteTask } = useTodoContext();
+  
   return (
     <div className="render-container__section">
       <h2 className="render-container__title">완료</h2>
       <ul id="done-list" className="render-container__list">
-        {tasks.map((task) => (
-          <CompletedItem key={task.id} task={task} onDelete={onDelete} />
+        {doneTasks.map((task) => (
+          <CompletedItem key={task.id} task={task} onDelete={deleteTask} />
         ))}
       </ul>
     </div>
