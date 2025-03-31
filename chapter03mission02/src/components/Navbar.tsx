@@ -10,7 +10,7 @@ const LINKS = [
 
 export function Navbar() {
   return (
-    <div className="flex gap-3 pd-4">
+    <div className="flex gap-3 pd-4 w-full justify-center gap-50">
       {LINKS.map((link) => (
         <NavLink
           key={link.to}

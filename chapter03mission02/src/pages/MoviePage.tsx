@@ -8,14 +8,12 @@ import { useParams } from "react-router-dom";
 
 export default function MoviePage() {
   const [movies, setMovies] = useState<Movie[]>([]);
-
   //1. 로딩 상태 만들기
   const [isPending, setIsPending] = useState(false);
   //2. 에러 상태 만들기
   const [isError, setIsError] = useState(false);
   //3. 페이지
   const [page, setPage] = useState(1);
-
   const { category } = useParams<{
     category: string;
   }>();
@@ -35,6 +33,7 @@ export default function MoviePage() {
         setMovies(data.results);
 
         console.log(data);
+        console.log(data.results[0].id);
         setIsPending(false);
       } catch {
         setIsError(true);
