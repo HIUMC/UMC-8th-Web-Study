@@ -1,54 +1,18 @@
-# React + TypeScript + Vite
+# 영화 검색 웹사이트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- TMDB API를 통한 인기 영화 데이터 가져오기
+- 영화 정보를 카드 형태로 표시
+- 호버 효과를 통한 영화 상세 정보 표시
 
-Currently, two official plugins are available:
+1. TMDB 웹사이트에 가입하고 API 키를 발급
+2. 프로젝트 루트 폴더에 `.env` 파일을 생성하고 다음과 같이 작성
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+VITE_TMDB_KEY=여기에_TMDB_API_토큰_입력
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 구현 내용
+- useEffect를 활용한 API 데이터 로딩
+- TypeScript 인터페이스를 사용한 타입 안전성 확보
+- Tailwind CSS를 활용한 반응형 UI 구현
+- 호버 효과를 구현하여 사용자 경험 향상
