@@ -7,7 +7,9 @@ const TodoBefore = (): JSX.Element => {
     const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
     const [input, setInput] =useState<string>('');
 
-    console.log('Input', input);
+    // const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    //     setInput(e.target.value);
+    // };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) : void => {
         e.preventDefault(); // 새로고침 방지
