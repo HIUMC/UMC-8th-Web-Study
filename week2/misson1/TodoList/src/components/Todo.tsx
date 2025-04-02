@@ -9,7 +9,7 @@ import { TodoContext } from './TodoContext';
 const Todo: React.FC = () => {
   const [todos,setTodos] = useState<TTodo[]>([]);
   const [doneTodos,setDoneTodos] = useState<TTodo[]>([]);
-  const [input, setInput] = useState<string>(''); 
+  const [input, setInput] = useState<string 
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) : void => {
     e.preventDefault();
