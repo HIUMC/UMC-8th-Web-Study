@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, React } from "react";
 import axios from "axios";
 import { Movie, MovieResponse } from "../types/movie";
 import MovieCard from "../components/MovieCard";
 import PageNation from "../components/PageNation";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { useParams } from "react-router-dom";
+import { usePending } from "../context/useLoading";
 
 export default function MoviePage() {
+  const { isPending, setIsPending } = usePending();
   const [movies, setMovies] = useState<Movie[]>([]);
   //1. 로딩 상태 만들기
-  const [isPending, setIsPending] = useState(false);
   //2. 에러 상태 만들기
   const [isError, setIsError] = useState(false);
   //3. 페이지
