@@ -1,0 +1,16 @@
+.Editor {
+  display: flex;
+  gap: 10px;
+}
+
+.Editor input {
+  flex: 0.8;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.Editor input::placeholder {
+  color: #dbe4f0;
+  font-style: italic;
+}
