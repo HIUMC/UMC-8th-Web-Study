@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 const HomePage = () => {
   const categories = [
     { title: '인기영화', path: '/popular', color: 'bg-red-500' },
-    { title: '상영 중', path: '/now', color: 'bg-blue-500' },
-    { title: '평점 높은', path: '/highrate', color: 'bg-green-500' },
-    { title: '개봉 예정', path: '/expected', color: 'bg-purple-500' },
+    { title: '상영 중', path: '/now_playing', color: 'bg-blue-500' },
+    { title: '평점 높은', path: '/top_rated', color: 'bg-green-500' },
+    { title: '개봉 예정', path: '/upcoming', color: 'bg-purple-500' },
   ];
 
   return (
