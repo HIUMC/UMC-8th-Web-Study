@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMUMC Navbar</title>
+    
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: white;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: block;
+            width: 40px; /* 로고 크기 조절 */
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            display: inline-block;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            text-decoration: none;
+            color:#4D4D4D;
+            font-size: 16px;
+            letter-spacing:-0.3px;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        .light-control {
+            width: 20px; 
+            cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="logo.png" alt="SMUMC Logo" class="logo">
+            <span class="logo-text">SMUMC</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#">PROJECTS</a>
+            <a href="#">MEMBERS</a>
+            <a href="#">NOTICE</a>
+            <img src="light.png" alt="빛 전환" class="light-control">
+        </div>
+    </nav>
+
+</body>
+</html>
