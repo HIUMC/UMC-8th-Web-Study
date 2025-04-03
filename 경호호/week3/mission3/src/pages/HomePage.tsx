@@ -9,8 +9,8 @@ const HomePage = () => {
       
       <div className="w-full py-12">
         <div className="text-center max-w-4xl mx-auto mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white"><span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-purple-200">TMDB 영화 웹사이트</span></h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-10">다양한 영화 카테고리를 탐색해보세요</p>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white"><span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-purple-200">영화 웹사이트</span></h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-10">다양한 영화를 탐색해보세요</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-full mx-auto px-8">
