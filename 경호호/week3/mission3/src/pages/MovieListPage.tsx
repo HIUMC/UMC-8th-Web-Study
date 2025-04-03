@@ -24,10 +24,10 @@ const CATEGORY_TITLES: Record<string, string> = {
 
 // 카테고리별 배경 색상 매핑
 const CATEGORY_COLORS: Record<string, { bg: string, text: string }> = {
-  popular: { bg: 'from-blue-900 to-blue-700', text: 'text-blue-100' },
-  upcoming: { bg: 'from-green-900 to-green-700', text: 'text-green-100' },
-  top_rated: { bg: 'from-yellow-800 to-yellow-600', text: 'text-yellow-100' },
-  now_playing: { bg: 'from-red-900 to-red-700', text: 'text-red-100' }
+  popular: { bg: 'from-indigo-900 to-indigo-700', text: 'text-indigo-100' },
+  upcoming: { bg: 'from-teal-900 to-teal-700', text: 'text-teal-100' },
+  top_rated: { bg: 'from-amber-900 to-amber-700', text: 'text-amber-100' },
+  now_playing: { bg: 'from-rose-900 to-rose-700', text: 'text-rose-100' }
 };
 
 const MovieListPage = () => {
@@ -102,9 +102,9 @@ const MovieListPage = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-gray-900 text-gray-100">
       {/* 배경 그라데이션 */}
-      <div className={`fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg} opacity-10`} />
+      <div className={`fixed inset-0 -z-10 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900`} />
       
       {/* 헤더 섹션 */}
       <div className={`w-full py-12 mb-8 bg-gradient-to-r ${colors.bg}`}>
