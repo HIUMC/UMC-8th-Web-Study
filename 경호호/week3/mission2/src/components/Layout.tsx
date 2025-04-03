@@ -1,16 +1,13 @@
-import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar';
+import { Outlet } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 flex-grow">
         <Outlet />
       </main>
-      <footer className="bg-gray-800 text-white text-center py-4">
-        <p>© 2024 TMDB 영화 웹사이트</p>
-      </footer>
     </div>
   );
 };
