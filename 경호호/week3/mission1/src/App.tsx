@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import { Movie } from './types/movie'
 import MovieCard from './components/MovieCard'
+import axios from 'axios'
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -12,7 +13,7 @@ function App() {
     const fetchMovies = async () => {
       try {
         setLoading(true)
-        const response = await fetch(
+        const response = await axios.get(
           'https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1',
           {
             headers: {
@@ -22,15 +23,14 @@ function App() {
           }
         )
 
-        if (!response.ok) {
-          throw new Error('영화 데이터를 불러오는데 실패했습니다.')
-        }
-
-        const data = await response.json()
-        setMovies(data.results)
+        setMovies(response.data.results)
         setError(null)
       } catch (err) {
-        setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.')
+        setError(
+          axios.isAxiosError(err)
+            ? err.response?.data?.message || err.message
+            : '알 수 없는 오류가 발생했습니다.'
+        )
       } finally {
         setLoading(false)
       }
