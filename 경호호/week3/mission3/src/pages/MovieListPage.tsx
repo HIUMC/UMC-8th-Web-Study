@@ -24,10 +24,10 @@ const CATEGORY_TITLES: Record<string, string> = {
 
 // 카테고리별 배경 색상 매핑
 const CATEGORY_COLORS: Record<string, { bg: string, text: string }> = {
-  popular: { bg: 'from-indigo-900 to-indigo-700', text: 'text-indigo-100' },
-  upcoming: { bg: 'from-teal-900 to-teal-700', text: 'text-teal-100' },
-  top_rated: { bg: 'from-amber-900 to-amber-700', text: 'text-amber-100' },
-  now_playing: { bg: 'from-rose-900 to-rose-700', text: 'text-rose-100' }
+  popular: { bg: 'from-indigo-900/80 to-indigo-700/80', text: 'text-indigo-100' },
+  upcoming: { bg: 'from-teal-900/80 to-teal-700/80', text: 'text-teal-100' },
+  top_rated: { bg: 'from-amber-900/80 to-amber-700/80', text: 'text-amber-100' },
+  now_playing: { bg: 'from-rose-900/80 to-rose-700/80', text: 'text-rose-100' }
 };
 
 const MovieListPage = () => {
@@ -104,10 +104,11 @@ const MovieListPage = () => {
   return (
     <div className="w-full bg-gray-900 text-gray-100">
       {/* 배경 그라데이션 */}
-      <div className={`fixed inset-0 -z-10 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900`} />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-gray-900 via-gray-800/95 to-gray-900" />
+      <div className="fixed inset-0 -z-10 bg-[url('/src/assets/noise.png')] opacity-5"></div>
       
       {/* 헤더 섹션 */}
-      <div className={`w-full py-12 mb-8 bg-gradient-to-r ${colors.bg}`}>
+      <div className={`w-full py-12 mb-8 bg-gradient-to-r ${colors.bg} backdrop-blur-lg border-b border-white/5`}>
         <div className="w-full px-8">
           <h1 className={`text-4xl md:text-5xl font-bold ${colors.text}`}>{title}</h1>
           <p className={`mt-3 text-lg md:text-xl ${colors.text} opacity-80`}>

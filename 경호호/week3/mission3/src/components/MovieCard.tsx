@@ -15,7 +15,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   return (
     <Link to={`/movie/${movie.id}`} className="block h-full">
       <div 
-        className="relative overflow-hidden rounded-xl shadow-xl h-full bg-gray-900 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-800"
+        className="relative overflow-hidden rounded-xl shadow-xl h-full bg-white/10 backdrop-blur-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-white/5"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -40,7 +40,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
         </div>
         
         <div 
-          className={`absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/30 p-4 flex flex-col justify-end transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent backdrop-blur-sm p-4 flex flex-col justify-end transition-opacity duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           }`}
         >
