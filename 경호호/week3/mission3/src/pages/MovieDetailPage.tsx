@@ -109,178 +109,188 @@ const MovieDetailPage = () => {
     return credits.cast.slice(0, 10);
   };
 
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <ErrorMessage message={error} />
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <ErrorMessage message="영화 정보를 찾을 수 없습니다." />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center w-full">
-      <div className="w-full max-w-6xl px-4 py-8 relative">
-        {loading ? (
-          <div className="flex justify-center items-center min-h-[50vh]">
-            <LoadingSpinner />
+    <div className="w-full">
+      {/* 배경 이미지 전체 화면 커버 */}
+      <div 
+        className="fixed inset-0 -z-10 opacity-20" 
+        style={{ 
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          filter: 'blur(2px)'
+        }}
+      />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-transparent via-black/20 to-black/60" />
+
+      {/* 메인 콘텐츠 */}
+      <div className="w-full px-8 py-8">
+        {/* 영화 상단 정보 섹션 */}
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+          {/* 포스터 */}
+          <div className="w-full md:w-1/3 lg:w-1/4">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              className="w-full rounded-xl shadow-2xl"
+            />
           </div>
-        ) : error ? (
-          <div className="flex justify-center items-center min-h-[50vh]">
-            <ErrorMessage message={error} />
-          </div>
-        ) : movie ? (
-          <div className="relative">
-            {/* 배경 이미지 */}
-            {movie.backdrop_path && (
-              <div className="absolute top-0 left-0 right-0 opacity-20 h-[500px] overflow-hidden -z-10">
-                <img
-                  src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                  alt={movie.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
+          
+          {/* 영화 정보 */}
+          <div className="w-full md:w-2/3 lg:w-3/4">
+            <h1 className="text-3xl md:text-5xl font-bold mb-3">{movie.title}</h1>
+            
+            {movie.tagline && (
+              <p className="text-gray-600 italic text-xl mb-6">"{movie.tagline}"</p>
+            )}
+            
+            <div className="flex flex-wrap gap-2 mb-6">
+              {movie.genres.map((genre) => (
+                <span key={genre.id} className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm">
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
+                <p className="text-gray-500 text-sm mb-1">개봉일</p>
+                <p className="font-medium">{movie.release_date}</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
+                <p className="text-gray-500 text-sm mb-1">상영 시간</p>
+                <p className="font-medium">{movie.runtime}분</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
+                <p className="text-gray-500 text-sm mb-1">평점</p>
+                <p className="font-medium flex items-center">
+                  <span className="text-yellow-500 mr-1">⭐</span> 
+                  {movie.vote_average.toFixed(1)} ({movie.vote_count.toLocaleString()})
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
+                <p className="text-gray-500 text-sm mb-1">상태</p>
+                <p className="font-medium">{movie.status}</p>
+              </div>
+            </div>
+            
+            {(movie.budget > 0 || movie.revenue > 0) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {movie.budget > 0 && (
+                  <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
+                    <p className="text-gray-500 text-sm mb-1">제작비</p>
+                    <p className="font-medium">{formatCurrency(movie.budget)}</p>
+                  </div>
+                )}
+                {movie.revenue > 0 && (
+                  <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
+                    <p className="text-gray-500 text-sm mb-1">수익</p>
+                    <p className="font-medium">{formatCurrency(movie.revenue)}</p>
+                  </div>
+                )}
               </div>
             )}
             
-            {/* 영화 정보 */}
-            <div className="relative z-10 flex flex-col md:flex-row gap-8 pt-8">
-              {/* 포스터 */}
-              <div className="w-full md:w-1/3 lg:w-1/4 flex justify-center md:justify-start">
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  className="w-full max-w-[300px] h-auto rounded-lg shadow-lg"
-                />
-              </div>
-              
-              {/* 상세 정보 */}
-              <div className="w-full md:w-2/3 lg:w-3/4">
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">{movie.title}</h1>
-                
-                {movie.tagline && (
-                  <p className="text-gray-600 italic mb-4">"{movie.tagline}"</p>
-                )}
-                
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {movie.genres.map((genre) => (
-                    <span key={genre.id} className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm">
-                      {genre.name}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <p className="text-gray-600 mb-1">개봉일</p>
-                    <p className="font-medium">{movie.release_date}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600 mb-1">상영 시간</p>
-                    <p className="font-medium">{movie.runtime}분</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600 mb-1">평점</p>
-                    <p className="font-medium flex items-center">
-                      <span className="text-yellow-500 mr-1">⭐</span> 
-                      {movie.vote_average.toFixed(1)} ({movie.vote_count.toLocaleString()} 투표)
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600 mb-1">상태</p>
-                    <p className="font-medium">{movie.status}</p>
-                  </div>
-                </div>
-                
-                {(movie.budget > 0 || movie.revenue > 0) && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    {movie.budget > 0 && (
-                      <div>
-                        <p className="text-gray-600 mb-1">제작비</p>
-                        <p className="font-medium">{formatCurrency(movie.budget)}</p>
-                      </div>
-                    )}
-                    {movie.revenue > 0 && (
-                      <div>
-                        <p className="text-gray-600 mb-1">수익</p>
-                        <p className="font-medium">{formatCurrency(movie.revenue)}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-                
-                <div className="mb-8">
-                  <h2 className="text-xl font-semibold mb-2">줄거리</h2>
-                  <p className="text-gray-700 leading-relaxed">
-                    {movie.overview || "줄거리 정보가 없습니다."}
-                  </p>
-                </div>
-                
-                {/* 감독 정보 */}
-                {credits && getDirectors().length > 0 && (
-                  <div className="mb-8">
-                    <h2 className="text-xl font-semibold mb-4">감독</h2>
-                    <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-                      {getDirectors().map((director) => (
-                        <div key={director.id} className="flex flex-col items-center">
-                          <div className="w-20 h-20 mb-2 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                            {director.profile_path ? (
-                              <img 
-                                src={`https://image.tmdb.org/t/p/w185${director.profile_path}`}
-                                alt={director.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                No Image
-                              </div>
-                            )}
-                          </div>
-                          <p className="text-center font-medium">{director.name}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* 출연진 정보 */}
-                {credits && getMainCast().length > 0 && (
-                  <div className="mb-8">
-                    <h2 className="text-xl font-semibold mb-4">주요 출연진</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                      {getMainCast().map((actor) => (
-                        <div key={actor.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                          <div className="h-40 bg-gray-200">
-                            {actor.profile_path ? (
-                              <img 
-                                src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                                alt={actor.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                No Image
-                              </div>
-                            )}
-                          </div>
-                          <div className="p-3">
-                            <p className="font-medium text-sm">{actor.name}</p>
-                            <p className="text-gray-600 text-xs mt-1">{actor.character}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* 뒤로 가기 버튼 */}
-                <div className="flex md:justify-start justify-center mt-6">
-                  <button
-                    onClick={handleGoBack}
-                    className="bg-blue-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    뒤로 가기
-                  </button>
-                </div>
-              </div>
+            <div className="mb-8 bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-semibold mb-4">줄거리</h2>
+              <p className="text-lg leading-relaxed">
+                {movie.overview || "줄거리 정보가 없습니다."}
+              </p>
             </div>
           </div>
-        ) : (
-          <div className="flex justify-center items-center min-h-[50vh]">
-            <ErrorMessage message="영화 정보를 찾을 수 없습니다." />
+        </div>
+        
+        {/* 감독 섹션 */}
+        {credits && getDirectors().length > 0 && (
+          <div className="mt-12 mb-10">
+            <h2 className="text-3xl font-bold mb-6 border-b pb-2">감독</h2>
+            <div className="flex flex-wrap gap-8">
+              {getDirectors().map((director) => (
+                <div key={director.id} className="flex flex-col items-center">
+                  <div className="w-32 h-32 mb-3 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 shadow-lg">
+                    {director.profile_path ? (
+                      <img 
+                        src={`https://image.tmdb.org/t/p/w185${director.profile_path}`}
+                        alt={director.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No Image
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-center font-medium text-lg">{director.name}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
+        
+        {/* 출연진 섹션 */}
+        {credits && getMainCast().length > 0 && (
+          <div className="mt-12 mb-10">
+            <h2 className="text-3xl font-bold mb-6 border-b pb-2">주요 출연진</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 gap-6">
+              {getMainCast().map((actor) => (
+                <div key={actor.id} className="bg-white/10 backdrop-blur-md rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
+                  <div className="h-60 bg-gray-200">
+                    {actor.profile_path ? (
+                      <img 
+                        src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                        alt={actor.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No Image
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <p className="font-medium text-lg">{actor.name}</p>
+                    <p className="text-gray-500 mt-1">{actor.character}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* 뒤로 가기 버튼 */}
+        <div className="mt-10 mb-4">
+          <button
+            onClick={handleGoBack}
+            className="bg-blue-600 text-white font-medium px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors text-lg"
+          >
+            뒤로 가기
+          </button>
+        </div>
       </div>
     </div>
   );
