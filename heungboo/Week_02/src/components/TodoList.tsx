@@ -1,8 +1,7 @@
-import { ReactElement } from "react";
 import { TTodo } from "../types/todo";
 
 interface TodoListProps {
-  todos?: TTodo[];
+  todos: TTodo[];
   completeTodo: (todo: TTodo) => void;
 
   text: string;
@@ -16,12 +15,12 @@ const TodoList = ({
   text,
   isDone,
   title,
-}: TodoListProps): ReactElement => {
+}: TodoListProps) => {
   return (
     <div className="render-container__section">
       <h2 className="render-container__title">{title}</h2>
       <ul id="todo-list" className="render-container__list">
-        {todos?.map((todo: TTodo) => {
+        {todos.map((todo: TTodo) => {
           return (
             <li key={todo.id} className="render-container__item">
               <span className="render-container__item-text">{todo.text}</span>
