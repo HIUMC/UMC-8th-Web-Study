@@ -15,7 +15,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   return (
     <Link to={`/movie/${movie.id}`} className="block h-full">
       <div 
-        className="relative overflow-hidden rounded-xl shadow-xl h-full bg-gray-800 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+        className="relative overflow-hidden rounded-xl shadow-xl h-full bg-gray-900 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-800"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -29,30 +29,27 @@ const MovieCard = ({ movie }: MovieCardProps) => {
         </div>
         
         <div className="p-4">
-          <h3 className="text-white font-bold text-lg line-clamp-1">{movie.title}</h3>
+          <h3 className="text-gray-200 font-bold text-lg line-clamp-1">{movie.title}</h3>
           <div className="flex justify-between items-center mt-2">
             <span className="flex items-center text-yellow-400">
               <span className="mr-1">⭐</span> 
               {movie.vote_average.toFixed(1)}
             </span>
-            <span className="text-gray-300 text-sm">{movie.release_date.split('-')[0]}</span>
+            <span className="text-gray-400 text-sm">{movie.release_date.split('-')[0]}</span>
           </div>
         </div>
         
         <div 
-          className={`absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4 flex flex-col justify-end transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/30 p-4 flex flex-col justify-end transition-opacity duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <h3 className="text-white font-bold text-lg mb-2">{movie.title}</h3>
-          <p className="text-gray-200 text-sm line-clamp-3 mb-2">{movie.overview || "줄거리 정보가 없습니다."}</p>
-          <div className="flex justify-between items-center">
+          <h3 className="text-gray-100 font-bold text-lg mb-2">{movie.title}</h3>
+          <p className="text-gray-300 text-sm line-clamp-3 mb-2">{movie.overview || "줄거리 정보가 없습니다."}</p>
+          <div className="flex items-center">
             <span className="flex items-center text-yellow-400">
               <span className="mr-1">⭐</span> 
               {movie.vote_average.toFixed(1)}
-            </span>
-            <span className="text-white text-sm bg-blue-600 px-3 py-1 rounded-full">
-              자세히 보기
             </span>
           </div>
         </div>

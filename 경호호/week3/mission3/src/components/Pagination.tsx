@@ -34,8 +34,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         disabled={currentPage <= 1}
         className={`px-3 py-2 rounded-md transition-colors ${
           currentPage <= 1
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+            ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
+            : 'bg-gray-800 text-gray-300 hover:bg-indigo-700 hover:text-white'
         }`}
       >
         «
@@ -47,8 +47,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         disabled={currentPage <= 1}
         className={`px-3 py-2 rounded-md transition-colors ${
           currentPage <= 1
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+            ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
+            : 'bg-gray-800 text-gray-300 hover:bg-indigo-700 hover:text-white'
         }`}
       >
         ‹
@@ -61,8 +61,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
           onClick={() => onPageChange(page)}
           className={`px-4 py-2 rounded-md transition-colors ${
             currentPage === page
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+              ? 'bg-indigo-700 text-white'
+              : 'bg-gray-800 text-gray-300 hover:bg-indigo-700 hover:text-white'
           }`}
         >
           {page}
@@ -75,8 +75,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         disabled={currentPage >= totalPages}
         className={`px-3 py-2 rounded-md transition-colors ${
           currentPage >= totalPages
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+            ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
+            : 'bg-gray-800 text-gray-300 hover:bg-indigo-700 hover:text-white'
         }`}
       >
         ›
@@ -88,8 +88,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
         disabled={currentPage >= totalPages}
         className={`px-3 py-2 rounded-md transition-colors ${
           currentPage >= totalPages
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
+            ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
+            : 'bg-gray-800 text-gray-300 hover:bg-indigo-700 hover:text-white'
         }`}
       >
         »

@@ -134,19 +134,19 @@ const MovieDetailPage = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-gray-900 text-gray-100">
       {/* 배경 이미지 전체 화면 커버 */}
       <div 
-        className="fixed inset-0 -z-10 opacity-20" 
+        className="fixed inset-0 -z-10 opacity-15" 
         style={{ 
           backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          filter: 'blur(2px)'
+          filter: 'blur(3px)'
         }}
       />
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-transparent via-black/20 to-black/60" />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-gray-900/90 via-gray-900/70 to-gray-900/95" />
 
       {/* 메인 콘텐츠 */}
       <div className="w-full px-8 py-8">
@@ -163,62 +163,62 @@ const MovieDetailPage = () => {
           
           {/* 영화 정보 */}
           <div className="w-full md:w-2/3 lg:w-3/4">
-            <h1 className="text-3xl md:text-5xl font-bold mb-3">{movie.title}</h1>
+            <h1 className="text-3xl md:text-5xl font-bold mb-3 text-white">{movie.title}</h1>
             
             {movie.tagline && (
-              <p className="text-gray-600 italic text-xl mb-6">"{movie.tagline}"</p>
+              <p className="text-gray-400 italic text-xl mb-6">"{movie.tagline}"</p>
             )}
             
             <div className="flex flex-wrap gap-2 mb-6">
               {movie.genres.map((genre) => (
-                <span key={genre.id} className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm">
+                <span key={genre.id} className="bg-gray-700 text-gray-200 px-4 py-1 rounded-full text-sm">
                   {genre.name}
                 </span>
               ))}
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
-                <p className="text-gray-500 text-sm mb-1">개봉일</p>
-                <p className="font-medium">{movie.release_date}</p>
+              <div className="bg-gray-800/50 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700">
+                <p className="text-gray-400 text-sm mb-1">개봉일</p>
+                <p className="font-medium text-gray-200">{movie.release_date}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
-                <p className="text-gray-500 text-sm mb-1">상영 시간</p>
-                <p className="font-medium">{movie.runtime}분</p>
+              <div className="bg-gray-800/50 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700">
+                <p className="text-gray-400 text-sm mb-1">상영 시간</p>
+                <p className="font-medium text-gray-200">{movie.runtime}분</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
-                <p className="text-gray-500 text-sm mb-1">평점</p>
-                <p className="font-medium flex items-center">
-                  <span className="text-yellow-500 mr-1">⭐</span> 
+              <div className="bg-gray-800/50 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700">
+                <p className="text-gray-400 text-sm mb-1">평점</p>
+                <p className="font-medium flex items-center text-gray-200">
+                  <span className="text-yellow-400 mr-1">⭐</span> 
                   {movie.vote_average.toFixed(1)} ({movie.vote_count.toLocaleString()})
                 </p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
-                <p className="text-gray-500 text-sm mb-1">상태</p>
-                <p className="font-medium">{movie.status}</p>
+              <div className="bg-gray-800/50 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700">
+                <p className="text-gray-400 text-sm mb-1">상태</p>
+                <p className="font-medium text-gray-200">{movie.status}</p>
               </div>
             </div>
             
             {(movie.budget > 0 || movie.revenue > 0) && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {movie.budget > 0 && (
-                  <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
-                    <p className="text-gray-500 text-sm mb-1">제작비</p>
-                    <p className="font-medium">{formatCurrency(movie.budget)}</p>
+                  <div className="bg-gray-800/50 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700">
+                    <p className="text-gray-400 text-sm mb-1">제작비</p>
+                    <p className="font-medium text-gray-200">{formatCurrency(movie.budget)}</p>
                   </div>
                 )}
                 {movie.revenue > 0 && (
-                  <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg">
-                    <p className="text-gray-500 text-sm mb-1">수익</p>
-                    <p className="font-medium">{formatCurrency(movie.revenue)}</p>
+                  <div className="bg-gray-800/50 backdrop-blur-md p-4 rounded-lg shadow-lg border border-gray-700">
+                    <p className="text-gray-400 text-sm mb-1">수익</p>
+                    <p className="font-medium text-gray-200">{formatCurrency(movie.revenue)}</p>
                   </div>
                 )}
               </div>
             )}
             
-            <div className="mb-8 bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg">
-              <h2 className="text-2xl font-semibold mb-4">줄거리</h2>
-              <p className="text-lg leading-relaxed">
+            <div className="mb-8 bg-gray-800/50 backdrop-blur-md p-6 rounded-lg shadow-lg border border-gray-700">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-100">줄거리</h2>
+              <p className="text-lg leading-relaxed text-gray-300">
                 {movie.overview || "줄거리 정보가 없습니다."}
               </p>
             </div>
@@ -228,11 +228,11 @@ const MovieDetailPage = () => {
         {/* 감독 섹션 */}
         {credits && getDirectors().length > 0 && (
           <div className="mt-12 mb-10">
-            <h2 className="text-3xl font-bold mb-6 border-b pb-2">감독</h2>
+            <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 text-gray-100">감독</h2>
             <div className="flex flex-wrap gap-8">
               {getDirectors().map((director) => (
                 <div key={director.id} className="flex flex-col items-center">
-                  <div className="w-32 h-32 mb-3 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 shadow-lg">
+                  <div className="w-32 h-32 mb-3 rounded-full overflow-hidden bg-gray-700 flex-shrink-0 shadow-lg border border-gray-600">
                     {director.profile_path ? (
                       <img 
                         src={`https://image.tmdb.org/t/p/w185${director.profile_path}`}
@@ -240,12 +240,12 @@ const MovieDetailPage = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <div className="w-full h-full flex items-center justify-center text-gray-500">
                         No Image
                       </div>
                     )}
                   </div>
-                  <p className="text-center font-medium text-lg">{director.name}</p>
+                  <p className="text-center font-medium text-lg text-gray-200">{director.name}</p>
                 </div>
               ))}
             </div>
@@ -255,11 +255,11 @@ const MovieDetailPage = () => {
         {/* 출연진 섹션 */}
         {credits && getMainCast().length > 0 && (
           <div className="mt-12 mb-10">
-            <h2 className="text-3xl font-bold mb-6 border-b pb-2">주요 출연진</h2>
+            <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 text-gray-100">주요 출연진</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 gap-6">
               {getMainCast().map((actor) => (
-                <div key={actor.id} className="bg-white/10 backdrop-blur-md rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
-                  <div className="h-60 bg-gray-200">
+                <div key={actor.id} className="bg-gray-800/50 backdrop-blur-md rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105 border border-gray-700">
+                  <div className="h-60 bg-gray-700">
                     {actor.profile_path ? (
                       <img 
                         src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
@@ -267,30 +267,20 @@ const MovieDetailPage = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <div className="w-full h-full flex items-center justify-center text-gray-500">
                         No Image
                       </div>
                     )}
                   </div>
                   <div className="p-4">
-                    <p className="font-medium text-lg">{actor.name}</p>
-                    <p className="text-gray-500 mt-1">{actor.character}</p>
+                    <p className="font-medium text-lg text-gray-200">{actor.name}</p>
+                    <p className="text-gray-400 mt-1">{actor.character}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         )}
-        
-        {/* 뒤로 가기 버튼 */}
-        <div className="mt-10 mb-4">
-          <button
-            onClick={handleGoBack}
-            className="bg-blue-600 text-white font-medium px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors text-lg"
-          >
-            뒤로 가기
-          </button>
-        </div>
       </div>
     </div>
   );
