@@ -22,6 +22,14 @@ const CATEGORY_TITLES: Record<string, string> = {
   now_playing: '현재 상영 중인 영화'
 };
 
+// 카테고리별 배경 색상 매핑
+const CATEGORY_COLORS: Record<string, { bg: string, text: string }> = {
+  popular: { bg: 'from-blue-900 to-blue-700', text: 'text-blue-100' },
+  upcoming: { bg: 'from-green-900 to-green-700', text: 'text-green-100' },
+  top_rated: { bg: 'from-yellow-800 to-yellow-600', text: 'text-yellow-100' },
+  now_playing: { bg: 'from-red-900 to-red-700', text: 'text-red-100' }
+};
+
 const MovieListPage = () => {
   const { category = 'popular' } = useParams<{ category: string }>();
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -73,32 +81,61 @@ const MovieListPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 현재 카테고리의 제목
+  // 현재 카테고리의 제목과 색상
   const title = CATEGORY_TITLES[category] || '영화 목록';
+  const colors = CATEGORY_COLORS[category] || CATEGORY_COLORS.popular;
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <ErrorMessage message={error} />
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">{title}</h1>
+    <div className="w-full">
+      {/* 배경 그라데이션 */}
+      <div className={`fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg} opacity-10`} />
       
-      {loading ? (
-        <LoadingSpinner />
-      ) : error ? (
-        <ErrorMessage message={error} />
-      ) : (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
-          
+      {/* 헤더 섹션 */}
+      <div className={`w-full py-12 mb-8 bg-gradient-to-r ${colors.bg}`}>
+        <div className="w-full px-8">
+          <h1 className={`text-4xl md:text-5xl font-bold ${colors.text}`}>{title}</h1>
+          <p className={`mt-3 text-lg md:text-xl ${colors.text} opacity-80`}>
+            {category === 'popular' && '전 세계적으로 지금 가장 인기 있는 영화 목록입니다.'}
+            {category === 'upcoming' && '곧 개봉할 기대작 영화 목록입니다.'}
+            {category === 'top_rated' && '역대 최고 평점을 받은 영화 목록입니다.'}
+            {category === 'now_playing' && '현재 극장에서 상영 중인 영화 목록입니다.'}
+          </p>
+        </div>
+      </div>
+      
+      {/* 영화 목록 */}
+      <div className="w-full px-8 pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+        
+        {/* 페이지네이션 */}
+        <div className="mt-12">
           <Pagination 
             currentPage={currentPage} 
             totalPages={totalPages} 
             onPageChange={handlePageChange} 
           />
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 };
