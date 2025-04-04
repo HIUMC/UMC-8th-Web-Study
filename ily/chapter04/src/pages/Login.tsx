@@ -129,7 +129,7 @@ function Login() {
             }}
           />
           {emailError && (
-            <div className="text-red-500">옳바른 이메일을 입력하세요!</div>
+            <div className="text-red-500">올바른 이메일을 입력하세요!</div>
           )}
           <input
             className="border-2 border-black-500 rounded-md p-2 w-1/2 mt-2"
