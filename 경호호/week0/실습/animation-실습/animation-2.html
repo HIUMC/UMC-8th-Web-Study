@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .box {
+      width: 100px;
+     
+      height: 100px;
+      background-color: purple;
+      border-radius: 50%;
+      position: relative;
+      animation: bounce 2s ease-in-out 0s infinite alternate;
+    }
+    
+    @keyframes bounce {
+      0% {
+        transform: translateY(0) scale(0.9, 1.1);
+      }
+      50% {
+        transform: translateY(200px) scale(1.1, 0.9);
+      }
+      100% {
+        transform: translateY(0) scale(0.9, 1.1);
+      }
+    }
+    
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+</body>
+</html>
