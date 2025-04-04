@@ -4,7 +4,7 @@ import MoviePage from "./pages/MoviePage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import MovieDetailPage from "./pages/MovieDetailPage";
-import {defineConfig} from "vite";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
         path: "movies/:category/:id",
         element: <MovieDetailPage />,
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
     ],
   },
 ]);
@@ -29,5 +33,3 @@ function App() {
 }
 
 export default App;
-
-
