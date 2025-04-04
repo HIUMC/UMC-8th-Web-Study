@@ -1,6 +1,4 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { MovieDetail } from "../types/movie";
 import LoadingSpinner from "../components/LoadingSpinner";
 import useCustomFetch from "../hooks/useCustomFetch";
