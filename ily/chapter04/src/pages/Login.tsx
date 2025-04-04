@@ -49,14 +49,10 @@ function Login() {
 
   //로그인 핸들러
   const LoginHandler = async () => {
-    if (
-      !isValid
-      //a만 넣어서 입력하게 하는 방법 은 !emailRef.current?.value&&!passwordRef.current?.value로 적으면 됨
-    ) {
+    if (!isValid) {
       alert("이메일과 비밀번호를 입력해주세요.");
       return;
     }
-
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
@@ -80,14 +76,13 @@ function Login() {
       console.log(data);
       setIsLogin(true);
       console.log(isLogin);
-    } catch {
-      if (data?.status !== true) {
+    } catch (error) {
+      if (data?.status !== true || error) {
         alert("로그인에 실패했습니다.");
         setIsPending(false);
       }
     } finally {
       if (data?.status === true) {
-        alert("로그인에 성공했습니다.");
         localStorage.setItem("accessToken", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
         console.log(data.data.accessToken);
