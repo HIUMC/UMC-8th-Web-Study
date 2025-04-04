@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  width: 700px;
+  align-items: center;
+  border: none;
+  border-bottom: 3px solid #e3e3e3;
+
+  padding: 80px;
+}
+
+.Plan_Wrapper_Input {
+  width: 500px;
+  height: 40px;
+
+  margin-top: 30px;
+}
+
+.Plan_Wrapper_Do {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  padding-top: 20px;
+
+  font-weight: bold;
+}
+
+.Plan_Wrapper_Before {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Plan_Wrapper_After {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* JS 를 위한 CSS  */
+
+.todo-item {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+
+  border-bottom: 2px solid #e3e3e3;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.done-btn {
+  background: #e3e3e3;
+  border: none;
+  padding: 5px 10px;
+
+  cursor: pointer;
+}
+
+.done-btn:hover {
+  background: #0056b3;
+}

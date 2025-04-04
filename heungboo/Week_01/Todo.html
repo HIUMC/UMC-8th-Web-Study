@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./Todo.css" />
+    <script type="module" src="./dist/Todo.js" defer></script>
+    <!--  defer = 나중에 실행을 의미 -->
+    <title>TODO</title>
+  </head>
+  <body>
+    <div class="Todo_container">
+      <div class="Todo_header">
+        <h1>WOOK TODO</h1>
+      </div>
+      <form class="Todo_form" id="todo-form">
+        <!-- // required = 무조건 값이 들어가야함.. 처음 앎 .. -->
+        <input
+          class="Todo_form_input"
+          id="todo-input"
+          placeholder="할 일 입력"
+          required
+        />
+
+        <!-- form 태그에서 버튼이 눌렸을 때 action이 취해지기 위해서 button 에 type=submit 필수 -->
+        <button type="submit" class="Todo_form_btn" id="todo-btn">
+          할 일 추가
+        </button>
+      </form>
+
+      <div class="Render_container">
+        <div class="Render_section">
+          <h2 class="Render_title">할 일</h2>
+          <ul class="Render_list" id="todo-before-list">
+            <!-- 안에 추가되도록 수정 -->
+            <!-- <li class="Render_item"> -->
+            <!-- <p class="Render_item_text">ㅎㅎ</p>
+              <button class="Render_item_btn">완료</button> -->
+            <!-- </li> -->
+          </ul>
+        </div>
+        <div class="Render_section">
+          <h2 class="Render_title">완료</h2>
+          <ul class="Render_list" id="todo-after-list">
+            <!-- 안에 추가되도록 수정 -->
+            <!-- <li>123</li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
