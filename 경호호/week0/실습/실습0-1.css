@@ -1,0 +1,78 @@
+body {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+section {
+    margin-bottom: 40px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+h2 {
+    color: #444;
+    margin-top: 0;
+}
+
+.explanation {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-left: 3px solid #333;
+    margin-top: 20px;
+}
+
+/* Block 요소 스타일 */
+.block-element {
+    display: block;
+    width: 80%;
+    height: 50px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #ffcccc;
+    border: 2px solid #ff6666;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Inline 요소 스타일 */
+.inline-container {
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.inline-element {
+    display: inline;
+    width: 200px; /* 적용되지 않음 */
+    height: 50px; /* 적용되지 않음 */
+    margin: 20px; /* 좌우만 적용 */
+    padding: 10px;
+    background-color: #ccffcc;
+    border: 2px solid #66cc66;
+}
+
+/* Inline-block 요소 스타일 */
+.inline-block-container {
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.inline-block-element {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #ccccff;
+    border: 2px solid #6666ff;
+    text-align: center;
+    box-sizing: border-box;
+} 

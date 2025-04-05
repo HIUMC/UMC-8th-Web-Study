@@ -3,7 +3,6 @@ import { Movie } from "../types/movie";
 
 interface DetailContextType {
   movies: Movie;
-  category: string;
 }
 
 export const DetailContext = createContext<DetailContextType | undefined>(
@@ -19,3 +18,6 @@ export const DetailProvider = ({ children }: PropsWithChildren) => {
     <DetailContext.Provider value={{ movies, setMovies }}
   )
 };
+
+
+

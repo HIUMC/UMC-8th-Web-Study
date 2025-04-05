@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* 이거 Check */
+  height: 100vh;
+  background-color: #f1f1f1;
+
+  display: flex;
+  justify-self: center;
+  align-items: center;
+
+  font-family: sans-serif;
+}
+
+.Todo_container {
+  /* padding을 넣으면 후에 지장이 가므로, width와 height를 넣어줌 */
+  width: 450px;
+  height: 260px;
+  /* padding: 50px; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  background-color: white;
+
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.Todo_header {
+  font-size: 24px;
+  margin: 16px 0px;
+}
+
+.Todo_form {
+  width: 400px;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+.Todo_form_input {
+  flex: 1;
+  padding: 8px;
+
+  border-radius: 6px;
+  border: 1px solid gray;
+
+  font-size: 14px;
+}
+
+.Todo_form_btn {
+  /* width: 100px; */
+  /* height: 30px; */
+
+  border-radius: 6px;
+
+  /* background-color: greenyellow; */
+  /* 요놈 .. 그린과 그린엘로우 사이 어딘가 이군요 */
+  background-color: #28a735;
+  /* background-color: green; */
+
+  color: white;
+  font-weight: 400;
+
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.Render_container {
+  /* todo-form 하고 같이 묶었어야 했나? */
+  width: 400px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.Render_section {
+  width: 100%;
+  text-align: left;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.Render_title {
+  font-size: 18px;
+  font-weight: bold;
+
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.Render_list {
+  /* 점이 안 찍히도록 함 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.Render_item {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  background-color: #f9f9f9;
+  margin-bottom: 6px;
+}
+
+.Render_item_text {
+  flex: 1;
+}
+
+.Render_item_btn {
+  background-color: #dc3545;
+
+  color: white;
+  font-size: 12px;
+
+  border: none;
+  border-radius: 6px;
+
+  padding: 6px 10px;
+
+  cursor: pointer;
+
+  transition: background-color 0.3s ease;
+}
+
+.Render_item_btn:hover {
+  background-color: #c82333;
+}
