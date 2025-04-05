@@ -1,19 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MovieDetailPage from "./pages/MovieDetail";
-import HomePage from "./pages/Home.tsx"; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import MoviePage from './pages/MoviePage';
+import HomePage from './pages/HomePage';
+import NotFoundPage from './pages/NotFoundPage';
+import MovieDetailPage from './pages/MovieDetail';
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
-        {/* 홈 페이지 */}
         <Route path="/" element={<HomePage />} />
-
-        {/* 영화 상세 페이지 */}
+        <Route path="/movies/:category" element={<MoviePage />} />
         <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
