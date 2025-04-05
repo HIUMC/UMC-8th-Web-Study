@@ -21,6 +21,7 @@ export default function MoviePage(){
 
 
   useEffect(():void=>{
+    const apiKey = import.meta.env.VITE_TMDB_KEY;
     
     const fetchMovies = async () : Promise<void>=>{
       setIsPending(true);
@@ -29,11 +30,12 @@ export default function MoviePage(){
 
 
       try{
+
       const { data }  = await axios.get<MovieResponse>(
-        'https://api.themoviedb.org/3/movie/${params.category}?language=ko-KR&page=${page}',
+        `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
         {
           headers: { 
-            Authorization: 'Bearer ${import.meta.env.VITE_TMDB_KEY}',
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
         }
@@ -67,20 +69,20 @@ export default function MoviePage(){
     cursor-pointer disabled:cursor-not-allowed'
     disabled={page===1}
     onClick={():void =>setPage((prev):number=>prev-1)}>
-      {'<'}</button>
+      {`<`}</button>
     <span>{page}페이지</span>
     <button 
     className='bg-[#dda5e3] text-white px-6 py-3 rounded-lg shadow-md 
     hover:bg-[#b2dab1] transition-all duration-200  cursor-pointer'
     onClick={():void =>setPage((prev):number=>prev+1)}>
-      {'>'}</button>
+      {`>`}</button>
   </div>
   {isPending&&(
     <div className='flex items-center justify-center h-dvh'>
       <LoadingSpinner/>
     </div>
   )}
-  {isPending&&(
+  {!isPending&&(
      <div className='p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
      xl:grid-cols-6'>
        {movies&& movies.map((movie):ReactElement=>(

@@ -13,13 +13,13 @@ export default function MovieCard({movie}:MovieCardProps):ReactElement{
 
   return (
   <div 
-  onClick={():void| Promise<void> =>navigate ('/movie/${movie.id}')}
+  onClick={():void| Promise<void> =>navigate (`/movie/${movie.id}`)}
   className='relative rounded-xl shadow-lg overflow-hidden cursor-pointer
   w-44 transition-transform duration-500 hover:scale-105' 
   onMouseEnter={():void=>setIsHovered(true)}
   onMouseLeave={():void=>setIsHovered(false)}>
-    <img src={'https://image.tmdb.org/t/p/w100${movie.poster_path}'}
-    alt={'${movie.title}영화의 이미지'}
+    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+    alt={`${movie.title}영화의 이미지`}
     className=''
     />
     {isHovered&& (
@@ -28,7 +28,7 @@ export default function MovieCard({movie}:MovieCardProps):ReactElement{
       items-center text-white p-4'>
         <h2 className='text-lg font-bold leading-snug'>{movie.title}</h2>
         <p className='text-sm text-gray-300 leading-relaxed mt-2
-        line-clamp-5'>
+        line-clamp-4'>
           {movie.overview}
           </p>
       </div>

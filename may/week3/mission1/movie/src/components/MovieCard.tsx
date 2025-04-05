@@ -15,8 +15,8 @@ export default function MovieCard({movie}:MovieCardProps):ReactElement{
   w-44 transition-transform duration-500 hover:scale-105' 
   onMouseEnter={():void=>setIsHovered(true)}
   onMouseLeave={():void=>setIsHovered(false)}>
-    <img src={'https://image.tmdb.org/t/p/w100${movie.poster_path}'}
-    alt={'${movie.title}영화의 이미지'}
+    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+    alt={`${movie.title}영화의 이미지`}
     className=''
     />
     {isHovered&& (

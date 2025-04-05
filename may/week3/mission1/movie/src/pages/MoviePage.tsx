@@ -8,9 +8,15 @@ export default function MoviePage(){
   const [movies, setMovies]=useState<Movie[]>([]);
 
   useEffect(():void=>{
-    const fetchMovies = async () : Promise<void>=>{
+    const apiKey = import.meta.env.VITE_TMDB_KEY;
+    const fetchMovies = async () =>{
       const { data }  = await axios.get<MovieResponse>(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`,
+        `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
+        {
+          headers: { 
+            Authorization: `Bearer ${apiKey}`,
+          },
+        }
       );
       console.log(data);
       setMovies(data.results); 
