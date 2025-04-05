@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nav</title>
+  <style>
+    .container{
+      position: fixed;
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .logo{
+      width: 30px;
+      height: 20px;
+    }
+    .name{
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .menu-container{
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      position: absolute;
+      right: 70px;
+    }
+    .menu{
+      font-size: 16px;
+    }
+    .icon{
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <img class="logo" src="https://www.smumc.co.kr/_next/image?url=%2Fimages%2Fmain-light-logo.webp&w=828&q=75" alt="로고 이미지">
+      <div class="name"><strong>SMUMC</strong></div>
+    </div>
+
+    <div class="menu-container">
+      <div class="menu">PROJECTS</div>
+      <div class="menu">MEMBERS</div>
+      <div class="menu">NOTICE</div>
+      <img class="icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeXnyNn_yo8YNP0QGHIe4sBhrlhHfWpS-Vsg&s" alt="아이콘">
+    </div>
+  </div>
+</body>
+
+</html>
