@@ -3,20 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useLogin } from "../context/useLogin";
-
-type Data = {
-  id: number;
-  name: string;
-  accessToken: string;
-  refreshToken: string;
-};
-
-type ResponseData = {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: Data;
-};
+import { ResponseData } from "../types/movie";
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
