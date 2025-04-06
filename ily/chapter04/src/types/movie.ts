@@ -78,3 +78,17 @@ export type Credit = {
   id: number;
   cast: cast[];
 };
+
+type Data = {
+  id: number;
+  name: string;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type ResponseData = {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: Data;
+};
