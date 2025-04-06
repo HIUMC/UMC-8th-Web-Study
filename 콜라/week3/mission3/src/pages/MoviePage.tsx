@@ -34,8 +34,7 @@ export const MoviePage = () => {
             `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
             {
               headers: {
-                Authorization:
-                  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZWY2NDFmMTEzMDlmZTYzZTRjN2I4OTZjYjg2NTUxZCIsIm5iZiI6MTc0MzQ5NzA4OS44NzM5OTk4LCJzdWIiOiI2N2ViYTc4MTAzYmFiZGNlZDI3YWIwZmQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.t9-PZYnYZqh8sS6vLruqbuEABmvx9L8_vzAXIldYG5Q",
+                Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
               },
             }
           ),
@@ -43,8 +42,7 @@ export const MoviePage = () => {
             `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`,
             {
               headers: {
-                Authorization:
-                  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZWY2NDFmMTEzMDlmZTYzZTRjN2I4OTZjYjg2NTUxZCIsIm5iZiI6MTc0MzQ5NzA4OS44NzM5OTk4LCJzdWIiOiI2N2ViYTc4MTAzYmFiZGNlZDI3YWIwZmQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.t9-PZYnYZqh8sS6vLruqbuEABmvx9L8_vzAXIldYG5Q",
+                Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
               },
             }
           ),
