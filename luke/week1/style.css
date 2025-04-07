@@ -1,0 +1,121 @@
+* {
+  margin : 0;
+  padding : 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f1f1;
+}
+
+.todo-container {
+  background-color: white;
+  padding:20;
+  border-radius: 12px;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0 0 0 0.1);
+  width: 350px;
+  text-align: center;
+}
+.todo-container_header {
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.todo-container_form {
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+  gap :10px;
+  margin-bottom: 20px;
+}
+.todo-container_input {
+  flex : 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.todo-container_button {
+  background-color: #2ba745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor : pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.todo-container_button:hover{
+  background-color: #2ba000;
+}
+
+.render-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.render-container_title{
+  font-size : 18px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.render-container_section {
+  width:100%;
+  
+  text-align: left;
+}
+.render-container_title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.render-container_list {
+  list-style:  none;
+  padding: 0;
+  margin: 0;
+  padding: 8px;
+}
+.render-container_item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border-bottom: 6px;
+  width : 100%;
+
+}
+
+.render-container_item_text {
+  flex : 1;
+
+}
+
+.render-container_item_button {
+
+  color : white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: background-color 0.3s else;
+}
+
+.render-container_item_button:hover{
+  background-color: #c82424;
+
+}
+
