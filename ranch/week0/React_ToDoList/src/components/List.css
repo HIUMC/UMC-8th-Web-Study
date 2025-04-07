@@ -1,0 +1,34 @@
+.List {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 5px;
+}
+
+.todo-section,
+.done-section {
+  margin: auto;
+  flex: 1;
+  max-width: 200px;
+  padding: 15px;
+  text-align: center;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.todo-section h2,
+.done-section h2 {
+  font-size: 15px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #dbe4f0;
+  display: inline-block;
+  width: fit-content;
+}
+
+.empty {
+  text-align: center;
+  color: gray;
+  font-style: italic;
+}
