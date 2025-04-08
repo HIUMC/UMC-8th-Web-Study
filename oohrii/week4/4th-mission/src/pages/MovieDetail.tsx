@@ -1,48 +1,50 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { MovieDetail, Credit } from '../types/movie';
 import { useCustomFetch } from '../hooks/useCustomFetch';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
+import { MovieDetail } from '../types/movie';
 
 const MovieDetailPage = () => {
-  const { movieId } = useParams<{ movieId: string }>();
-  const API_URL = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${import.meta.env.VITE_TMDB_KEY}`;
+  const { movieId } = useParams();
+  const API_URL = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`;
+  const CREDITS_URL = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`;
   
-  const { data, loading, error } = useCustomFetch<MovieDetail>(API_URL);
+  const { data: movieData, loading: movieLoading, error: movieError } = useCustomFetch<MovieDetail>(API_URL);
+  const { data: creditsData, loading: creditsLoading, error: creditsError } = useCustomFetch<{ cast: any[]; crew: any[] }>(CREDITS_URL);
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage message={error.message} />;
-  if (!data) return <ErrorMessage message="영화 정보를 불러올 수 없습니다." />;
+  if (movieLoading || creditsLoading) return <LoadingSpinner />;
+  if (movieError) return <ErrorMessage message={movieError.message} />;
+  if (creditsError) return <ErrorMessage message={creditsError.message} />;
+  if (!movieData || !creditsData) return <ErrorMessage message="영화 정보를 불러올 수 없습니다." />;
 
-  const director = data.credits.crew.find((person) => person.job === 'Director');
-  const mainCast = data.credits.cast.slice(0, 5);
+  const director = creditsData.crew.find((person) => person.job === 'Director');
+  const mainCast = creditsData.cast.slice(0, 5);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div
         className="relative h-[60vh] bg-cover bg-center rounded-b-3xl overflow-hidden"
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`,
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${movieData.backdrop_path})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="container mx-auto px-4 relative h-full flex items-end">
           <div className="flex gap-8 pb-16">
             <img
-              src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-              alt={data.title}
+              src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`}
+              alt={movieData.title}
               className="w-64 rounded-xl shadow-xl"
             />
             <div className="flex flex-col justify-end">
-              <h1 className="text-4xl font-bold mb-4">{data.title}</h1>
+              <h1 className="text-4xl font-bold mb-4">{movieData.title}</h1>
               <div className="flex gap-4 mb-4">
-                <span>{data.release_date.split('-')[0]}</span>
-                <span>{data.runtime}분</span>
-                <span>평점: {data.vote_average.toFixed(1)}</span>
+                <span>{movieData.release_date.split('-')[0]}</span>
+                <span>{movieData.runtime}분</span>
+                <span>평점: {movieData.vote_average.toFixed(1)}</span>
               </div>
               <div className="flex gap-2 mb-4">
-                {data.genres.map((genre) => (
+                {movieData.genres.map((genre) => (
                   <span
                     key={genre.id}
                     className="px-3 py-1 bg-blue-500 rounded-full text-sm"
@@ -51,7 +53,7 @@ const MovieDetailPage = () => {
                   </span>
                 ))}
               </div>
-              <p className="text-lg mb-4">{data.overview}</p>
+              <p className="text-lg mb-4">{movieData.overview}</p>
             </div>
           </div>
         </div>

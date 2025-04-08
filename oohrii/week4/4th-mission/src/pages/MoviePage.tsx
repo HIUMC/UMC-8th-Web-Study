@@ -1,53 +1,28 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Movie } from "../types/movie";
+import { useCustomFetch } from "../hooks/useCustomFetch";
 import MovieCard from "../components/MovieCard";
-import { LoadingSpinner } from "../components/LoadingSpinner";
-import { useCustomFetch } from '../hooks/useCustomFetch';
-import MovieList from '../components/MovieList';
-import ErrorMessage from '../components/ErrorMessage';
+import LoadingSpinner from "../components/LoadingSpinner";
+import ErrorMessage from "../components/ErrorMessage";
+import { Movie } from "../types/movie";
 
-export default function MoviePage(): ReactElement {
+const MoviePage = (): ReactElement => {
   const { category } = useParams<{ category: string }>();
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const navigate = useNavigate();
 
-  const API_URL = `https://api.themoviedb.org/3/movie/${category}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=ko-KR&page=${currentPage}`;
-  
-  const { data, loading: customLoading, error: customError } = useCustomFetch<{ results: Movie[] }>(API_URL);
+  const API_URL = `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${currentPage}`;
+  const { data, loading, error } = useCustomFetch<{ results: Movie[]; total_pages: number }>(API_URL);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${currentPage}`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        setMovies(response.data.results);
-        setTotalPages(Math.min(response.data.total_pages, 500)); // TMDB API는 최대 500페이지까지만 제공
-      } catch (err) {
-        setError("영화 데이터를 불러오는데 실패했습니다.");
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (data) {
+      setTotalPages(Math.min(data.total_pages, 500));
+    }
+  }, [data]);
 
-    fetchMovies();
-  }, [category, currentPage]);
-
-  if (customLoading) return <LoadingSpinner />;
-  if (customError) return <ErrorMessage message={customError.message} />;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error.message} />;
   if (!data) return <ErrorMessage message="데이터를 불러올 수 없습니다." />;
 
   return (
@@ -104,4 +79,6 @@ export default function MoviePage(): ReactElement {
       </div>
     </div>
   );
-}
+};
+
+export default MoviePage;
