@@ -1,32 +1,22 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import MoviePage from "./pages/MoviePage"; 
+import Layout from "./Layout";
+import { MovieDetail } from "./pages/MovieDetail";
+import "./App.css";
 
-import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import NotFoundPage from './pages/NotFoundPage';
-import MoviePage from './pages/MoviePage';
-import MovieDetailPage from './pages/MovieDetailPage';
-
-
-const router= createBrowserRouter([
-  {
-    path:'/',
-    element:<HomePage />,
-    errorElement:<NotFoundPage/>,
-    children:[
-      {
-        path:'movies/:category',
-        element:<MoviePage/>,
-      },
-      {
-        path:'movies/:movieId',
-        element:<MovieDetailPage/>
-      }
-    ],
-  },
-]);
-
-function App(){
-  return <RouterProvider router={router}/>
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="movies/:category" element={<MoviePage />} /> 
+          <Route path='movies/:category/:id' element={<MovieDetail/>}/>
+        </Route>  
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
