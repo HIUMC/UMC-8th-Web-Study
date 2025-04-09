@@ -1,50 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+
+interface LoginFormInputs {
+  email: string;
+  password: string;
+}
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [isValid, setIsValid] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<LoginFormInputs>({
+    mode: 'onChange',
+  });
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePassword = (password: string) => {
-    return password.length >= 8;
-  };
-
-  useEffect(() => {
-    setIsValid(validateEmail(email) && validatePassword(password));
-  }, [email, password]);
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailError('');
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setPasswordError('');
-  };
-
-  const handleLogin = () => {
-    if (!validateEmail(email)) {
-      setEmailError('올바른 이메일 형식을 입력해주세요.');
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      setPasswordError('비밀번호는 8자 이상이어야 합니다.');
-      return;
-    }
-
+  const onSubmit = (data: LoginFormInputs) => {
     // 로그인 로직 구현
+    console.log(data);
   };
 
   return (
@@ -53,8 +29,8 @@ const LoginPage = () => {
         <BackButton onClick={() => navigate(-1)}>&lt;</BackButton>
         <Title>로그인</Title>
       </Header>
-      <LoginForm>
-        <GoogleLoginButton>
+      <LoginForm onSubmit={handleSubmit(onSubmit)}>
+        <GoogleLoginButton type="button">
           <GoogleIcon>G</GoogleIcon>
           구글 로그인
         </GoogleLoginButton>
@@ -63,25 +39,35 @@ const LoginPage = () => {
         </Divider>
         <InputWrapper>
           <InputField
+            {...register('email', {
+              required: true,
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '올바른 이메일 형식을 입력해주세요.',
+              },
+            })}
             type="email"
             placeholder="이메일을 입력해주세요!"
-            value={email}
-            onChange={handleEmailChange}
-            error={!!emailError}
+            error={!!errors.email}
           />
-          {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </InputWrapper>
         <InputWrapper>
           <InputField
+            {...register('password', {
+              required: true,
+              minLength: {
+                value: 8,
+                message: '비밀번호는 8자 이상이어야 합니다.',
+              },
+            })}
             type="password"
             placeholder="비밀번호를 입력해주세요!"
-            value={password}
-            onChange={handlePasswordChange}
-            error={!!passwordError}
+            error={!!errors.password}
           />
-          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         </InputWrapper>
-        <LoginButton onClick={handleLogin} disabled={!isValid}>
+        <LoginButton type="submit" disabled={!isValid}>
           로그인
         </LoginButton>
       </LoginForm>
@@ -116,7 +102,7 @@ const Title = styled.h1`
   font-size: 24px;
 `;
 
-const LoginForm = styled.div`
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -176,7 +162,7 @@ const InputField = styled.input<{ error?: boolean }>`
   
   &:focus {
     outline: none;
-    border-color: ${props => props.error ? 'red' : '#ff1b6d'};
+    border-color: ${props => props.error ? 'red' : '#00C2B3'};
   }
 `;
 
