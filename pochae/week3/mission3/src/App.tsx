@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import MovieDetailPage from './pages/MovieDetailPage';
 
+// 왜안돼
 // Browserrouter v5
 // createBrowserRouter v6
 
