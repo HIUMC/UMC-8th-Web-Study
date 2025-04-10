@@ -6,6 +6,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import HomeLayout from './layouts/HomeLayout'
 import HomePage from './pages/HomePage'
 import SignupPage from './pages/SignupPage'
+import MyPage from './pages/MyPage'
 
 const router=createBrowserRouter([
   {
@@ -15,7 +16,9 @@ const router=createBrowserRouter([
     children:[
       {index:true, element:<HomePage/>},
       {path:'login', element:<LoginPage/>},
-      {path:'signup', element:<SignupPage/>}
+      {path:'signup', element:<SignupPage/>},
+      {path: 'my', element: <MyPage />}
+
     ]
   }
 ])
@@ -25,3 +28,5 @@ function App() {
   
 }
 export default App
+
+
