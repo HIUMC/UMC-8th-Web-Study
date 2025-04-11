@@ -2,42 +2,36 @@ import useFetch from './useFetch';
 import { MovieApiResponse } from '../types/movie';
 import { getCategoryPath } from '../services/movieService';
 
-const API_KEY = import.meta.env.VITE_TMDB_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
+// API_KEY와 BASE_URL 정의 제거
 
-/**
- * 영화 데이터를 가져오는 커스텀 훅
- * @param category 영화 카테고리 (popular, top-rated, upcoming, now_playing)
- * @param page 페이지 번호
- * @param language 언어 설정
- * @returns 영화 데이터, 로딩 상태, 에러 정보, refetch 함수
- */
 const useMovies = (
   category: string,
   page: number = 1,
   language: string = 'ko-KR'
 ) => {
+  console.log(`[useMovies] Hook called with category: ${category}, page: ${page}`); // 로그 추가
   const categoryPath = getCategoryPath(category);
-  const url = `${BASE_URL}/movie/${categoryPath}`;
+  // 상대 경로만 사용
+  const url = `/movie/${categoryPath}`; 
   
+  // headers 옵션 제거, params만 전달
   const { data, loading, error, refetch } = useFetch<MovieApiResponse>(url, {
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      'Content-Type': 'application/json',
-    },
     params: {
       language,
       page,
     },
   });
 
+  // useFetch 결과 로그 추가
+  console.log(`[useMovies] useFetch result - loading: ${loading}, error: ${error}, data received: ${!!data}`);
+
   return {
     movies: data?.results || [],
-    totalPages: data ? Math.min(data.total_pages, 500) : 0, // TMDB API는 최대 500페이지까지 제공
+    totalPages: data ? Math.min(data.total_pages, 500) : 0,
     loading,
     error,
     refetch,
   };
 };
 
-export default useMovies; 
+export default useMovies;

@@ -1,3 +1,6 @@
+// 최상단에 로그 추가
+console.log('[main.tsx] Script execution started.');
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
@@ -5,6 +8,7 @@ import './index.css'
 
 import Layout from './components/Layout'
 import MovieListPage from './pages/MovieListPage'
+import MovieDetailPage from './pages/MovieDetailPage'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: 'movies/:category',
         element: <MovieListPage />,
+      },
+      {
+        path: 'movie/:id',
+        element: <MovieDetailPage />,
       }
     ],
   },

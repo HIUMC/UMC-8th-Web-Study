@@ -8,10 +8,13 @@ import { getCategoryTitle } from '../services/movieService';
 import useMovies from '../hooks/useMovies';
 
 const MovieListPage = () => {
+  console.log('[MovieListPage] Rendering...');
   const { category = 'popular' } = useParams<{ category: string }>();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  
   const { movies, totalPages, loading, error } = useMovies(category, currentPage);
+
+  // 훅 상태 로그 추가
+  console.log(`[MovieListPage] State from useMovies - loading: ${loading}, error: ${error}, movies count: ${movies.length}, totalPages: ${totalPages}`);
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -19,6 +22,12 @@ const MovieListPage = () => {
   };
 
   const categoryTitle = getCategoryTitle(category);
+
+  // 렌더링 조건 로그 추가
+  if (loading) console.log('[MovieListPage] Rendering LoadingSpinner');
+  if (error) console.log(`[MovieListPage] Rendering ErrorDisplay with message: ${error}`);
+  if (!loading && !error && movies.length === 0) console.log('[MovieListPage] Rendering No Movies message');
+  if (!loading && !error && movies.length > 0) console.log(`[MovieListPage] Rendering ${movies.length} MovieCards`);
 
   return (
     <div className="animate-fadeIn">
@@ -51,4 +60,4 @@ const MovieListPage = () => {
   );
 };
 
-export default MovieListPage; 
+export default MovieListPage;
