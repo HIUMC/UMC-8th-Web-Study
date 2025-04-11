@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { apiClient } from '../services/movieService'; // apiClient 임포트
 
 interface FetchState<T> {
   data: T | null;
@@ -11,14 +12,8 @@ interface UseFetchReturn<T> extends FetchState<T> {
   refetch: () => Promise<void>;
 }
 
-/**
- * 데이터 fetching을 위한 커스텀 훅
- * @param url API 요청 URL
- * @param options Axios 요청 옵션
- * @returns 데이터, 로딩 상태, 에러 정보 및 refetch 함수
- */
 const useFetch = <T>(
-  url: string, 
+  url: string,
   options?: AxiosRequestConfig
 ): UseFetchReturn<T> => {
   const [state, setState] = useState<FetchState<T>>({
@@ -28,11 +23,20 @@ const useFetch = <T>(
   });
 
   const fetchData = async (): Promise<void> => {
+    console.log(`[useFetch] Attempting to fetch data from: ${url}`, options); // 로그 수정
     try {
+      console.log('[useFetch] Setting state to loading: true'); // 로그 추가
       setState(prev => ({ ...prev, loading: true, error: null }));
-      
-      const response: AxiosResponse<T> = await axios(url, options);
-      
+
+      // 캐시 무력화를 위해 URL에 타임스탬프 추가
+      const cacheBustingUrl = `${url}${url.includes('?') ? '&' : '?'}_t=${Date.now()}`;
+      console.log(`[useFetch] Cache busting URL: ${cacheBustingUrl}`);
+
+      // axios 대신 apiClient 사용, 캐시 헤더 제거
+      const response: AxiosResponse<T> = await apiClient(cacheBustingUrl, options);
+
+      console.log('[useFetch] Data received successfully:', response.data); // 로그 수정
+      console.log('[useFetch] Setting state with received data, loading: false'); // 로그 추가
       setState({
         data: response.data,
         loading: false,
@@ -40,7 +44,8 @@ const useFetch = <T>(
       });
     } catch (err) {
       const error = err as Error | AxiosError;
-      
+      console.error('[useFetch] Error occurred while fetching data:', error); // 로그 수정
+      console.log('[useFetch] Setting state with error, loading: false'); // 로그 추가
       setState({
         data: null,
         loading: false,
@@ -53,7 +58,7 @@ const useFetch = <T>(
 
   useEffect(() => {
     fetchData();
-  }, [url]);
+  }, [url, JSON.stringify(options)]);
 
   return {
     ...state,
@@ -61,4 +66,4 @@ const useFetch = <T>(
   };
 };
 
-export default useFetch; 
+export default useFetch;
