@@ -1,34 +1,49 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg'
+import { useTheme } from './context/ThemeContext';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { isDarkMode, toggleTheme } = useTheme();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className={`w-full h-full flex flex-col ${
+      isDarkMode 
+        ? 'bg-[#1a1a1a] text-white' 
+        : 'bg-white text-black'
+    }`}>
+      {/* 상단 네비게이션 바 */}
+      <nav className={`w-full h-32 flex items-center justify-end px-8 ${
+        isDarkMode 
+          ? 'bg-[#111111]' 
+          : 'bg-gray-100'
+      }`}>
+        <button
+          onClick={toggleTheme}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+            isDarkMode
+              ? 'bg-white text-black hover:bg-gray-100'
+              : 'bg-black text-white hover:bg-gray-900'
+          }`}
+        >
+          {isDarkMode ? '라이트 모드로 전환' : '다크 모드로 전환'}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </nav>
+
+      {/* 메인 컨텐츠 */}
+      <main className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className={`text-3xl font-bold mb-4 ${
+            isDarkMode ? 'text-gray-200' : 'text-gray-900'
+          }`}>
+            {isDarkMode ? '다크모드' : '라이트모드'}
+          </h2>
+          <p className={`text-lg ${
+            isDarkMode ? 'text-gray-200' : 'text-gray-600'
+          }`}>
+            현재 {isDarkMode ? '다크' : '라이트'} 테마를 사용중입니다
+          </p>
+        </div>
+      </main>
+    </div>
   )
 }
 
