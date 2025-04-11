@@ -1,72 +1,100 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useForm from '../hooks/useForm';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
 
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import axiosInstance from '../lib/axiosInstance';
+import {
+  signupSchema,
+  SignupFormData,
+  nameSchema,
+} from '../schemas/authSchemas';
 
-const validateEmail = (email: string): string | null => {
-  if (!email) return '이메일을 입력해주세요.';
-  
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return '올바른 이메일 형식이 아닙니다.';
-  }
-  return null;
-};
-
-const validatePassword = (password: string): string | null => {
-  if (!password) return '비밀번호를 입력해주세요.';
-  if (password.length < 8) {
-    return '비밀번호는 최소 8자 이상이어야 합니다.';
-  }
-  return null;
-};
-
-type SignupStep = 'email' | 'password';
+type SignupStep = 'email' | 'password' | 'name';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<SignupStep>('email');
+  const [step, setStep] = useLocalStorage<SignupStep>('signupStep', 'email');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+
   const {
-    values,
-    errors,
-    isSubmitting,
-    isValid, // 전체 폼 유효성
-    isFieldValid, // 특정 필드 유효성
-    handleChange,
+    register,
     handleSubmit,
-  } = useForm(
-    {
+    trigger,
+    watch,
+    formState: { errors, isValid, isSubmitting, dirtyFields },
+    getValues,
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    mode: 'onChange',
+    defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
+      name: '',
     },
-    {
-      email: validateEmail,
-      password: validatePassword,
-    }
-  );
+  });
+
 
   const handleGoBack = () => {
-    if (step === 'password') {
-      setStep('email'); // 비밀번호 단계에서 뒤로가기 시 이메일 단계로
-    } else {
-      navigate(-1); // 이메일 단계에서 뒤로가기 시 이전 페이지로
-    }
-  };
-
-  const handleNextStep = () => {
-    // 이메일 유효성 검사 후 다음 단계로
-    if (isFieldValid('email')) {
+    setApiError(null);
+    if (step === 'name') {
       setStep('password');
+    } else if (step === 'password') {
+      setStep('email');
+    } else {
+      navigate(-1);
     }
-    // isFieldValid가 false면 버튼이 비활성화되므로 별도 처리는 불필요
   };
 
-  // 최종 회원가입 제출 처리
-  const handleSignupSubmit = async (formValues: typeof values) => {
-    console.log('회원가입 시도:', formValues);
-    // 여기에 실제 회원가입 API 호출 로직 추가
-    await new Promise(resolve => setTimeout(resolve, 1000)); // 임시 지연
-    alert(`회원가입 성공: ${formValues.email}`);
-    navigate('/'); // 성공 시 홈으로 이동 (임시)
+  const handleNextStep = async () => {
+    setApiError(null);
+    let isValidStep = false;
+    if (step === 'email') {
+      isValidStep = await trigger('email');
+      if (isValidStep) setStep('password');
+    } else if (step === 'password') {
+      isValidStep = await trigger(['password', 'confirmPassword']);
+      if (isValidStep) setStep('name');
+    }
+  };
+
+  const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
+    setApiError(null);
+    try {
+      const response = await axiosInstance.post('/v1/auth/signup', {
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      });
+
+      console.log('회원가입 성공:', response.data);
+      alert('회원가입에 성공했습니다!');
+      localStorage.removeItem('signupStep');
+      navigate('/signin');
+
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = (error.response.data as { message?: string })?.message;
+        setApiError(errorMessage || '회원가입 중 오류가 발생했습니다.');
+      } else {
+        setApiError('회원가입 중 오류가 발생했습니다. 네트워크 연결을 확인해주세요.');
+      }
+    }
+  };
+
+  const isEmailStepValid = !errors.email && dirtyFields.email;
+  const isPasswordStepValid = !errors.password && !errors.confirmPassword && dirtyFields.password && dirtyFields.confirmPassword && (watch('password') === watch('confirmPassword'));
+  const isNameStepValid = !errors.name && dirtyFields.name;
+
+  const renderError = (fieldError: typeof errors[keyof typeof errors]) => {
+    return fieldError && <p className="text-red-400 text-xs mt-1">{fieldError.message}</p>;
   };
 
   return (
@@ -80,68 +108,139 @@ const SignupPage = () => {
           {'<'}
         </button>
         <h1 className="text-2xl font-bold text-center flex-grow text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">회원가입</h1>
+        <span className="text-sm text-gray-400 ml-4">
+          {step === 'email' ? '1/3' : step === 'password' ? '2/3' : '3/3'}
+        </span>
       </div>
 
-      {step === 'email' && (
-        <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-              이메일
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 bg-gray-700 text-white placeholder-gray-400 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500 focus:border-purple-500'}`}
-              placeholder="이메일을 입력하세요"
-              value={values.email}
-              onChange={handleChange}
-              aria-invalid={!!errors.email}
-              aria-describedby="email-error"
-            />
-            {errors.email && <p id="email-error" className="text-red-400 text-xs mt-1">{errors.email}</p>}
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
-            disabled={!isFieldValid('email')}
-          >
-            다음
-          </button>
-        </form>
+      {apiError && (
+        <div className="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded relative mb-4" role="alert">
+          <strong className="font-bold">오류!</strong>
+          <span className="block sm:inline"> {apiError}</span>
+        </div>
       )}
 
-      {step === 'password' && (
-        <form onSubmit={handleSubmit(handleSignupSubmit)}>
-           <div className="mb-4">
-              <p className="text-sm text-gray-400">이메일: {values.email}</p>
-           </div>
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-              비밀번호
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 bg-gray-700 text-white placeholder-gray-400 ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500 focus:border-purple-500'}`}
-              placeholder="비밀번호 (8자 이상)"
-              value={values.password}
-              onChange={handleChange}
-              aria-invalid={!!errors.password}
-              aria-describedby="password-error"
-            />
-            {errors.password && <p id="password-error" className="text-red-400 text-xs mt-1">{errors.password}</p>}
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
-            disabled={!isValid || isSubmitting}
-          >
-            {isSubmitting ? '가입 처리 중...' : '회원가입'}
-          </button>
-        </form>
-      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {step === 'email' && (
+          <>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                이메일
+              </label>
+              <input
+                type="email"
+                id="email"
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 bg-gray-700 text-white placeholder-gray-400 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500 focus:border-purple-500'}`}
+                placeholder="이메일을 입력하세요"
+                {...register('email')}
+                aria-invalid={!!errors.email}
+                aria-describedby="email-error"
+              />
+              {renderError(errors.email)}
+            </div>
+            <button
+              type="button"
+              onClick={handleNextStep}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
+              disabled={!isEmailStepValid}
+            >
+              다음
+            </button>
+          </>
+        )}
+
+        {step === 'password' && (
+          <>
+            <div className="mb-4">
+              <p className="text-sm text-gray-400">이메일: {getValues('email')}</p>
+            </div>
+            <div className="mb-4 relative">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+                비밀번호
+              </label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 bg-gray-700 text-white placeholder-gray-400 ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500 focus:border-purple-500'}`}
+                placeholder="비밀번호 (영문, 숫자, 특수문자 포함 8자 이상)"
+                {...register('password')}
+                aria-invalid={!!errors.password}
+                aria-describedby="password-error"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-sm leading-5 text-gray-400 hover:text-white"
+                aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              {renderError(errors.password)}
+            </div>
+            <div className="mb-6 relative">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-1">
+                비밀번호 확인
+              </label>
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 bg-gray-700 text-white placeholder-gray-400 ${errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500 focus:border-purple-500'}`}
+                placeholder="비밀번호를 다시 입력하세요"
+                {...register('confirmPassword')}
+                aria-invalid={!!errors.confirmPassword}
+                aria-describedby="confirmPassword-error"
+              />
+               <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-sm leading-5 text-gray-400 hover:text-white"
+                aria-label={showConfirmPassword ? "비밀번호 확인 숨기기" : "비밀번호 확인 보기"}
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              {renderError(errors.confirmPassword)}
+            </div>
+            <button
+              type="button"
+              onClick={handleNextStep}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
+              disabled={!isPasswordStepValid}
+            >
+              다음
+            </button>
+          </>
+        )}
+
+        {step === 'name' && (
+          <>
+            <div className="mb-4">
+              <p className="text-sm text-gray-400">이메일: {getValues('email')}</p>
+            </div>
+            <div className="mb-6">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+                이름
+              </label>
+              <input
+                type="text"
+                id="name"
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 bg-gray-700 text-white placeholder-gray-400 ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-600 focus:ring-purple-500 focus:border-purple-500'}`}
+                placeholder="이름 (2~10자)"
+                {...register('name')}
+                aria-invalid={!!errors.name}
+                aria-describedby="name-error"
+              />
+              {renderError(errors.name)}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
+              disabled={!isNameStepValid || isSubmitting}
+            >
+              {isSubmitting ? '가입 처리 중...' : '회원가입'}
+            </button>
+          </>
+        )}
+      </form>
     </div>
   );
 };

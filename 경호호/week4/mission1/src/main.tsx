@@ -5,7 +5,7 @@ import './index.css'
 
 import Layout from './components/Layout'
 import MovieListPage from './pages/MovieListPage'
-import MovieDetailPage from './pages/MovieDetailPage' // <-- MovieDetailPage 임포트 추가
+import MovieDetailPage from './pages/MovieDetailPage'
 
 const router = createBrowserRouter([
   {
@@ -20,8 +20,8 @@ const router = createBrowserRouter([
         path: 'movies/:category',
         element: <MovieListPage />,
       },
-      { // <-- 영화 상세 페이지 라우트 추가
-        path: 'movie/:id', 
+      {
+        path: 'movie/:id',
         element: <MovieDetailPage />,
       }
     ],

@@ -11,14 +11,8 @@ interface UseFetchReturn<T> extends FetchState<T> {
   refetch: () => Promise<void>;
 }
 
-/**
- * 데이터 fetching을 위한 커스텀 훅
- * @param url API 요청 URL
- * @param options Axios 요청 옵션
- * @returns 데이터, 로딩 상태, 에러 정보 및 refetch 함수
- */
 const useFetch = <T>(
-  url: string, 
+  url: string,
   options?: AxiosRequestConfig
 ): UseFetchReturn<T> => {
   const [state, setState] = useState<FetchState<T>>({
@@ -28,13 +22,13 @@ const useFetch = <T>(
   });
 
   const fetchData = async (): Promise<void> => {
-    console.log(`[useFetch] Fetching data from: ${url}`, options); // <-- 로그 추가
+    console.log(`[useFetch] Fetching data from: ${url}`, options);
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
       const response: AxiosResponse<T> = await axios(url, options);
 
-      console.log('[useFetch] Data received:', response.data); // <-- 로그 추가
+      console.log('[useFetch] Data received:', response.data);
       setState({
         data: response.data,
         loading: false,
@@ -42,7 +36,7 @@ const useFetch = <T>(
       });
     } catch (err) {
       const error = err as Error | AxiosError;
-      console.error('[useFetch] Error fetching data:', error); // <-- 로그 추가
+      console.error('[useFetch] Error fetching data:', error);
 
       setState({
         data: null,
@@ -57,7 +51,7 @@ const useFetch = <T>(
   useEffect(() => {
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, JSON.stringify(options)]); // README.md에 있던 개선 사항 반영
+  }, [url, JSON.stringify(options)]);
 
   return {
     ...state,

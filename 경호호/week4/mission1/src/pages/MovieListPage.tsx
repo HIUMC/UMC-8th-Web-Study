@@ -8,10 +8,10 @@ import { getCategoryTitle } from '../services/movieService';
 import useMovies from '../hooks/useMovies';
 
 const MovieListPage = () => {
-  console.log('[MovieListPage] Rendering...'); // <-- 로그 추가
+  console.log('[MovieListPage] Rendering...');
   const { category = 'popular' } = useParams<{ category: string }>();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  
+
   const { movies, totalPages, loading, error } = useMovies(category, currentPage);
 
   const handlePageChange = (page: number) => {

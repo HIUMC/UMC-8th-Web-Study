@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage'; // HomePage 임포트
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
@@ -14,8 +14,5 @@ function App() {
     </div>
   );
 }
-
-// 임시 LoginPage 컴포넌트 (나중에 pages 폴더로 이동 및 구현)
-// const LoginPage = () => <div>로그인 페이지 내용</div>;
 
 export default App;

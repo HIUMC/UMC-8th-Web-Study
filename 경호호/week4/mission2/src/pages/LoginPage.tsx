@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import useForm from '../hooks/useForm'; // useForm 훅 임포트
+import useForm from '../hooks/useForm';
 
-// 이메일 유효성 검사 함수
 const validateEmail = (email: string): string | null => {
   if (!email) return '이메일을 입력해주세요.';
   if (!/\S+@\S+\.\S+/.test(email)) {
@@ -11,7 +10,6 @@ const validateEmail = (email: string): string | null => {
   return null;
 };
 
-// 비밀번호 유효성 검사 함수
 const validatePassword = (password: string): string | null => {
   if (!password) return '비밀번호를 입력해주세요.';
   if (password.length < 8) {
