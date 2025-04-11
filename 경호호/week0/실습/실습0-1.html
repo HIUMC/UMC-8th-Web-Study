@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Display 속성 비교</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    
+    <section>
+        <h2>block</h2>
+        <div class="block-container">
+            <div class="block-element">Block 요소 1</div>
+            <div class="block-element">Block 요소 2</div>
+            <div class="block-element">Block 요소 3</div>
+        </div>
+        <p class="explanation">
+            block 요소는 항상 새로운 줄에서 시작, 가능한 최대 너비를 차지, width, height, margin, padding 속성이 모두 적용
+        </p>
+    </section>
+
+    <section>
+        <h2>inline</h2>
+        <div class="inline-container">
+            <span class="inline-element">Inline 요소 1</span>
+            <span class="inline-element">Inline 요소 2</span>
+            <span class="inline-element">Inline 요소 3</span>
+        </div>
+        <p class="explanation">
+            inline 요소는 새로운 줄에서 시작하지 않고, 내용물 크기만큼만 공간을 차지, width와 height 속성이 적용되지 않으며, margin과 padding은 좌우만 적용
+        </p>
+    </section>
+
+    <section>
+        <h2>inline-block</h2>
+        <div class="inline-block-container">
+            <div class="inline-block-element">Inline-block 요소 1</div>
+            <div class="inline-block-element">Inline-block 요소 2</div>
+            <div class="inline-block-element">Inline-block 요소 3</div>
+        </div>
+        <p class="explanation">
+            inline-block 요소는 inline처럼 한 줄에 배치, block처럼 width, height, margin, padding 속성이 모두 적용, 요소 간에 기본 간격 존재
+        </p>
+    </section>
+</body>
+</html> 
