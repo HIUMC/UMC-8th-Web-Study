@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex와 Grid 레이아웃</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            color: white;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .HEADER {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: black;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .MENU {
+            display: flex;
+            background-color: red;
+            flex-grow: 1;
+            padding: 1rem;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .MENU h1 {
+            font-size: 1.2rem;
+        }
+        
+        .hero {
+            background-color: #3498db;
+            padding: 3rem 1rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40vh;
+        }
+        
+        main.content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 0;
+            padding: 0;
+            background-color: #eaeaea;
+        }
+        
+        .MAIN {
+            background-color: #27ae60;
+            padding: 2rem;
+            grid-column: 1;
+            grid-row: 1 / span 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .empty-space {
+            background-color: white;
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .image-section {
+            background-color: #e74c3c;
+            padding: 2rem;
+            grid-column: 3;
+            grid-row: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .extra {
+            background-color: #9b59b6;
+            padding: 2rem;
+            grid-column: 3;
+            grid-row: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .banner {
+            background-color: #f39c12;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div class="HEADER">
+                <h1>HEADER</h1>
+            </div>
+            <div class="MENU">
+                <h1>MENU</h1>
+            </div>
+        </div>
+        
+        <div class="hero">
+            <h1>HERO</h1>
+        </div>
+        
+        <main class="content">
+            <div class="MAIN">
+                <h1>MAIN</h1>
+            </div>
+            
+            <div class="empty-space">
+                <!-- 흰 빈공간 -->
+            </div>
+            
+            <div class="image-section">
+                <h2>IMAGE</h2>
+            </div>
+            
+            <div class="extra">
+                <h2>EXTRA</h2>
+            </div>
+        </main>
+        
+        <div class="banner">
+            <h2>BANNER</h2>
+        </div>
+    </div>
+</body>
+</html>
