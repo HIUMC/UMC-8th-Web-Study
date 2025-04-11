@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // axios 추가
 import useForm from '../hooks/useForm';
+import axiosInstance from '../lib/axiosInstance'; // axiosInstance 추가
+import { useLocalStorage } from '../hooks/useLocalStorage'; // useLocalStorage 추가
 
 const validateEmail = (email: string): string | null => {
   if (!email) return '이메일을 입력해주세요.';
@@ -21,6 +24,10 @@ const validatePassword = (password: string): string | null => {
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [apiError, setApiError] = useState<string | null>(null); // API 에러 상태 추가
+  const [, setAccessToken] = useLocalStorage<string | null>('accessToken', null); // Access Token 저장용
+  const [, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null); // Refresh Token 저장용
+
   const {
     values,
     errors,
@@ -41,10 +48,38 @@ const LoginPage = () => {
   };
 
   const handleLoginSubmit = async (formValues: typeof values) => {
-    console.log('로그인 시도:', formValues);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    alert(`로그인 시도: ${formValues.email}`);
+    setApiError(null); // 이전 에러 초기화
+    try {
+      const response = await axiosInstance.post('/v1/auth/signin', {
+        email: formValues.email,
+        password: formValues.password,
+      });
+
+      // 응답 데이터에서 토큰 추출 (API 응답 구조에 따라 키 이름 조정 필요)
+      const { accessToken, refreshToken } = response.data;
+
+      if (accessToken && refreshToken) {
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+        alert('로그인 성공!');
+        navigate('/'); // 로그인 성공 시 홈 페이지로 이동 (경로 수정 가능)
+      } else {
+        // 토큰이 응답에 없는 경우
+        setApiError('로그인 응답 형식이 올바르지 않습니다.');
+      }
+
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        // 백엔드에서 내려주는 에러 메시지 사용 (구조에 따라 키 이름 조정 필요)
+        const errorMessage = (error.response.data as { message?: string })?.message;
+        setApiError(errorMessage || '로그인 중 오류가 발생했습니다.');
+      } else {
+        setApiError('로그인 중 오류가 발생했습니다. 네트워크 연결을 확인해주세요.');
+      }
+    }
   };
+
 
   return (
     <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
@@ -58,6 +93,14 @@ const LoginPage = () => {
         </button>
         <h1 className="text-2xl font-bold text-center flex-grow text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">로그인</h1>
       </div>
+
+      {/* API 에러 메시지 표시 */}
+      {apiError && (
+        <div className="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded relative mb-4" role="alert">
+          <strong className="font-bold">오류!</strong>
+          <span className="block sm:inline"> {apiError}</span>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(handleLoginSubmit)}>
         <div className="mb-4">
