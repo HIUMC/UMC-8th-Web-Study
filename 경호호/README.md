@@ -6,6 +6,9 @@
 - week2✅
 - week3✅
 - week4✅
+
+<<중간고사>>
+
 - week5
 - week6
 - week7
