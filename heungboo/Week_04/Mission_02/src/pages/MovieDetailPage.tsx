@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
 import { DetailMovieResponse } from "../types/movies";
 import useCustomFetch from "../hooks/useCustomFetch";
-
+//여기는 무비디테일페이지
 const MovieDetailPage = (): ReactElement => {
   const params = useParams();
 
