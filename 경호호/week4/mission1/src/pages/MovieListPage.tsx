@@ -8,6 +8,7 @@ import { getCategoryTitle } from '../services/movieService';
 import useMovies from '../hooks/useMovies';
 
 const MovieListPage = () => {
+  console.log('[MovieListPage] Rendering...'); // <-- 로그 추가
   const { category = 'popular' } = useParams<{ category: string }>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   
@@ -51,4 +52,4 @@ const MovieListPage = () => {
   );
 };
 
-export default MovieListPage; 
+export default MovieListPage;

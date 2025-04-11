@@ -28,11 +28,13 @@ const useFetch = <T>(
   });
 
   const fetchData = async (): Promise<void> => {
+    console.log(`[useFetch] Fetching data from: ${url}`, options); // <-- 로그 추가
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
-      
+
       const response: AxiosResponse<T> = await axios(url, options);
-      
+
+      console.log('[useFetch] Data received:', response.data); // <-- 로그 추가
       setState({
         data: response.data,
         loading: false,
@@ -40,7 +42,8 @@ const useFetch = <T>(
       });
     } catch (err) {
       const error = err as Error | AxiosError;
-      
+      console.error('[useFetch] Error fetching data:', error); // <-- 로그 추가
+
       setState({
         data: null,
         loading: false,
@@ -53,7 +56,8 @@ const useFetch = <T>(
 
   useEffect(() => {
     fetchData();
-  }, [url]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url, JSON.stringify(options)]); // README.md에 있던 개선 사항 반영
 
   return {
     ...state,
@@ -61,4 +65,4 @@ const useFetch = <T>(
   };
 };
 
-export default useFetch; 
+export default useFetch;

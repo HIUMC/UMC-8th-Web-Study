@@ -11,8 +11,24 @@ const Navbar = () => {
     <nav className="bg-gray-800 py-4 sticky top-0 z-10 shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center md:justify-between gap-3 sm:gap-4">
-          <div className="text-white font-bold text-xl hidden md:block">영화 정보</div>
+          <Link 
+            to="/" 
+            className="text-white font-bold text-xl hidden md:block hover:text-gray-300 transition-colors duration-200"
+          >
+            영화 정보
+          </Link>
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
+            <Link
+              to="/"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                isActive('/') 
+                  ? 'bg-gray-900 text-white' 
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              홈
+            </Link>
+            
             <Link
               to="/movies/popular"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
