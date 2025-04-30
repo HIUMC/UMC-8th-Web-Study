@@ -42,3 +42,5 @@ export type ResponseMyInfoDto = commonResponse<{
   createdAt: Date;
   updatedAt: Date;
 }>;
+
+export type ResponseSignoutDto = commonResponse<{}>;

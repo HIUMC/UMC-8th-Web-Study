@@ -1,30 +1,38 @@
 // Removed unused import
-import React from "react";
-import { postSignin } from "../apis/auth";
-import { LOCAL_STORAGE_KEY } from "../constants/key";
+
 import useForm from "../hooks/useForm";
-import { useLocalStorage } from "../hooks/uselocalStorage";
-import { ResponseSigninDto } from "../types/auth";
 import { UserSigninInformation, validateSignin } from "../utils/validate";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+// import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+  const { login, accessToken } = useAuth();
+  const navigate = useNavigate();
+
+  // login 상태 일 때 로그인 페이지 접근 시 홈으로 이동
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [navigate, accessToken]);
+
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValues: { email: "", password: "" },
       validate: validateSignin,
     });
-  //   const [formValues, setFormvalues] = useState({ email: "", password: "" });
 
   const handleSubmit = async () => {
     try {
-      const response: ResponseSigninDto = await postSignin(values);
-      setItem(response.data.accessToken);
-      console.log(response);
+      await login(values);
     } catch (error) {
-      alert(error?.message);
+      console.error("로그인 오류", error);
     }
   };
+
   const isDisabled =
     Object.values(errors || {}).some((error: string) => error.length > 0) ||
     Object.values(values).some((value: string) => value == "");
