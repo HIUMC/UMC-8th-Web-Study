@@ -1,8 +1,14 @@
 // Removed unused import
+import React from "react";
+import { postSignin } from "../apis/auth";
+import { LOCAL_STORAGE_KEY } from "../constants/key";
 import useForm from "../hooks/useForm";
+import { useLocalStorage } from "../hooks/uselocalStorage";
+import { ResponseSigninDto } from "../types/auth";
 import { UserSigninInformation, validateSignin } from "../utils/validate";
 
 const LoginPage = () => {
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValues: { email: "", password: "" },
@@ -10,10 +16,15 @@ const LoginPage = () => {
     });
   //   const [formValues, setFormvalues] = useState({ email: "", password: "" });
 
-  const handleSubmit = () => {
-    console.log(values);
+  const handleSubmit = async () => {
+    try {
+      const response: ResponseSigninDto = await postSignin(values);
+      setItem(response.data.accessToken);
+      console.log(response);
+    } catch (error) {
+      alert(error?.message);
+    }
   };
-
   const isDisabled =
     Object.values(errors || {}).some((error: string) => error.length > 0) ||
     Object.values(values).some((value: string) => value == "");

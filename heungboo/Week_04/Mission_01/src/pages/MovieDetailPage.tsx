@@ -1,7 +1,7 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
-import { DetailMovieResponse, Movie, MovieResponse } from "../types/movies";
-import axios from "axios";
+import { MovieDetailResponse } from "../types/movies";
+
 import useCustomFetch from "../hooks/useCustomFetch";
 
 const MovieDetailPage = (): void | ReactElement => {
@@ -10,9 +10,9 @@ const MovieDetailPage = (): void | ReactElement => {
   const url = `https://api.themoviedb.org/3/movie/${params.movieId}?language=ko-KR`;
   const {
     data: movie,
-    isPending,
+    //isPending,
     isError,
-  } = useCustomFetch<DetailMovieResponse>(url);
+  } = useCustomFetch<MovieDetailResponse>(url);
 
   if (isError) {
     return (
