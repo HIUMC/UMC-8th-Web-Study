@@ -80,7 +80,7 @@ const SignupPage = () => {
       });
 
       console.log('회원가입 성공:', response.data);
-      setStep('profile');
+      navigate('/users/me');
 
     } catch (error) {
       console.error('회원가입 실패:', error);

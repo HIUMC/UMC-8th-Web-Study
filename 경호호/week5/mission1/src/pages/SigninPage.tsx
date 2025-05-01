@@ -24,7 +24,7 @@ const SigninPage = () => {
     
     try {
       await login(email, password);
-      navigate('/my-page');
+      navigate('/users/me');
     } catch (err: any) {
       setError(err.response?.data?.message || '로그인에 실패했습니다.');
     } finally {
@@ -78,10 +78,19 @@ const SigninPage = () => {
         </button>
       </form>
       
-      <div className="mt-6 text-center">
-        <Link to="/signup" className="text-purple-400 hover:text-purple-300">
-          회원가입 페이지로 이동
-        </Link>
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={() => navigate('/signup')}
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-colors duration-300"
+        >
+          회원가입
+        </button>
+        <div className="mt-4 text-center">
+          <Link to="/" className="text-purple-400 hover:text-purple-300">
+            홈 페이지로 이동
+          </Link>
+        </div>
       </div>
     </div>
   );
