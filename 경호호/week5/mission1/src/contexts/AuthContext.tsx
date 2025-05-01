@@ -60,8 +60,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
+      console.log('signin 요청 보냄:', { email, password });
       const response = await axiosInstance.post('/v1/auth/signin', { email, password });
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
+      console.log('signin 응답:', response);
+      console.log('signin 응답 데이터:', response.data);
+      // API 응답이 { data: { accessToken, refreshToken } } 또는 { accessToken, refreshToken } 일 수 있으므로 처리
+      const respData = response.data as any;
+      const payload = respData.data ?? respData;
+      const newAccessToken = payload.accessToken;
+      const newRefreshToken = payload.refreshToken;
       
       setAccessToken(newAccessToken);
       setRefreshToken(newRefreshToken);

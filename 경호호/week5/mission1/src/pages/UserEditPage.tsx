@@ -24,6 +24,9 @@ const UserEditPage = () => {
 
   return (
     <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-700 text-white">
+      <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white mb-4">
+        뒤로가기
+      </button>
       <h1 className="text-2xl font-bold text-center mb-6">정보 수정</h1>
       {error && <p className="text-red-400 mb-4">{error}</p>}
       <input

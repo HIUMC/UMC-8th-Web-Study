@@ -80,7 +80,7 @@ const SignupPage = () => {
       });
 
       console.log('회원가입 성공:', response.data);
-      navigate('/users/me');
+      navigate('/signin');
 
     } catch (error) {
       console.error('회원가입 실패:', error);
@@ -106,10 +106,10 @@ const SignupPage = () => {
       <div className="flex items-center mb-6">
         <button
           onClick={handleGoBack}
-          className="text-gray-400 hover:text-white mr-4 text-2xl"
+          className="text-gray-400 hover:text-white mr-4"
           aria-label="뒤로 가기"
         >
-          {'<'}
+          뒤로 가기
         </button>
         <h1 className="text-2xl font-bold text-center flex-grow text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">회원가입</h1>
         <span className="text-sm text-gray-400 ml-4">

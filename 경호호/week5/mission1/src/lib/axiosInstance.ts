@@ -11,21 +11,23 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      const accessToken = localStorage.getItem('accessToken');
-      if (accessToken) {
+      const rawToken = localStorage.getItem('accessToken');
+      if (rawToken && rawToken !== 'undefined') {
         try {
-          const token = JSON.parse(accessToken);
-          config.headers.Authorization = `Bearer ${token}`;
-        } catch (error) {
-          console.error('토큰 파싱 오류:', error);
+          const token = JSON.parse(rawToken);
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+        } catch (err) {
+          console.error('토큰 파싱 오류, localStorage 초기화:', err);
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
         }
       }
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 axiosInstance.interceptors.response.use(
