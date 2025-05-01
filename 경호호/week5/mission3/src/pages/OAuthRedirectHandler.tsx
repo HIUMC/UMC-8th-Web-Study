@@ -13,7 +13,7 @@ const OAuthRedirectHandler = () => {
     const refreshToken = params.get('refreshToken');
     if (accessToken && refreshToken) {
       socialLogin({ accessToken, refreshToken });
-      navigate('/users/me', { replace: true });
+      navigate('/', { replace: true });
     } else {
       navigate('/signin', { replace: true });
     }

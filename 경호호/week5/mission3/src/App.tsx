@@ -19,6 +19,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/signin" element={<SigninPage />} />
+            <Route path="/v1/auth/google/callback" element={<OAuthRedirectHandler />} />
             <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} />
             
             <Route element={<ProtectedRoute />}>

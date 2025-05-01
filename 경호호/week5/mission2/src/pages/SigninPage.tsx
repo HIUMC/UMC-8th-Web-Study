@@ -13,7 +13,7 @@ const SigninPage = () => {
   
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/users/me');
+      navigate('/users/me', { replace: true });
     }
   }, [isLoggedIn, navigate]);
   
@@ -24,7 +24,7 @@ const SigninPage = () => {
     
     try {
       await login(email, password);
-      navigate('/users/me');
+      navigate('/users/me', { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.message || '로그인에 실패했습니다.');
     } finally {

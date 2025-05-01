@@ -33,12 +33,20 @@ const UsersMePage = () => {
     fetchUser();
   }, []);
 
+  const handleBack = () => {
+    if (window.history.state && window.history.state.idx >  0) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   if (loading) return <div className="flex justify-center items-center h-64">로딩중...</div>;
   if (error) return <div className="text-red-400">{error}</div>;
 
   return (
     <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm p-6 rounded-xl shadow-lg w-full max-w-md mx-auto text-white">
-      <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white mb-4">
+      <button onClick={handleBack} className="text-gray-400 hover:text-white mb-4">
         뒤로가기
       </button>
       <h1 className="text-3xl font-bold text-center mb-6">내 정보</h1>
