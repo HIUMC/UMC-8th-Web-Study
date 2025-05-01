@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo</title>
+    <link rel="stylesheet" href="todo.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="container_title">jini todo</h1>
+        <form class="todo_form">
+            <input type="text" class="todo_input" placeholder="할 일 입력" required>
+            <button type="submit" class="input_button">할 일 추가</button> 
+        </form>
+        <div class="list_container">
+            <div class="list_section">
+                <h2 class="list_title">할 일</h2>
+                <ul id="todo_list" class="list"></ul>
+            </div>
+            <div class="list_section">
+                <h2 class="list_title">완료 </h2>
+                <ul id="done_list" class="list"></ul>
+            </div>
+        </div>
+    </div> 
+    <script src="todo.ts"></script>
+</body>
+
+
+</html>
