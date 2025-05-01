@@ -32,38 +32,11 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error) => {
-    const originalRequest = error.config;
-    
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      
-      try {
-        const refreshTokenStr = localStorage.getItem('refreshToken');
-        if (!refreshTokenStr) {
-          window.location.href = '/signin';
-          return Promise.reject(error);
-        }
-        
-        const refreshToken = JSON.parse(refreshTokenStr);
-        
-        const response = await axios.post('http://localhost:8000/v1/auth/refresh', { 
-          refreshToken 
-        });
-        
-        const { accessToken: newAccessToken } = response.data;
-        
-        localStorage.setItem('accessToken', JSON.stringify(newAccessToken));
-        
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        
-        return axios(originalRequest);
-      } catch (refreshError) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/signin';
-        return Promise.reject(refreshError);
-      }
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/signin';
     }
     
     return Promise.reject(error);
