@@ -1,17 +1,30 @@
 import axios from 'axios';
 
+// BASE_URL을 프록시 경로로 변경
+const BASE_URL = '/api/tmdb'; 
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
 
-// API 요청을 위한 Axios 인스턴스 (API 키정보는 이제 useMovies 훅에서 직접 처리)
+// API 키 로딩 확인용 로그 추가
+console.log('[movieService] VITE_TMDB_KEY:', API_KEY ? 'Loaded' : 'Not Loaded or Empty');
+if (!API_KEY) {
+  console.error('[movieService] Error: VITE_TMDB_KEY is missing or empty in .env file!');
+}
+
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_KEY}`,
+    // 기본 헤더에 캐시 제어 추가
+    'Cache-Control': 'no-store, no-cache, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0',
   },
 });
 
-// 카테고리에 따라 적절한 경로를 반환하는 함수
+// apiClient 헤더 확인용 로그 추가
+console.log('[movieService] apiClient default headers:', JSON.stringify(apiClient.defaults.headers));
+
 export const getCategoryPath = (category: string): string => {
   switch (category) {
     case 'popular':
@@ -27,7 +40,6 @@ export const getCategoryPath = (category: string): string => {
   }
 };
 
-// 카테고리에 따라 한글 제목을 반환하는 함수
 export const getCategoryTitle = (category: string): string => {
   switch (category) {
     case 'popular':
@@ -41,4 +53,4 @@ export const getCategoryTitle = (category: string): string => {
     default:
       return '영화 목록';
   }
-}; 
+};

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Movie } from '../types/movie';
 
 interface MovieCardProps {
@@ -11,8 +12,9 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   const backdropUrl = `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`;
 
   return (
-    <div 
-      className="relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl h-full"
+    <Link 
+      to={`/movie/${movie.id}`}
+      className="block relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl h-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -40,7 +42,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
           <span className="text-gray-300 text-xs sm:text-sm">{movie.release_date.split('-')[0]}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
