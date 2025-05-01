@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Film Note</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Merriweather:wght@400;700&family=Noto+Sans:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1 class="title">Film Note</h1>
+
+    <input type="text" id="taskInput" placeholder="Start tracking the movies you want to watch!">
+    <button id="addButton">Add</button>
+
+    <div class="container">
+      <div class="list">
+        <p>Queued Films</p>
+        <ul id="todoList"></ul>
+      </div>
+      <div class="list">
+        <p>Reel Memories</p>
+        <ul id="doneList"></ul>
+      </div>
+    </div>
+
+    <!-- TypeScript 컴파일 후 생성되는 JavaScript 파일 연결 -->
+    <script src="./dist/script.js"></script>
+</body>
+</html>

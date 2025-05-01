@@ -1,0 +1,119 @@
+/* 기본 스타일 */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #eaeff9;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* 제목 */
+h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
+/* 제목 아래 하늘색 줄 */
+.divider {
+  width: 80%;
+  height: 2px;
+  background-color: #d1dded;
+  margin: 10px auto 20px auto;
+}
+
+/* 입력창 */
+.input-wrapper {
+  width: 70%;
+  margin: 10px auto;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid black; /* 기본 검은색 테두리 */
+  border-radius: 8px; /* 둥근 모서리 */
+  outline: none;
+  text-align: left; /* 왼쪽 정렬 */
+  padding-left: 15px;
+}
+
+/* placeholder만 기울어짐 */
+input::placeholder {
+  font-style: italic; /* 기울어짐 */
+  color: #d1dded; /* 연한 회색 */
+}
+
+/* 입력창 클릭(포커스) 시 테두리를 파란색으로 변경 */
+input:focus {
+  border: 2px solid #4e91e9; /* 포커스 시 파란색 테두리 */
+}
+
+/* 해야 할 일 / 해낸 일 컨테이너 */
+.todo-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+/* 각 컬럼 */
+.todo-column {
+  width: 40%;
+}
+
+/* 해야 할 일 / 해낸 일 제목 */
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* 하늘색 구분 줄 */
+.column-divider {
+  width: 50%; /* 현재 설정 유지 */
+  height: 2px;
+  background-color: #d1dded;
+  margin: 0 auto 10px auto; /* 위아래 마진 조정 + 가로 방향 가운데 정렬 */
+}
+
+/* 리스트 스타일 */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* 각 아이템 (할 일 목록) */
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px; /* 좌우 여백 조정 */
+  margin-bottom: 5px;
+  border-bottom: 5px solid #d1dded; /* 하늘색 밑줄 */
+  width: 60%; /* 목록 길이 줄이기 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 버튼 스타일 */
+button {
+  padding: 5px 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 완료 버튼 */
+.complete {
+  background-color: #d1dded;
+  color: rgb(0, 0, 0);
+}
+
+/* 삭제 버튼 */
+.delete {
+  background-color: #d1dde1;
+  color: rgb(0, 0, 0);
+}

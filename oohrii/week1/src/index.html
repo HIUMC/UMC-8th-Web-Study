@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Css 파일업로드-->
+    <link rel="stylesheet" href="./" />
+    <!--js 파일업로드-->
+    <script type="module" src="./dist/script.js" defer></script>
+    <title>UMC TODO</title>
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color:aliceblue;
+}
+
+.todo-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
+    width: 350px;
+    text-align: center;
+}
+
+.todo-container__form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.todo-container__form__input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.todo-container__button {
+    background-color: #6bb67a;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.todo-container__button:hover {
+    background-color: #579664;
+}
+
+.render-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.render-container___title {
+    font-size: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: center; 
+}
+
+.render-container__section{
+    width: 100%;
+    text-align: left;  
+}
+
+.render-container__title {
+    font-size: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.render-container__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.render-container__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    width: 100%;
+}
+
+.render-container__item-text {
+    flex: 1;
+}
+
+.render-container__idem-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.render-container__item-button:hover {
+    background-color: #c82333;
+}
+
+</style>
+ </head>
+ <body>
+    <div class="todo-container">
+        <h1 class="todo-container__Header">YONG TODO</h1>
+        <form id="todo-form" class="todo-container__form">
+            <input
+             type="text"
+             id="todo-input" 
+             class="todo-container__input" 
+             placeholer="할 일을 입력해주세요."
+             required
+            />
+            <button type="submit" class="todo-container__button">할일 추가</button>
+        </form>
+        <div class="render-container">
+            <div class="render-container__section">
+                <h2 class="render-container__title">할 일</h2>
+                <ul id="todo-list" class="render-container__list"></ul>
+            </div>
+            <div class="render-container__section">
+                <h2 class="render-container__title">완료</h2>
+                <ul id="todo-list" class="render-container__list">
+                </ul>
+            </div>
+        </div>
+    </div>
+ </body>
+
+ <script></script>
+</html>
