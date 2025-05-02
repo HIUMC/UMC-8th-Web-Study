@@ -4,6 +4,8 @@ import axios from "axios";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useLogin } from "../context/useLogin";
 import { ResponseData } from "../types/movie";
+import RenewingAuth from "../hooks/RenewingAuth";
+import useRenewing from "../hooks/useRenewing";
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -22,17 +24,15 @@ function Login() {
   //올바른 이메일 비밀번호 설정
   const [isValid, setIsValid] = useState(false);
 
-  //accessToken, refreshToken 저장
-  const [isToken, setIsToken] = useState<{
-    accessToken: string;
-    refreshToken: string;
-  } | null>(null);
+  //useRenwing 커스텀 훅 작성
+  const { startRenewing } = useRenewing();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       LoginHandler();
     }
   };
+
   useEffect(() => {
     if (!emailError && !passwordError) {
       setIsValid(true);
@@ -66,24 +66,23 @@ function Login() {
         },
       );
 
-      setIsToken({
-        accessToken: response.data.accessToken,
-        refreshToken: response.data.refreshToken,
-      });
       setIsData(response.data);
-      console.log(data);
+      console.log(response.data);
       setIsLogin(true);
       navigate("/");
+      localStorage.setItem("accessToken", response.data.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.data.refreshToken);
+      console.log(localStorage.getItem("accessToken"));
+      console.log(localStorage.getItem("refreshToken"));
+      startRenewing();
     } catch (error) {
       if (data?.status !== true || error) {
+        console.log(error);
         alert("로그인에 실패했습니다.");
         setIsPending(false);
       }
     } finally {
       if (data?.status === true) {
-        localStorage.setItem("accessToken", data.data.accessToken);
-        localStorage.setItem("refreshToken", data.data.refreshToken);
-        console.log(data.data.accessToken);
         setIsPending(false);
       }
     }
