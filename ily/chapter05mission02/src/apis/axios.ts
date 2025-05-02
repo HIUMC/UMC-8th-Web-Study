@@ -42,6 +42,7 @@ axiosInstance.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
+      error.response.errorCode === "AUTH_001" && // 이렇게 에러코드가 custom된 경우에는 그에 따른 과정을 해결해줘야 함.
       !originalRequest._retry
     ) {
       //refresh 엔드포인트 401에러가 발생한 경우 (Unauthorization), 중복 재시도 방지를 위해 로그아웃 처리
