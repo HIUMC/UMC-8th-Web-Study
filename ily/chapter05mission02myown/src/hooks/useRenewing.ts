@@ -41,7 +41,7 @@ const useRenewingAuth = () => {
   const startRenewing = () => {
     if (!intervalRef.current) {
       fetchToken();
-      intervalRef.current = window.setInterval(fetchToken, 100000);
+      intervalRef.current = window.setInterval(fetchToken, 3000);
     }
   };
 
