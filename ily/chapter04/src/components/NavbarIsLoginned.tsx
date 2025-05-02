@@ -12,7 +12,7 @@ const LINKS = [
 
 export function NavbarIsLoginned() {
   return (
-    <div className="flex gap-3 pd-4 w-full justify-center gap-50">
+    <div className="flex gap-10 pd-4 w-full justify-center ">
       {LINKS.map((link) => (
         <NavLink
           key={link.to}

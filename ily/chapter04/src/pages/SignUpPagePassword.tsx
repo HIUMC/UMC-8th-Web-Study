@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUpPagePassword = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,7 @@ const SignUpPagePassword = () => {
       nameRef.current?.value !== null &&
       passwordCheckRef.current?.value !== null &&
       passwordRef.current?.value.length >= 8 &&
-      passwordCheckRef.current.value.length >= 8
+      passwordCheckRef.current?.value.length >= 8
     ) {
       setLength(true);
     } else {
@@ -114,10 +114,11 @@ const SignUpPagePassword = () => {
 
       <button
         onClick={SignupHandler}
-        disabled={!length}
-        className={`mt-2 rounded-md p-2 w-1/2 text-center
-            ${!checkError ? "border-black-500 text-black border-2 hover:bg-gray-200" : "border-gray-400 text-gray-400 bg-gray-100 cursor-not-allowed"}
-          `}
+        className={`mt-2 rounded-md p-2 w-1/2 text-center text-center block text-sm
+          ${length ? "border-black-500 text-black border-2 hover:bg-gray-200" : "border-gray-400 text-gray-400 bg-gray-100 cursor-not-allowed pointer-events-none"}
+ 
+          
+        `}
       >
         회원가입
       </button>

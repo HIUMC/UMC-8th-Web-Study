@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -7,6 +7,7 @@ import { ResponseData } from "../types/movie";
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
   const passwordRef = useRef<HTMLInputElement>(null);
   const [data, setIsData] = useState<ResponseData | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -20,6 +21,12 @@ function Login() {
 
   //올바른 이메일 비밀번호 설정
   const [isValid, setIsValid] = useState(false);
+
+  //accessToken, refreshToken 저장
+  const [isToken, setIsToken] = useState<{
+    accessToken: string;
+    refreshToken: string;
+  } | null>(null);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -59,10 +66,14 @@ function Login() {
         },
       );
 
+      setIsToken({
+        accessToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+      });
       setIsData(response.data);
       console.log(data);
       setIsLogin(true);
-      console.log(isLogin);
+      navigate("/");
     } catch (error) {
       if (data?.status !== true || error) {
         alert("로그인에 실패했습니다.");
