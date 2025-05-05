@@ -13,7 +13,8 @@ export const useLocalStorage = (key: string) => {
     try {
       console.log("useLoocalStorage getItem 실행", key);
       const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
+      console.log(item);
+      return item;
     } catch (e) {
       console.log(e);
     }

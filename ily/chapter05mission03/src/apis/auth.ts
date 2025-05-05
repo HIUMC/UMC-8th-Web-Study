@@ -23,7 +23,7 @@ export const postSignin = async (
   return data;
 };
 
-export const getMyInfo = async () /* : Promise<ResponseMyInfoDto>*/ => {
+export const getMyInfo = async (): Promise<ResponseMyInfoDto> => {
   try {
     console.log("getmyinfo 실행");
     console.log(
@@ -34,16 +34,10 @@ export const getMyInfo = async () /* : Promise<ResponseMyInfoDto>*/ => {
       "acessToken in LOCAL_STORAGE_KEY",
       localStorage.getItem(LOCAL_STORAGE_KEY.accessToken),
     );
-    // const { data } = await axiosInstance.get("/v1/users/me");
-    const { data } = await axios.get("/v1/users/me", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(
-          LOCAL_STORAGE_KEY.accessToken,
-        )}`,
-      },
-    });
-    console.log("api get호출 후");
+    const { data } = await axiosInstance.get("/v1/users/me");
 
+    console.log("api get호출 후");
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

@@ -3,6 +3,7 @@ import { getMyInfo } from "../apis/auth";
 import { ResponseMyInfoDto } from "../types/auth";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { NavbarIsLoginned } from "../components/NavbarIsLoginned";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const MyPage = () => {
   useEffect(() => {
     const getData = async () => {
       const response = await getMyInfo();
+
       setData(response);
       console.log("response 출력:", response);
     };
@@ -28,8 +30,11 @@ const MyPage = () => {
 
   return (
     <div>
+      {/*로그아웃 link는 존재하지만 실제 구현하진 않았음. */}
+      <NavbarIsLoginned />{" "}
       <div>
         {data?.data?.name} {data?.data?.email}
+        <img className="w-100 h-100" src={data?.data?.avatar} alt="profile" />
       </div>
       <button
         className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
