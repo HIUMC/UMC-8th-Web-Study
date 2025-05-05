@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       {path: '/', element: <HomePage/>},
       {path: 'login', element: <Login/>},
       {path: 'singup', element: <SingupPage/>},
-      {path: 'google/callback', element: <GoogleCallback/>}
+      {path: 'v1/auth/google/callback', element: <GoogleCallback/>}
       
     ]
     },

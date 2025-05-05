@@ -9,6 +9,8 @@ const GoogleCallback = () => {
         const params = new URLSearchParams(location.search);
         const accessToken = params.get("accessToken");
         const refreshToken = params.get("refreshToken");
+        
+
 
         if (accessToken && refreshToken) {
             localStorage.setItem("accessToken", accessToken);
