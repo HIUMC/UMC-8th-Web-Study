@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { NavbarIsLoginned } from "../components/NavbarIsLoginned";
 
 const ProtectedLayout = () => {
   const { accessToken } = useAuth();
@@ -8,8 +7,13 @@ const ProtectedLayout = () => {
   if (!accessToken) {
     return (
       <>
-        <NavbarIsLoginned />
-        <Navigate to="/login" replace />
+        <div className="h-dvh flex flex-col">
+          <nav></nav>
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <footer></footer>
+        </div>
       </>
     ); // replace는 history를 남기지 않음.
   }

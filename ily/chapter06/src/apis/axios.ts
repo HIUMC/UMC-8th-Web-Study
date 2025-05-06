@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const { getItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
     const accessToken = getItem() ? JSON.parse(getItem() as string) : null;
-
+    console.log("accessToken", accessToken);
     //accessToken이 존재하면 Authorization헤더에 Bearer 토큰 형식으로 추가함.
     if (accessToken) {
       config.headers = config.headers || {};

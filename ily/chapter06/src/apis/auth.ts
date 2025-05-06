@@ -4,10 +4,9 @@ import {
   ResponseSignupDto,
   ResponseSigninDto,
   ResponseMyInfoDto,
-} from "../types/auth.ts";
+} from "../utils/types/auth";
 import { axiosInstance } from "../apis/axios.ts";
 import { LOCAL_STORAGE_KEY } from "../constants/key.ts";
-import axios from "axios";
 
 export const postSignup = async (
   body: RequestSignupDto,

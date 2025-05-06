@@ -2,10 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import TodonesList from "./TodonesList";
 import { Button_Todones } from "../context/Buttons";
-import {
-  useTodoContext,
-  useTodonesContext,
-} from "./../context/TodoListsContext";
+import { useTodoContext, useTodonesContext } from "../context/TodoListsContext";
 
 function TodosList() {
   const [newTodones, setNewTodones] = useState<string>("");

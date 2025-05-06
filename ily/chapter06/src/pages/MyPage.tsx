@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyInfo } from "../apis/auth";
-import { ResponseMyInfoDto } from "../types/auth";
+import { ResponseMyInfoDto } from "../utils/types/auth";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { NavbarIsLoginned } from "../components/NavbarIsLoginned";
