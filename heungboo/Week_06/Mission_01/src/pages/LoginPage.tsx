@@ -1,4 +1,4 @@
-// Removed unused imports
+// Removed unused import
 
 import useForm from "../hooks/useForm";
 import { UserSigninInformation, validateSignin } from "../utils/validate";
@@ -31,6 +31,11 @@ const LoginPage = () => {
     } catch (error) {
       console.error("로그인 오류", error);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href =
+      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
   };
 
   const isDisabled =
@@ -77,6 +82,22 @@ const LoginPage = () => {
           disabled={isDisabled}
         >
           로그인
+        </button>
+
+        <button
+          className="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300 duration-200"
+          type="button"
+          onClick={handleGoogleLogin}
+          // disabled={isDisabled}
+        >
+          <div>
+            <img
+              src="/public/google.png"
+              alt="Google"
+              className="w-5 h-5 inline-block mr-2"
+            />
+            <span>구글 로그인</span>
+          </div>
         </button>
       </div>
     </div>
