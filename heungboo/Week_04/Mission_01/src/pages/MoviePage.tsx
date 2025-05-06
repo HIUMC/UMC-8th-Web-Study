@@ -8,8 +8,8 @@ import MovieCard from "../components/MovieCard";
 
 export default function MoviePage(): ReactElement {
   const [page, setPage] = useState(1);
-
   const { category } = useParams<{ category: string }>();
+
   const url = `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=${page}`;
 
   const {
