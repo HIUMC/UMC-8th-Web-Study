@@ -16,7 +16,7 @@ const MyPage = () => {
         getData();
     }, [])
 
-    return <div>{data ? `${data.data.name} ${data.data.email}` : "Loading..."}</div>
-}  
+  return <div>{data ? `${data.data.name} ${data.data.email}` : "Loading..."}</div>
+}
 
 export default MyPage
