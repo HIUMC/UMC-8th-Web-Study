@@ -60,7 +60,13 @@ export const postAddLp = async ({
   );
   try {
     console.log(title, content, thumbnail, tags);
-    const { data } = await axiosInstance.post("/v1/lps");
+    const { data } = await axiosInstance.post("/v1/lps", {
+      title,
+      content,
+      tags,
+      thumbnail,
+      published,
+    });
     console.log(data);
 
     return data;
