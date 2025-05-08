@@ -9,7 +9,8 @@ import HomeLayout from './layouts/HomeLayout';
 import ProtectedLayout from './layouts/ProtectedLayout';
 import { AuthProvider } from './context/AuthContext';
 import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage';
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const publicRoutes: RouteObject[] = [
   {
     path: "/",
@@ -37,13 +38,18 @@ const protectedRoutes: RouteObject[] = [
 
 const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
+export const queryClient = new QueryClient();
 
 function App() {
   return(
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  ); 
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      {/* 개발 환경에서만 조회할 수 있음 */}
+    </QueryClientProvider>
+  )
 }
 
 export default App
