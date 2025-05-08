@@ -89,7 +89,7 @@ const protectedRoutes: RouteObject[] = [
         element: <MyPage />,
       },
       {
-        path: "/lp/:LPid",
+        path: "lps/:LPid",
         element: <LPidCard />,
       },
     ],

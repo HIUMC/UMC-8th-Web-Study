@@ -15,6 +15,19 @@ export type LP = {
   likes: LIKES[];
 };
 
+export type LPwithAUTHOR = {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  published: boolean;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  tags: TAGS[];
+  likes: LIKES[];
+  author: AUTHOR;
+};
 export type TAGS = {
   id: number;
   name: string;
@@ -24,4 +37,21 @@ export type LIKES = {
   id: number;
   userId: number;
   lpId: number;
+};
+
+export type LPDETAILLIST = {
+  status: boolean;
+  statusCode: number;
+  message: string;
+  data: LPwithAUTHOR;
+};
+
+export type AUTHOR = {
+  id: number;
+  name: string;
+  email: string;
+  bio: string | null;
+  avatar: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 };
