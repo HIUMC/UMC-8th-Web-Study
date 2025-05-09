@@ -39,8 +39,26 @@ export const LPCard = ({ lp }: LPCardProps) => {
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
     >
-      <div className="aspect-video bg-gray-700 flex items-center justify-center">
-        <span className="text-xl font-bold">{lp.title.charAt(0)}</span>
+      <div className="aspect-video bg-gray-700 flex items-center justify-center overflow-hidden">
+        {(lp.thumbnail || lp.imageUrl) ? (
+          <img 
+            src={lp.thumbnail || lp.imageUrl} 
+            alt={lp.title} 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.removeAttribute('style');
+            }} 
+          />
+        ) : (
+          <span className="text-xl font-bold">{lp.title.charAt(0)}</span>
+        )}
+        <span 
+          className="text-xl font-bold absolute" 
+          style={{ display: 'none' }}
+        >
+          {lp.title.charAt(0)}
+        </span>
       </div>
       
       {isHovered && (

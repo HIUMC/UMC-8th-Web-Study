@@ -7,6 +7,9 @@ export const getLPList = async (params: PaginationDto = {}): Promise<LPListRespo
 };
 
 export const getLPDetail = async (lpId: string): Promise<LP> => {
-  const { data } = await axiosInstance.get<LPDetailResponse>(`/v1/lps/${lpId}`);
-  return data;
+  const response = await axiosInstance.get<LPDetailResponse>(`/v1/lps/${lpId}`);
+  console.log('LP 상세 API 응답:', response.data);
+  const lpData = response.data.data;
+  console.log('LP 데이터:', lpData);
+  return lpData;
 };

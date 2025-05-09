@@ -62,11 +62,11 @@ const LPDetailPage = () => {
           <div className="p-6">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h1 className="text-2xl font-bold mb-2">{lpData.title}</h1>
+                <h1 className="text-2xl font-bold mb-2">{lpData.title || '제목 없음'}</h1>
                 <div className="flex items-center text-gray-400 text-sm">
-                  <span>작성자: {lpData.user.nickname}</span>
+                  <span>작성자: {lpData.user?.nickname || '알 수 없음'}</span>
                   <span className="mx-2">•</span>
-                  <span>작성일: {formatDate(lpData.createdAt)}</span>
+                  <span>작성일: {lpData.createdAt ? formatDate(lpData.createdAt) : '날짜 정보 없음'}</span>
                 </div>
               </div>
               {isAuthenticated && (
@@ -106,11 +106,25 @@ const LPDetailPage = () => {
               )}
             </div>
 
+            {(lpData.thumbnail) && (
+              <div className="mb-6 overflow-hidden rounded-md">
+                <img 
+                  src={lpData.thumbnail} 
+                  alt={lpData.title || '이미지'} 
+                  className="w-full h-auto object-cover rounded-md"
+                  onError={(e) => {
+                    // 이미지 로드 오류 시 기본 이미지 표시
+                    e.currentTarget.src = 'https://via.placeholder.com/800x400?text=이미지를+찾을+수+없습니다';
+                  }}
+                />
+              </div>
+            )}
+
             <div className="bg-gray-700 p-4 rounded-md mb-6">
               <p className="whitespace-pre-line">{lpData.content}</p>
             </div>
 
-            {lpData.tags.length > 0 && (
+            {lpData.tags && lpData.tags.length > 0 && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-2">태그</h3>
                 <div className="flex flex-wrap gap-2">
@@ -131,7 +145,7 @@ const LPDetailPage = () => {
               <div className="flex items-center space-x-2">
                 <div className="bg-gray-700 rounded-md p-3 inline-flex items-center">
                   <Heart size={16} className="text-red-500 mr-2" />
-                  <span className="font-semibold">{lpData.likes.length}</span>
+                  <span className="font-semibold">{lpData.likes?.length || 0}</span>
                 </div>
                 <p className="text-gray-400">명이 이 LP를 좋아합니다.</p>
               </div>
