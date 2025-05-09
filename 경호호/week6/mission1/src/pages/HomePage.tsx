@@ -6,7 +6,12 @@ import { PaginationOrder } from '../types/lp';
 
 const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
-  const { data, isLoading, isError } = useGetLPList({ order });
+  
+  const { data, isLoading, isError } = useGetLPList({ 
+    order,
+    limit: 20,
+    search: ""
+  });
 
   const toggleOrder = () => {
     setOrder(order === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
@@ -37,15 +42,15 @@ const HomePage = () => {
           </div>
         )}
 
-        {data && data.data && data.data.data && (
+        {data && data.items && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {data.data.data.map((lp) => (
+            {data.items.map((lp) => (
               <LPCard key={lp.id} lp={lp} />
             ))}
           </div>
         )}
 
-        {data && data.data && data.data.data && data.data.data.length === 0 && (
+        {data && data.items && data.items.length === 0 && (
           <div className="text-center py-10">
             <p className="text-gray-400">LP가 없습니다.</p>
           </div>
