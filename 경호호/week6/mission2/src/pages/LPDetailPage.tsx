@@ -247,14 +247,11 @@ const LPDetailPage = () => {
                 </div>
               )}
               
-              {/* 디버깅용 로그 - 리액트 렌더링 밖에서 실행 */}
               {(() => {
-                // 디버깅용 로그 - 형식을 수정하여 React 렌더링에 영향을 주지 않도록 함
                 console.log('commentsData:', commentsData);
                 if (commentsData) {
                   console.log('commentsData.pages:', commentsData.pages);
                 }
-                // IIFE를 사용하여 undefined 반환
                 return null;
               })()}
               
