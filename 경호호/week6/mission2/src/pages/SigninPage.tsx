@@ -13,7 +13,7 @@ const SigninPage = () => {
   
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/users/me');
+      navigate('/');
     }
   }, [isLoggedIn, navigate]);
   
@@ -24,7 +24,7 @@ const SigninPage = () => {
     
     try {
       await login(email, password);
-      navigate('/users/me');
+      navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.message || '로그인에 실패했습니다.');
     } finally {
@@ -33,7 +33,8 @@ const SigninPage = () => {
   };
   
   return (
-    <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
+    <div className="flex justify-center items-center min-h-[calc(100vh-150px)]">
+      <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
       <h1 className="text-2xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">로그인</h1>
       
       {error && (
@@ -100,6 +101,7 @@ const SigninPage = () => {
         >
           Google로 로그인
         </button>
+      </div>
       </div>
     </div>
   );
