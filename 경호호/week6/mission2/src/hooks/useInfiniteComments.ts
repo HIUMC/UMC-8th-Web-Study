@@ -24,16 +24,35 @@ export const useInfiniteComments = (params: InfiniteCommentsParams) => {
         order
       });
 
-      if (response && response.data) {
-        if (response.data.data && Array.isArray(response.data.data)) {
+      console.log('댓글 API 응답:', response);
+      if (response) {
+
+        if (response.data && Array.isArray(response.data.data)) {
           return {
             nextCursor: response.data.nextCursor,
             hasNext: response.data.hasNext,
             comments: response.data.data as Comment[]
           };
         }
+
+        else if (Array.isArray(response.data)) {
+          return {
+            nextCursor: null,
+            hasNext: false,
+            comments: response.data as Comment[]
+          };
+        }
+
+        else if (response.data) {
+          return {
+            nextCursor: response.nextCursor || null,
+            hasNext: response.hasNext || false,
+            comments: response.data as unknown as Comment[]
+          };
+        }
       }
 
+      // 기본 반환값
       return {
         nextCursor: null,
         hasNext: false,

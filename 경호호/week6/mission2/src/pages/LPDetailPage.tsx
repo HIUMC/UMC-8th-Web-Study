@@ -60,10 +60,15 @@ const LPDetailPage = () => {
     }
   }, [data, user]);
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('댓글 작성:', commentText);
-    setCommentText('');
+    try {
+      setCommentText('');
+    } catch (error) {
+      console.error('댓글 작성 오류:', error);
+      alert('댓글 작성 중 오류가 발생했습니다.');
+    }
   };
 
   const toggleCommentOrder = () => {
@@ -242,13 +247,26 @@ const LPDetailPage = () => {
                 </div>
               )}
               
-              {commentsData && commentsData.pages.length > 0 && (
+              {(() => {
+                console.log('commentsData:', commentsData);
+                if (commentsData) {
+                  console.log('commentsData.pages:', commentsData.pages);
+                }
+                return null;
+              })()}
+              
+              {commentsData && commentsData.pages && commentsData.pages.length > 0 && (
                 <div className="space-y-4">
-                  {commentsData.pages.flatMap((page) => page.comments).map((comment) => (
+                  {commentsData.pages.flatMap((page) => 
+                    // comments 배열이 존재하는지 확인 후 flatMap
+                    page.comments && Array.isArray(page.comments) 
+                      ? page.comments 
+                      : []
+                  ).map((comment) => (
                     <div key={comment.id} className="bg-gray-800 rounded-lg p-4">
                       <div className="flex items-center mb-2">
                         <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
-                          {comment.author.avatar ? (
+                          {comment.author && comment.author.avatar ? (
                             <img 
                               src={comment.author.avatar} 
                               alt={comment.author.name} 
@@ -259,7 +277,7 @@ const LPDetailPage = () => {
                           )}
                         </div>
                         <div>
-                          <span className="font-medium">{comment.author.name}</span>
+                          <span className="font-medium">{comment.author ? comment.author.name : '익명'}</span>
                           <span className="text-xs text-gray-400 ml-2">
                             {formatDate(comment.createdAt)}
                           </span>

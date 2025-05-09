@@ -13,7 +13,8 @@ export const getCommentList = async (params: CommentPaginationDto) => {
       }
     });
     
-    return response;
+    console.log('댓글 API 원본 응답:', response);
+    return response.data;
   } catch (error) {
     console.error('댓글 목록 조회 오류:', error);
     throw error;
