@@ -4,6 +4,7 @@ import axiosInstance from '../lib/axiosInstance';
 interface User {
   id: string;
   nickname: string;
+  name?: string;
   profileImage?: string;
 }
 

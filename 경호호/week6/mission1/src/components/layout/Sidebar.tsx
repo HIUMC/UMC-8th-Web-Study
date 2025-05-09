@@ -51,9 +51,9 @@ export const Sidebar = () => {
 
       <div 
         ref={sidebarRef}
-        className={`fixed left-0 top-0 h-full bg-gray-800 text-white w-64 shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`h-screen bg-gray-800 text-white w-64 shadow-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0`}
+        } md:translate-x-0 md:relative md:min-h-screen fixed left-0 top-0 z-40`}
       >
         <div className="p-5">
           <h2 className="text-xl font-bold mb-6 mt-10 md:mt-0">카테고리</h2>
