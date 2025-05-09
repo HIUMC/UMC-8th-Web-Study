@@ -7,3 +7,9 @@ export const QUERY_KEY = {
   lps: "lps",
   myInfo: "myInfo",
 };
+
+export const USER_KEY = {
+  name: "name",
+  bio: "bio",
+  avatar: "avatar",
+};

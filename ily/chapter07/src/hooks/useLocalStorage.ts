@@ -1,8 +1,6 @@
 export const useLocalStorage = (key: string) => {
-  console.log("useLocalStorage 실행", key);
   const setItem = (value: unknown) => {
     try {
-      console.log("useLoocalStorage setItem 실행", key, value);
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.log(error);
@@ -11,9 +9,7 @@ export const useLocalStorage = (key: string) => {
 
   const getItem = () => {
     try {
-      console.log("useLoocalStorage getItem 실행", key);
       const item = localStorage.getItem(key);
-      console.log(item);
       return item;
     } catch (e) {
       console.log(e);
@@ -22,7 +18,6 @@ export const useLocalStorage = (key: string) => {
 
   const removeItem = () => {
     try {
-      console.log("useLoocalStorage removeItem 실행", key);
       window.localStorage.removeItem(key);
     } catch (error) {
       console.log(error);

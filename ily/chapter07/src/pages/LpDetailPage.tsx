@@ -15,9 +15,8 @@ const LpDetailPage = () => {
     data: lp,
     isPending,
     isError,
-  } = useGetLpDetail({ lpId: Number(lpId) });
+  } = useGetLpDetail({ lpId: Number(lpId) }); // 여기에서 lpId를 객체로 전달하는 것을 알 수 있음.
   const { data: me } = useGetMyInfo(accessToken);
-  console.log(me);
 
   // mutate -> 비동기 요청을 실행하고, 콜백 함수를 이용해서 후속 작업 처리함.
   // mutateAsync -> Promise를 반환해서 await
@@ -28,8 +27,16 @@ const LpDetailPage = () => {
   // const isLiked = lp?.data.likes
   //   .map((like: LIKES) => like.userId)
   //   .includes(me?.data.id as number);
-  const isLiked = lp?.data.likes.some(
-    (like: LIKES) => like.userId === me?.data.id,
+  console.log("me?.data:", me?.data);
+  console.log("me?.data?.id:", me?.data?.id);
+
+  if (!me?.data || !lp?.data) {
+    return <div>Loading...</div>; // 또는 null, Skeleton 등
+  }
+
+  console.log("isLiked함수 실행");
+  const isLiked = lp?.data?.likes.some(
+    (like: LIKES) => like?.userId === me?.data?.id,
   );
 
   const handleLikeLP = () => {

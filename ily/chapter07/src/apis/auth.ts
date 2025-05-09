@@ -24,19 +24,8 @@ export const postSignin = async (
 
 export const getMyInfo = async (): Promise<ResponseMyInfoDto> => {
   try {
-    console.log("getmyinfo 실행");
-    console.log(
-      "accessToken in LocalStorage",
-      localStorage.getItem("accessToken"),
-    );
-    console.log(
-      "acessToken in LOCAL_STORAGE_KEY",
-      localStorage.getItem(LOCAL_STORAGE_KEY.accessToken),
-    );
     const { data } = await axiosInstance.get("/v1/users/me");
 
-    console.log("api get호출 후");
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

@@ -48,7 +48,7 @@ const routes: RouteObject[] = [
             <MyPage />
           </ProtectedLayout>
         ),
-      },
+      ,
     ],
   },
 ];

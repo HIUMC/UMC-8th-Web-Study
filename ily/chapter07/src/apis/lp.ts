@@ -4,6 +4,7 @@ import {
   ResponseLpListDto,
   ResponseLikeLpDto,
   RequestAddLpDto,
+  UpdateUserDto,
 } from "../utils/types/lp";
 import { axiosInstance } from "./axios";
 
@@ -74,4 +75,13 @@ export const postAddLp = async ({
     console.error("Error adding LP:", error);
     console.log(title, content, thumbnail, tags);
   }
+};
+
+export const patchUsers = async ({ name, bio, avatar }: UpdateUserDto) => {
+  const { data } = await axiosInstance.patch("/v1/users", {
+    name,
+    bio,
+    avatar,
+  });
+  return data;
 };

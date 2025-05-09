@@ -34,7 +34,7 @@ export type TAGS = {
 };
 
 export type LIKES = {
-  id: number;
+  id: number | undefined;
   userId: number;
   lpId: number;
 };
@@ -72,4 +72,10 @@ export type RequestAddLpDto = {
   thumbnail: string | null;
   tags: string[] | null;
   published: true;
+};
+
+export type UpdateUserDto = {
+  name: string;
+  bio: string | null;
+  avatar: string | null;
 };
