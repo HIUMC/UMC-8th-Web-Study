@@ -20,6 +20,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // CORS 요청에 쿠키 포함
 });
 
 axiosInstance.interceptors.request.use(

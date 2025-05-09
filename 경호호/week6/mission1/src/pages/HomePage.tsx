@@ -8,13 +8,13 @@ const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
   
   const { data, isLoading, isError } = useGetLPList({ 
-    cursor: "0", // cursor가 문자열 타입이미로 문자열로 전달
+    cursor: "0",
     order,
     limit: 20,
     search: ""
   });
   
-  console.log('LP 데이터 응답 전체 구조:', data);
+
 
   const toggleOrder = () => {
     setOrder(order === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
