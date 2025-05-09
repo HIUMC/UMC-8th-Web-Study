@@ -59,7 +59,7 @@ export const LPCard = ({ lp }: LPCardProps) => {
         <div className="p-4">
           <h3 className="font-semibold truncate">{lp.title}</h3>
           <p className="text-sm text-gray-400 mt-1">
-            {lp.user.nickname}
+            {lp.user?.nickname || '사용자 없음'}
           </p>
         </div>
       )}

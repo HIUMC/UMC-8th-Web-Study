@@ -1,33 +1,28 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useGetLPDetail } from '../hooks/useGetLPDetail';
 import { Layout } from '../components/layout/Layout';
 import { Heart, Edit, Trash } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { LP, Like, LPDetailResponse } from '../types/lp';
 
-interface LpData {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-  tags: {
-    id: string;
-    name: string;
-  }[];
-  likes: {
-    id: string;
-    userId: string;
-  }[];
-  user: {
-    id: string;
-    nickname: string;
-    profileImage?: string;
-  };
-}
+// API 응답 타입을 types/lp.ts에서 가져옵니다
 
 const LPDetailPage = () => {
   const { lpId } = useParams<{ lpId: string }>();
   const { data, isLoading, isError } = useGetLPDetail(lpId || '');
+  const { isAuthenticated, user } = useAuth();
+  const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
+  
+  // 현재 사용자가 이 LP에 좋아요를 눌렀는지 확인
+  useEffect(() => {
+    if (data && user) {
+      const lpData = data;
+      const userLiked = lpData.likes?.some((like: Like) => like.userId === user.id) ?? false;
+      setIsLiked(userLiked);
+    }
+  }, [data, user]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -48,7 +43,7 @@ const LPDetailPage = () => {
     );
   }
 
-  if (isError || !data || !data.data) {
+  if (isError || !data) {
     return (
       <Layout>
         <div className="bg-red-500 bg-opacity-20 border border-red-500 text-red-500 p-4 rounded-md">
@@ -58,7 +53,7 @@ const LPDetailPage = () => {
     );
   }
 
-  const lpData = data.data as LpData;
+  const lpData = data;
 
   return (
     <Layout>
@@ -74,17 +69,41 @@ const LPDetailPage = () => {
                   <span>작성일: {formatDate(lpData.createdAt)}</span>
                 </div>
               </div>
-              <div className="flex space-x-2">
-                <button className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors">
-                  <Heart size={20} className="text-red-500" />
-                </button>
-                <button className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors">
-                  <Edit size={20} />
-                </button>
-                <button className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors">
-                  <Trash size={20} />
-                </button>
-              </div>
+              {isAuthenticated && (
+                <div className="flex space-x-2">
+                  <button 
+                    onClick={() => setIsLiked(!isLiked)}
+                    className={`p-2 rounded-full transition-colors ${isLiked ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                    title="좋아요"
+                  >
+                    <Heart size={20} className={isLiked ? 'text-white' : 'text-red-500'} />
+                  </button>
+                  
+                  {user && user.id === lpData.userId && (
+                    <>
+                      <button 
+                        className="p-2 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors"
+                        title="수정하기"
+                        onClick={() => navigate(`/lp/${lpData.id}/edit`)}
+                      >
+                        <Edit size={20} className="text-white" />
+                      </button>
+                      <button 
+                        className="p-2 rounded-full bg-red-600 hover:bg-red-700 transition-colors"
+                        title="삭제하기"
+                        onClick={() => {
+                          if (window.confirm('정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                            // 삭제 로직 추가 예정
+                            console.log('삭제 버튼 클릭됨');
+                          }
+                        }}
+                      >
+                        <Trash size={20} className="text-white" />
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="bg-gray-700 p-4 rounded-md mb-6">
@@ -109,7 +128,13 @@ const LPDetailPage = () => {
 
             <div>
               <h3 className="text-lg font-semibold mb-2">좋아요</h3>
-              <p>{lpData.likes.length}명이 이 LP를 좋아합니다.</p>
+              <div className="flex items-center space-x-2">
+                <div className="bg-gray-700 rounded-md p-3 inline-flex items-center">
+                  <Heart size={16} className="text-red-500 mr-2" />
+                  <span className="font-semibold">{lpData.likes.length}</span>
+                </div>
+                <p className="text-gray-400">명이 이 LP를 좋아합니다.</p>
+              </div>
             </div>
           </div>
         </div>

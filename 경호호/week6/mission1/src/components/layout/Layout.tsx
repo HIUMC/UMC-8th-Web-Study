@@ -7,11 +7,11 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  // URL을 확인하여 마이페이지인지 파악
+
   const isCentered = window.location.pathname.includes('/users/me');
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex">
+    <div className="min-h-screen w-full bg-gray-900 text-white flex">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header />

@@ -53,9 +53,9 @@ export const Sidebar = () => {
         ref={sidebarRef}
         className={`h-screen bg-gray-800 text-white w-64 shadow-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 md:relative md:min-h-screen fixed left-0 top-0 z-40`}
+        } md:translate-x-0 md:relative md:min-h-screen fixed left-0 top-0 z-40 md:sticky`}
       >
-        <div className="p-5">
+        <div className="h-full flex flex-col p-5 overflow-y-auto">
           <h2 className="text-xl font-bold mb-6 mt-10 md:mt-0">카테고리</h2>
           <nav>
             <ul className="space-y-4">
