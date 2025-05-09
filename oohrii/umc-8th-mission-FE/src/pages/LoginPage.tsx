@@ -2,6 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { useAuth } from '../contexts/AuthContext';
+import axiosInstance from '../api/axios';
+import { getGoogleAuthUrl } from '../api/auth';
 
 interface LoginFormInputs {
   email: string;
@@ -10,6 +13,7 @@ interface LoginFormInputs {
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -18,9 +22,29 @@ const LoginPage = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: LoginFormInputs) => {
-    // 로그인 로직 구현
-    console.log(data);
+  const onSubmit = async (data: LoginFormInputs) => {
+    try {
+      console.log('로그인 시도:', data);
+      const response = await axiosInstance.post('/auth/login', data);
+      const { accessToken, refreshToken } = response.data;
+      
+      console.log('로그인 성공:', { accessToken, refreshToken });
+      
+      // 로그인 함수 호출
+      login(accessToken, refreshToken);
+      
+      // 상태 업데이트가 완료될 때까지 기다린 후 리다이렉트
+      await new Promise(resolve => setTimeout(resolve, 100));
+      console.log('마이페이지로 리다이렉트');
+      navigate('/my', { replace: true });
+    } catch (error) {
+      console.error('로그인 중 오류 발생:', error);
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    const authUrl = getGoogleAuthUrl();
+    window.location.href = authUrl;
   };
 
   return (
@@ -30,7 +54,7 @@ const LoginPage = () => {
         <Title>로그인</Title>
       </Header>
       <LoginForm onSubmit={handleSubmit(onSubmit)}>
-        <GoogleLoginButton type="button">
+        <GoogleLoginButton type="button" onClick={handleGoogleLogin}>
           <GoogleIcon>G</GoogleIcon>
           구글 로그인
         </GoogleLoginButton>
