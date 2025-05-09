@@ -1,10 +1,18 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import axiosInstance from '../lib/axiosInstance';
 
+interface User {
+  id: string;
+  nickname: string;
+  profileImage?: string;
+}
+
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
   isLoggedIn: boolean;
+  isAuthenticated: boolean;
+  user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   socialLogin: (tokens: { accessToken: string; refreshToken: string }) => void;
@@ -54,9 +62,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(() => getAccessTokenFromStorage());
   const [refreshToken, setRefreshToken] = useState<string | null>(() => getRefreshTokenFromStorage());
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!accessToken);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     setIsLoggedIn(!!accessToken);
+  }, [accessToken]);
+  
+  // 사용자 정보 가져오기
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (accessToken) {
+        try {
+          const response = await axiosInstance.get('/v1/users/me');
+          const userData = response.data.data || response.data;
+          setUser(userData);
+        } catch (error) {
+          console.error('사용자 정보 가져오기 실패:', error);
+        }
+      } else {
+        setUser(null);
+      }
+    };
+
+    fetchUserData();
   }, [accessToken]);
 
   const login = async (email: string, password: string): Promise<void> => {
@@ -112,6 +140,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     accessToken,
     refreshToken,
     isLoggedIn,
+    isAuthenticated: !!accessToken,
+    user,
     login,
     logout,
     socialLogin
