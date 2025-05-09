@@ -1,24 +1,55 @@
-import { useState } from 'react';
-import { useGetLPList } from '../hooks/useGetLPList';
+import { useState, useRef, useEffect } from 'react';
+import { useInfiniteLPList } from '../hooks/useInfiniteLPList';
 import { Layout } from '../components/layout/Layout';
 import { LPCard } from '../components/LPCard';
 import { PaginationOrder } from '../types/lp';
+import SkeletonCard from '../components/SkeletonCard';
 
 const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
+  const observerTarget = useRef<HTMLDivElement>(null);
   
-  const { data, isLoading, isError } = useGetLPList({ 
-    cursor: "0",
+  const { 
+    data, 
+    fetchNextPage, 
+    hasNextPage, 
+    isFetchingNextPage, 
+    isLoading, 
+    isError 
+  } = useInfiniteLPList({ 
+    initialCursor: "0",
     order,
-    limit: 20,
+    limit: 8,
     search: ""
   });
   
-
-
   const toggleOrder = () => {
     setOrder(order === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
   };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  // 모든 LP 아이템을 하나의 배열로 변환
+  const allLPs = data?.pages.flatMap(page => page.items) || [];
 
   return (
     <Layout>
@@ -34,8 +65,10 @@ const HomePage = () => {
         </div>
 
         {isLoading && (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
           </div>
         )}
 
@@ -45,19 +78,29 @@ const HomePage = () => {
           </div>
         )}
 
-        {data && data.items && (
+        {data && allLPs.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {data.items.map((lp) => (
+            {allLPs.map((lp) => (
               <LPCard key={lp.id} lp={lp} />
             ))}
           </div>
         )}
 
-        {data && data.items && data.items.length === 0 && (
+        {data && allLPs.length === 0 && (
           <div className="text-center py-10">
             <p className="text-gray-400">LP가 없습니다.</p>
           </div>
         )}
+
+        {hasNextPage && (
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonCard key={`loading-${index}`} />
+            ))}
+          </div>
+        )}
+
+        <div ref={observerTarget} className="h-4 mt-4"></div>
       </div>
     </Layout>
   );
