@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 export const Header = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="bg-gray-800 text-white p-4 shadow-md w-full">
@@ -13,7 +14,19 @@ export const Header = () => {
           {isAuthenticated ? (
             <div className="flex items-center space-x-4">
               <span className="text-sm">{user?.nickname || user?.name || "회원"}님 반갑습니다.</span>
-              <Link to="/users/me" className="text-sm hover:text-gray-300">마이페이지</Link>
+              <button 
+                onClick={async () => {
+                  try {
+                    await logout();
+                    navigate('/');
+                  } catch (err) {
+                    console.error('로그아웃 오류:', err);
+                  }
+                }} 
+                className="bg-purple-600 text-white px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
+              >
+                로그아웃
+              </button>
             </div>
           ) : (
             <div className="flex items-center space-x-4">
