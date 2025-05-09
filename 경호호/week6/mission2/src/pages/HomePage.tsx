@@ -3,7 +3,7 @@ import { useInfiniteLPList } from '../hooks/useInfiniteLPList';
 import { Layout } from '../components/layout/Layout';
 import { LPCard } from '../components/LPCard';
 import { PaginationOrder } from '../types/lp';
-import SkeletonCard from '../components/SkeletonCard';
+import SkeletonCard from '../components/LPSkeletonCard';
 
 const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
@@ -48,7 +48,6 @@ const HomePage = () => {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  // 모든 LP 아이템을 하나의 배열로 변환
   const allLPs = data?.pages.flatMap(page => page.items) || [];
 
   return (
