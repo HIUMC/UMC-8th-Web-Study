@@ -1,11 +1,22 @@
 import { Link } from "react-router-dom"
 import { useAuth } from "../context/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import { getMyInfo } from "../apis/auth";
 
 const Navbar = () => {
     const {accessToken, logout} = useAuth();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [userName, setUserName] = useState<string>("");
+
+    useEffect(() => {
+        const fetch = async () => {
+          const res = await getMyInfo();
+          setUserName(res.data.name);
+        };
+      
+        if (accessToken) fetch();
+      }, [accessToken]);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -47,7 +58,7 @@ const Navbar = () => {
                 {accessToken &&(
                     <>
                         <div className="text-white">
-                            {}님 반갑습니다.
+                            {userName}님 반갑습니다.
                         </div>
                         <button
                             onClick={logout}

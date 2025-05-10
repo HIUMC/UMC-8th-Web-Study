@@ -11,10 +11,9 @@ export const useLocalStorage = (key: string) => {
         try {
             const item = window.localStorage.getItem(key);
 
-            return item ? JSON.parse(item) : null
+            return item ? JSON.parse(item) : null;
         } catch(e) {
             console.log(e);
-            return null;
         }
     };
 
