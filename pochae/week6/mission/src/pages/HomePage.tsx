@@ -12,8 +12,7 @@ const HomePage = () => {
     const [order, setOrder] =useState<PAGINATION_ORDER>(PAGINATION_ORDER.asc);
 
     const {data:lps, isFetching, hasNextPage, isPending, fetchNextPage, isError} 
-    = useGetInfiniteLpList( 1, search, order);
-
+    = useGetInfiniteLpList( 10, search, order);
 
     // ref, inView
     // ref -> 특정한 HTML 요소를 감시할 수 있다.
