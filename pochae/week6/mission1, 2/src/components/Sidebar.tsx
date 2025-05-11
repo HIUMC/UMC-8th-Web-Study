@@ -19,7 +19,7 @@ const Sidebar = ({isOpen, onClose}: SidebarProps) => {
                     onClick={onClose}>
                     <img 
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTesnQaIIeKboFJaQ4LtnxKLyvP7RhtLsZUIQ&s"
-                    className="w-7 h-7"
+                    className="w-8 h-8"
                     />
                     찾기
                 </Link>

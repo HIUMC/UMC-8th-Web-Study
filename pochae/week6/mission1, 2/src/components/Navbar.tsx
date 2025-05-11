@@ -39,7 +39,7 @@ const Navbar = () => {
 
             </div>
 
-            <div className='flex items-center space-x-6'>
+            <div className='flex items-center space-x-5'>
                 <Link to={'/search'} className='text-white hover:text-pink-500'>
                     <img
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTesnQaIIeKboFJaQ4LtnxKLyvP7RhtLsZUIQ&s"

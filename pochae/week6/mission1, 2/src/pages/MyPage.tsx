@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext"
 
 const MyPage = () => {
     const {logout}= useAuth();
-    const [data, setData] = useState<ResponseMyInfoDto>([]);
+    const [data, setData] = useState<ResponseMyInfoDto | null>(null);
 
     useEffect(() => {
         const getData = async() => {
@@ -22,9 +22,9 @@ const MyPage = () => {
     };
 
     return <div className='mt-10'>
-         <h1>{data.data?.name}님 환영합니다.</h1>
-         <img src={data.data?.avatar as string} alt={"구글 로고"} />
-         <h1>{data.data?.email}</h1>
+         <h1>{data?.data?.name}님 환영합니다.</h1>
+         <img src={data?.data?.avatar as string} alt={"구글 로고"} />
+         <h1>{data?.data?.email}</h1>
 
          <button 
          onClick={handleLogout}

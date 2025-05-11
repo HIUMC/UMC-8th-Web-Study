@@ -58,13 +58,19 @@ const LoginPage = () => {
         <button type='button'
                 onClick={handleSubmit} 
                 disabled={isDisabled} 
-                className='w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hober:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300'
+                className='w-full bg-pink-500 text-white py-3 rounded-md text-lg font-medium hober:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300'
         >로그인
         </button>
 
+        <div className="flex items-center my-4">
+            <hr className="flex-grow border-white" />
+                <span className="px-4 text-white text-sm">OR</span>
+            <hr className="flex-grow border-white"/>
+        </div>
+        
         <button type='button'
                 onClick={handleGoogleLogin} 
-                className='w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hober:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300'
+                className='w-full bg-black border border-white text-white py-3 rounded-md text-lg font-medium hover:bg-pink-500 transition-colors cursor-pointer disabled:bg-gray-300'
         >
             <div className="flex items-center justify-center gap-4">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png" 

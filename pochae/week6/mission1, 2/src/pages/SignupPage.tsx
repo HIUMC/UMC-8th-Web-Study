@@ -99,7 +99,7 @@ const SignupPage = () => {
           disabled={isSubmitting}
           type='button'
           onClick={handleSubmit(onSubmit)} 
-          className='w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hober:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300'
+          className='w-full bg-pink-500 text-white py-3 rounded-md text-lg font-medium hober:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300'
         >회원가입</button>
     </div>
   </div>
