@@ -36,7 +36,7 @@ const HomePage = () => {
             <input value={search} onChange={(e) => setSearch(e.target.value)} />
 
             {/* 정렬 버튼 */}
-            <div className="flex justify-end p-2">
+            <div className="flex justify-end mr-4 p-2">
                 <OrderToggle order={order} setOrder={setOrder} />
             </div>
 
