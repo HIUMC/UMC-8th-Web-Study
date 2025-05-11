@@ -9,7 +9,7 @@ const LpList = () => {
     const [search, setSearch] = useState("");
     const [sortType, setSortType] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.asc);
     const {data:lps, isFetching, hasNextPage, isPending, fetchNextPage, isError} = useGetInfiniteLpList(10, search, sortType);
-    
+    console.log(lps);
     // ref -> 특정한 HTML 요소를 감시
     // inView -> 그 요소가 화면에 보이면 true, 아니면 false
     const {ref, inView} = useInView({
