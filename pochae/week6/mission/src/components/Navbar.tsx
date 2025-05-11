@@ -34,7 +34,7 @@ const Navbar = () => {
                 <Link 
                     to='/' 
                     className='text-xl font-bold text-pink-500 dark:text-white'>
-                        돌려돌려LP판
+                        LP
                 </Link>
 
             </div>
