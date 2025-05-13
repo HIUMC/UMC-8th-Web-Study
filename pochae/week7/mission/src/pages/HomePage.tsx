@@ -38,15 +38,18 @@ const HomePage = () => {
             <div className="flex justify-end mr-4 p-2">
                 <OrderToggle order={order} setOrder={setOrder} />
             </div>
-
-            <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-7"}>
-                {isPending && <LpCardSkeletonList count={20} />}
-                {lps?.pages
-                ?.map((page)=>page.data.data)
-                ?.flat()
-                ?.map((lp)=> <LpCard key={lp.id} lp={lp}/>)}
-                {isFetching && <LpCardSkeletonList count={20} />}
+            
+            <div className='ml-64'>
+                <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-7"}>
+                    {isPending && <LpCardSkeletonList count={20} />}
+                    {lps?.pages
+                    ?.map((page)=>page.data.data)
+                    ?.flat()
+                    ?.map((lp)=> <LpCard key={lp.id} lp={lp}/>)}
+                    {isFetching && <LpCardSkeletonList count={20} />}
+                </div>
             </div>
+
             <div ref={ref} className='h-2'></div>
         </div>
     )
