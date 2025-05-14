@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const HomePage = () => {
   // search  값 에 따라 LP 리스트를 가져오는 쿼리
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("욱");
   const { data, isPending, isError } = useGetLpList({ search });
 
   if (isPending) {
@@ -13,19 +13,24 @@ const HomePage = () => {
   if (isError) {
     return <div className={"mt-20"}>Error...</div>;
   }
+
+  console.log(data);
   return (
     <>
-      // <main className="flex-1">Home Page 입니다.</main>
-      <div className={"mt-20"}>
+      <main className="flex-1 border-4 mt-5">Home Page 입니다.</main>
+      <div className="mt-10">
         <input
-          className="border-amber-400"
+          className="border-1"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-
-        {data?.map((lp) => (
-          <h1>{lp.title}</h1>
-        ))}
+        {data?.map((lp) => {
+          return (
+            <h1 key={lp.id}>
+              {lp.id} : {lp.title}
+            </h1>
+          );
+        })}
       </div>
     </>
   );

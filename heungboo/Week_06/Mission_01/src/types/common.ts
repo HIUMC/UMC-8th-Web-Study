@@ -16,7 +16,9 @@ export type CursorBasedResponse<T> = {
   hasNext: boolean;
 };
 
-export type PaginationDto = {
+// 보낼 때 사용하는 거
+export type PageinationDto = {
+  // 필수 없음 모두 optional
   cursor?: number;
   limit?: number;
   search?: string;
