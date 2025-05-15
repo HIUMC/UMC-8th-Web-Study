@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 type SidebarProps = {
     isOpen: boolean;
     onClose: () => void;
+    onRequestDelete: () => void;
 };
 
-const Sidebar = ({isOpen, onClose}: SidebarProps) => {
+const Sidebar = ({isOpen, onClose, onRequestDelete}: SidebarProps) => {
+    
   return (
     <div className={`absolute top-16 left-0 w-64 h-full bg-black text-white transform 
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -38,14 +40,16 @@ const Sidebar = ({isOpen, onClose}: SidebarProps) => {
                 </li>
             </ul>
 
-            {/* 하단 탈퇴하기 버튼튼 */}
+            {/* 하단 탈퇴하기 버튼 */}
             <div className='p-4'>
-                <Link to='/'
-                    className='hover:text-pink-500 cursor:pointer'
+                <button
+                    onClick={onRequestDelete}
+                    className='hover:text-pink-500 cursor-pointer'
                 >
                     탈퇴하기
-                </Link>
+                </button>
             </div>
+
         </div>
         
     </div>
