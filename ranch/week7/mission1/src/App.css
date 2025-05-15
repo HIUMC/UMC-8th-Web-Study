@@ -1,0 +1,9 @@
+/* Import a custom font */
+@font-face {
+  font-family: 'NanumSquareNeo-eHv';
+  src: url('./assets/fonts/NanumSquareNeo-dEb.ttf') format('truetype');
+}
+/* Apply the font globally */
+body {
+  font-family: 'NanumSquareNeo-dEb', sans-serif;
+}
