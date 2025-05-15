@@ -52,3 +52,9 @@ export interface ApiResponse<T> {
 
 export type LPListResponse = ApiResponse<CursorBasedResponse<LP>>;
 export type LPDetailResponse = ApiResponse<LP>;
+
+export interface LPCreateDto {
+  title: string;
+  content: string;
+  tags?: string[];
+}

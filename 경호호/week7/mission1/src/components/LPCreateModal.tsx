@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createLP } from '../api/lp';
 import Modal from './Modal';
 
 interface LPCreateModalProps {
@@ -11,6 +13,14 @@ const LPCreateModal = ({ isOpen, onClose }: LPCreateModalProps) => {
   const [content, setContent] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const queryClient = useQueryClient();
+
+  const createLPMutation = useMutation({
+    mutationFn: createLP,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['lps']});
+    }
+  });
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim()) {
@@ -28,8 +38,21 @@ const LPCreateModal = ({ isOpen, onClose }: LPCreateModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ title, content, tags });
-    onClose();
+    createLPMutation.mutate(
+      { 
+        title, 
+        content, 
+        tags 
+      },
+      {
+        onSuccess: () => {
+          onClose();
+          setTitle('');
+          setContent('');
+          setTags([]);
+        }
+      }
+    );
   };
 
   return (

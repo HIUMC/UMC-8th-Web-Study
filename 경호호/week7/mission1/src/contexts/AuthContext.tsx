@@ -91,43 +91,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetchUserData();
   }, [accessToken]);
 
-  const loginMutation = useMutation(
-    ({ email, password }: { email: string; password: string }) =>
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
       axiosInstance.post('/v1/auth/signin', { email, password }),
-    {
-      onSuccess: (response: any) => {
-        const respData = response.data as any;
-        const payload = respData.data ?? respData;
-        const newAccessToken = payload.accessToken;
-        const newRefreshToken = payload.refreshToken;
-        setAccessToken(newAccessToken);
-        setRefreshToken(newRefreshToken);
-        setAccessTokenInStorage(newAccessToken);
-        setRefreshTokenInStorage(newRefreshToken);
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-      },
-      onError: (error: any) => {
-        console.error('로그인 실패:', error);
-      },
+    onSuccess: (response: any) => {
+      const respData = response.data as any;
+      const payload = respData.data ?? respData;
+      const newAccessToken = payload.accessToken;
+      const newRefreshToken = payload.refreshToken;
+      setAccessToken(newAccessToken);
+      setRefreshToken(newRefreshToken);
+      setAccessTokenInStorage(newAccessToken);
+      setRefreshTokenInStorage(newRefreshToken);
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+    },
+    onError: (error: any) => {
+      console.error('로그인 실패:', error);
     }
-  );
+  });
 
-  const logoutMutation = useMutation(
-    () => axiosInstance.post('/v1/auth/signout'),
-    {
-      onSuccess: () => {
-        setAccessToken(null);
-        setRefreshToken(null);
-        removeAccessTokenFromStorage();
-        removeRefreshTokenFromStorage();
-        delete axiosInstance.defaults.headers.common['Authorization'];
-        queryClient.clear();
-      },
-      onError: (error: any) => {
-        console.error('로그아웃 오류:', error);
-      },
+  const logoutMutation = useMutation({
+    mutationFn: () => axiosInstance.post('/v1/auth/signout'),
+    onSuccess: () => {
+      setAccessToken(null);
+      setRefreshToken(null);
+      removeAccessTokenFromStorage();
+      removeRefreshTokenFromStorage();
+      delete axiosInstance.defaults.headers.common['Authorization'];
+      queryClient.clear();
+    },
+    onError: (error: any) => {
+      console.error('로그아웃 오류:', error);
     }
-  );
+  });
 
   const login = async (email: string, password: string): Promise<void> => {
     return loginMutation.mutateAsync({ email, password });

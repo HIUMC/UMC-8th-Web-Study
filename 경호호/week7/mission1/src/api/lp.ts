@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axiosInstance';
-import { LP, LPDetailResponse, LPListResponse, PaginationDto } from '../types/lp';
+import { LP, LPDetailResponse, LPListResponse, PaginationDto, LPCreateDto } from '../types/lp';
 
 export const getLPList = async (params: PaginationDto = {}): Promise<LPListResponse> => {
   const { data } = await axiosInstance.get<LPListResponse>('/v1/lps', { params });
@@ -12,4 +12,9 @@ export const getLPDetail = async (lpId: string): Promise<LP> => {
   const lpData = response.data.data;
   console.log('LP 데이터:', lpData);
   return lpData;
+};
+
+export const createLP = async (lpData: LPCreateDto): Promise<LP> => {
+  const response = await axiosInstance.post<LPDetailResponse>('/v1/lps', lpData);
+  return response.data.data;
 };
