@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGetLPDetail } from '../hooks/useGetLPDetail';
 import { Layout } from '../components/layout/Layout';
 import { Heart, Edit, Trash, Send, MessageCircle, MoreVertical } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Like, PaginationOrder } from '../types/lp';
 import { useInfiniteComments } from '../hooks/useInfiniteComments';
@@ -23,7 +23,6 @@ const LPDetailPage = () => {
   const [editedCommentText, setEditedCommentText] = useState('');
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const observerTarget = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   
@@ -154,11 +153,12 @@ const LPDetailPage = () => {
     );
   };
 
-  const handleEditComment = (comment: any) => {
+  const handleEditComment = useCallback((comment: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenMenuId(null);
     setEditingComment(comment.id);
     setEditedCommentText(comment.content);
-    setOpenMenuId(null);
-  };
+  }, []);
 
   const cancelEditComment = () => {
     setEditingComment(null);
@@ -175,29 +175,32 @@ const LPDetailPage = () => {
     });
   };
 
-  const handleDeleteComment = (commentId: number) => {
+  const handleDeleteComment = useCallback((commentId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
     if (window.confirm('댓글을 삭제하시겠습니까?')) {
       deleteCommentMutation.mutate({ lpId: lpId || '', commentId });
       setOpenMenuId(null);
     }
-  };
+  }, [lpId, deleteCommentMutation]);
 
-  const toggleMenu = (commentId: number) => {
+  const toggleMenu = useCallback((commentId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
     setOpenMenuId(prevId => prevId === commentId ? null : commentId);
-  };
+  }, []);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.comment-menu') && !target.closest('.menu-button')) {
         setOpenMenuId(null);
       }
-    }
-    
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuRef]);
+    
+    document.addEventListener('click', handleGlobalClick);
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+    };
+  }, []);
 
   const toggleCommentOrder = () => {
     setCommentOrder(commentOrder === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
@@ -416,25 +419,30 @@ const LPDetailPage = () => {
                           
                           {userId === comment.authorId && (
                             <div className="absolute right-4 top-4 z-20">
-                              <div className="relative" ref={menuRef}>
+                              <div className="relative comment-menu">
                                 <button 
-                                  className="p-1 hover:bg-gray-700 rounded-full w-7 h-7 flex items-center justify-center"
-                                  onClick={() => toggleMenu(comment.id)}
+                                  className="p-1 hover:bg-gray-700 rounded-full w-7 h-7 flex items-center justify-center menu-button"
+                                  onClick={(e) => toggleMenu(comment.id, e)}
+                                  tabIndex={0}
+                                  role="button"
+                                  aria-label="댓글 메뉴"
                                 >
                                   <MoreVertical size={16} />
                                 </button>
                                 {openMenuId === comment.id && (
-                                  <div className="absolute right-0 top-full bg-gray-700 rounded shadow-lg z-30 w-24 py-1 mt-1">
+                                  <div className="absolute right-0 top-full bg-gray-700 rounded shadow-lg z-30 w-24 py-1 mt-1 comment-menu">
                                     <button 
                                       className="flex items-center px-3 py-2 w-full text-left hover:bg-gray-600 text-sm"
-                                      onClick={() => handleEditComment(comment)}
+                                      onClick={(e) => handleEditComment(comment, e)}
+                                      tabIndex={0}
                                     >
                                       <Edit size={14} className="mr-2" />
                                       수정
                                     </button>
                                     <button 
                                       className="flex items-center px-3 py-2 w-full text-left hover:bg-gray-600 text-red-400 text-sm"
-                                      onClick={() => handleDeleteComment(comment.id)}
+                                      onClick={(e) => handleDeleteComment(comment.id, e)}
+                                      tabIndex={0}
                                     >
                                       <Trash size={14} className="mr-2" />
                                       삭제
