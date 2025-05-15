@@ -13,7 +13,7 @@ const LpDetailPage = () => {
 
     const { data: me } = useGetMyInfo(accessToken);
     // mutate -> 비동기 요청을 실행하고, 콜백 함수를 이용해서 후속 작업 처리함.
-    // mutateAsync -> Promise를 반환해서 awiat 사용 가능
+    // mutateAsync -> Promise를 반환해서 awiat 사용
     const { mutate:likeMutate } = usePostLike();
     const { mutate:dislikeMutate } = useDeleteLike();
 
