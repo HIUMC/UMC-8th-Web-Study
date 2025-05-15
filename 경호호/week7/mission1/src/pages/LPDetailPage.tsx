@@ -21,7 +21,9 @@ const LPDetailPage = () => {
   const [commentText, setCommentText] = useState('');
   const [editingComment, setEditingComment] = useState<number | null>(null);
   const [editedCommentText, setEditedCommentText] = useState('');
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const observerTarget = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   
@@ -155,6 +157,7 @@ const LPDetailPage = () => {
   const handleEditComment = (comment: any) => {
     setEditingComment(comment.id);
     setEditedCommentText(comment.content);
+    setOpenMenuId(null);
   };
 
   const cancelEditComment = () => {
@@ -175,8 +178,26 @@ const LPDetailPage = () => {
   const handleDeleteComment = (commentId: number) => {
     if (window.confirm('댓글을 삭제하시겠습니까?')) {
       deleteCommentMutation.mutate({ lpId: lpId || '', commentId });
+      setOpenMenuId(null);
     }
   };
+
+  const toggleMenu = (commentId: number) => {
+    setOpenMenuId(prevId => prevId === commentId ? null : commentId);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    }
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
 
   const toggleCommentOrder = () => {
     setCommentOrder(commentOrder === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
@@ -363,96 +384,97 @@ const LPDetailPage = () => {
                 </div>
               )}
               
-              {(() => {
-                console.log('commentsData:', commentsData);
-                if (commentsData) {
-                  console.log('commentsData.pages:', commentsData.pages);
-                }
-                return null;
-              })()}
-              
               {commentsData && commentsData.pages && commentsData.pages.length > 0 && (
                 <div className="space-y-4">
                   {commentsData.pages.flatMap((page) => 
-                    // comments 배열이 존재하는지 확인 후 flatMap
                     page.comments && Array.isArray(page.comments) 
                       ? page.comments 
                       : []
-                  ).map((comment) => (
-                    <div key={comment.id} className="bg-gray-800 rounded-lg p-4 relative">
-                      <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
-                          {comment.author && comment.author.avatar ? (
-                            <img 
-                              src={comment.author.avatar} 
-                              alt={comment.author.name} 
-                              className="w-8 h-8 rounded-full object-cover"
-                            />
-                          ) : (
-                            <MessageCircle size={14} />
-                          )}
-                        </div>
-                        <div>
-                          <span className="font-medium">{comment.author ? comment.author.name : '익명'}</span>
-                          <span className="text-xs text-gray-400 ml-2">
-                            {formatDate(comment.createdAt)}
-                          </span>
-                        </div>
-                        {user && user.id === String(comment.authorId) && (
-                          <div className="absolute right-4 top-4">
-                            <div className="relative group">
-                              <button className="p-1 hover:bg-gray-700 rounded">
-                                <MoreVertical size={16} />
-                              </button>
-                              <div className="absolute right-0 top-full bg-gray-700 rounded shadow-lg hidden group-hover:block z-10">
+                  ).map((comment) => {
+                    const userId = user ? Number(user.id) : null;
+                    
+                    return (
+                      <div key={comment.id} className="bg-gray-800 rounded-lg p-4 relative">
+                        <div className="flex items-center mb-2">
+                          <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white mr-2">
+                            {comment.author && comment.author.avatar ? (
+                              <img 
+                                src={comment.author.avatar} 
+                                alt={comment.author.name} 
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            ) : (
+                              <MessageCircle size={14} />
+                            )}
+                          </div>
+                          <div>
+                            <span className="font-medium">{comment.author ? comment.author.name : '익명'}</span>
+                            <span className="text-xs text-gray-400 ml-2">
+                              {formatDate(comment.createdAt)}
+                            </span>
+                          </div>
+                          
+                          {userId === comment.authorId && (
+                            <div className="absolute right-4 top-4 z-20">
+                              <div className="relative" ref={menuRef}>
                                 <button 
-                                  className="flex items-center px-4 py-2 w-full text-left hover:bg-gray-600"
-                                  onClick={() => handleEditComment(comment)}
+                                  className="p-1 hover:bg-gray-700 rounded-full w-7 h-7 flex items-center justify-center"
+                                  onClick={() => toggleMenu(comment.id)}
                                 >
-                                  <Edit size={14} className="mr-2" />
-                                  수정
+                                  <MoreVertical size={16} />
                                 </button>
-                                <button 
-                                  className="flex items-center px-4 py-2 w-full text-left hover:bg-gray-600 text-red-400"
-                                  onClick={() => handleDeleteComment(comment.id)}
-                                >
-                                  <Trash size={14} className="mr-2" />
-                                  삭제
-                                </button>
+                                {openMenuId === comment.id && (
+                                  <div className="absolute right-0 top-full bg-gray-700 rounded shadow-lg z-30 w-24 py-1 mt-1">
+                                    <button 
+                                      className="flex items-center px-3 py-2 w-full text-left hover:bg-gray-600 text-sm"
+                                      onClick={() => handleEditComment(comment)}
+                                    >
+                                      <Edit size={14} className="mr-2" />
+                                      수정
+                                    </button>
+                                    <button 
+                                      className="flex items-center px-3 py-2 w-full text-left hover:bg-gray-600 text-red-400 text-sm"
+                                      onClick={() => handleDeleteComment(comment.id)}
+                                    >
+                                      <Trash size={14} className="mr-2" />
+                                      삭제
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             </div>
+                          )}
+                        </div>
+                        {editingComment === comment.id ? (
+                          <div className="mt-2">
+                            <textarea
+                              value={editedCommentText}
+                              onChange={(e) => setEditedCommentText(e.target.value)}
+                              className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
+                              rows={2}
+                            />
+                            <div className="flex justify-end mt-2 space-x-2">
+                              <button
+                                onClick={cancelEditComment}
+                                className="px-3 py-1 bg-gray-600 rounded hover:bg-gray-500"
+                              >
+                                취소
+                              </button>
+                              <button
+                                onClick={() => submitEditComment(comment.id)}
+                                className="px-3 py-1 bg-purple-600 rounded hover:bg-purple-700"
+                                disabled={!editedCommentText.trim()}
+                              >
+                                저장
+                              </button>
+                            </div>
                           </div>
+                        ) : (
+                          <p className="text-gray-300">{comment.content}</p>
                         )}
                       </div>
-                      {editingComment === comment.id ? (
-                        <div className="mt-2">
-                          <textarea
-                            value={editedCommentText}
-                            onChange={(e) => setEditedCommentText(e.target.value)}
-                            className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
-                            rows={2}
-                          />
-                          <div className="flex justify-end mt-2 space-x-2">
-                            <button
-                              onClick={cancelEditComment}
-                              className="px-3 py-1 bg-gray-600 rounded hover:bg-gray-500"
-                            >
-                              취소
-                            </button>
-                            <button
-                              onClick={() => submitEditComment(comment.id)}
-                              className="px-3 py-1 bg-purple-600 rounded hover:bg-purple-700"
-                              disabled={!editedCommentText.trim()}
-                            >
-                              저장
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p className="text-gray-300">{comment.content}</p>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
               
