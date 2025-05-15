@@ -27,3 +27,10 @@ export const toggleLike = async (lpId: string): Promise<LP> => {
 export const deleteLP = async (lpId: string): Promise<void> => {
   await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}`);
 };
+
+export interface LPCreateDto {
+  title: string;
+  content: string;
+  tags?: string[];
+  thumbnail?: string | null;
+}
