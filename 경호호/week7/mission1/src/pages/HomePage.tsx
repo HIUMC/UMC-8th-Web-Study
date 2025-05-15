@@ -64,12 +64,12 @@ const HomePage = () => {
             >
               LP 작성
             </button>
-            <button
-              onClick={toggleOrder}
-              className="bg-purple-600 px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
-            >
-              {order === PaginationOrder.DESC ? '최신순' : '오래된순'}
-            </button>
+          <button
+            onClick={toggleOrder}
+            className="bg-purple-600 px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
+          >
+            {order === PaginationOrder.DESC ? '최신순' : '오래된순'}
+          </button>
           </div>
         </div>
 

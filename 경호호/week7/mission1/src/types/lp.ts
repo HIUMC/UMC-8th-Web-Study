@@ -58,4 +58,5 @@ export interface LPCreateDto {
   content: string;
   tags?: string[];
   thumbnail?: string | null;
+  published?: boolean;
 }
