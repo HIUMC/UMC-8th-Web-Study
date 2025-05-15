@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import axiosInstance from '../lib/axiosInstance';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface User {
   id: string;
@@ -65,6 +66,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!accessToken);
   const [user, setUser] = useState<User | null>(null);
 
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     setIsLoggedIn(!!accessToken);
   }, [accessToken]);
@@ -88,45 +91,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetchUserData();
   }, [accessToken]);
 
-  const login = async (email: string, password: string): Promise<void> => {
-    try {
-
-      const response = await axiosInstance.post('/v1/auth/signin', { email, password });
-
-
-
-      const respData = response.data as any;
-      const payload = respData.data ?? respData;
-      const newAccessToken = payload.accessToken;
-      const newRefreshToken = payload.refreshToken;
-      
-      setAccessToken(newAccessToken);
-      setRefreshToken(newRefreshToken);
-      setAccessTokenInStorage(newAccessToken);
-      setRefreshTokenInStorage(newRefreshToken);
-      
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-    } catch (error) {
-      console.error('로그인 실패:', error);
-      throw error;
+  const loginMutation = useMutation(
+    ({ email, password }: { email: string; password: string }) =>
+      axiosInstance.post('/v1/auth/signin', { email, password }),
+    {
+      onSuccess: (response: any) => {
+        const respData = response.data as any;
+        const payload = respData.data ?? respData;
+        const newAccessToken = payload.accessToken;
+        const newRefreshToken = payload.refreshToken;
+        setAccessToken(newAccessToken);
+        setRefreshToken(newRefreshToken);
+        setAccessTokenInStorage(newAccessToken);
+        setRefreshTokenInStorage(newRefreshToken);
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+      },
+      onError: (error: any) => {
+        console.error('로그인 실패:', error);
+      },
     }
+  );
+
+  const logoutMutation = useMutation(
+    () => axiosInstance.post('/v1/auth/signout'),
+    {
+      onSuccess: () => {
+        setAccessToken(null);
+        setRefreshToken(null);
+        removeAccessTokenFromStorage();
+        removeRefreshTokenFromStorage();
+        delete axiosInstance.defaults.headers.common['Authorization'];
+        queryClient.clear();
+      },
+      onError: (error: any) => {
+        console.error('로그아웃 오류:', error);
+      },
+    }
+  );
+
+  const login = async (email: string, password: string): Promise<void> => {
+    return loginMutation.mutateAsync({ email, password });
   };
 
   const logout = async (): Promise<void> => {
-    try {
-      if (accessToken) {
-        await axiosInstance.post('/v1/auth/signout');
-      }
-    } catch (error) {
-      console.error('로그아웃 API 호출 중 오류:', error);
-    } finally {
-      setAccessToken(null);
-      setRefreshToken(null);
-      removeAccessTokenFromStorage();
-      removeRefreshTokenFromStorage();
-      
-      delete axiosInstance.defaults.headers.common['Authorization'];
-    }
+    return logoutMutation.mutateAsync();
   };
 
   const socialLogin = ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }): void => {

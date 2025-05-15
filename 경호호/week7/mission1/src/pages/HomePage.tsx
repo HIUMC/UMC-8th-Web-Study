@@ -4,10 +4,12 @@ import { Layout } from '../components/layout/Layout';
 import { LPCard } from '../components/LPCard';
 import { PaginationOrder } from '../types/lp';
 import SkeletonCard from '../components/LPSkeletonCard';
+import LPCreateModal from '../components/LPCreateModal';
 
 const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
   const observerTarget = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const { 
     data, 
@@ -55,12 +57,20 @@ const HomePage = () => {
       <div className="container mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">LP 목록</h1>
-          <button
-            onClick={toggleOrder}
-            className="bg-purple-600 px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
-          >
-            {order === PaginationOrder.DESC ? '최신순' : '오래된순'}
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-green-600 px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors"
+            >
+              LP 작성
+            </button>
+            <button
+              onClick={toggleOrder}
+              className="bg-purple-600 px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
+            >
+              {order === PaginationOrder.DESC ? '최신순' : '오래된순'}
+            </button>
+          </div>
         </div>
 
         {isLoading && (
@@ -100,6 +110,7 @@ const HomePage = () => {
         )}
 
         <div ref={observerTarget} className="h-4 mt-4"></div>
+        <LPCreateModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
     </Layout>
   );
