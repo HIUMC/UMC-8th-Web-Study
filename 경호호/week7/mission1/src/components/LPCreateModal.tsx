@@ -16,7 +16,6 @@ const LPCreateModal = ({ isOpen, onClose }: LPCreateModalProps) => {
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const [published, setPublished] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
 
@@ -83,7 +82,7 @@ const LPCreateModal = ({ isOpen, onClose }: LPCreateModalProps) => {
         content, 
         tags,
         thumbnail,
-        published
+        published: true
       },
       {
         onSuccess: () => {
@@ -186,17 +185,6 @@ const LPCreateModal = ({ isOpen, onClose }: LPCreateModalProps) => {
               ))}
             </div>
           )}
-          
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="published"
-              checked={published}
-              onChange={(e) => setPublished(e.target.checked)}
-              className="mr-2 h-4 w-4"
-            />
-            <label htmlFor="published" className="text-sm">공개 (Published)</label>
-          </div>
           
           <button
             type="submit"
