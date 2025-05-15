@@ -18,3 +18,12 @@ export const createLP = async (lpData: LPCreateDto): Promise<LP> => {
   const response = await axiosInstance.post<LPDetailResponse>('/v1/lps', lpData);
   return response.data.data;
 };
+
+export const toggleLike = async (lpId: string): Promise<LP> => {
+  const response = await axiosInstance.post<LPDetailResponse>(`/v1/lps/${lpId}/likes`);
+  return response.data.data;
+};
+
+export const deleteLP = async (lpId: string): Promise<void> => {
+  await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}`);
+};

@@ -20,3 +20,26 @@ export const getCommentList = async (params: CommentPaginationDto) => {
     throw error;
   }
 };
+
+export interface CreateCommentDto {
+  content: string;
+}
+
+export interface UpdateCommentDto {
+  content: string;
+}
+
+export const createComment = async (lpId: string, data: CreateCommentDto) => {
+  const response = await axiosInstance.post(`/v1/lps/${lpId}/comments`, data);
+  return response.data;
+};
+
+export const updateComment = async (lpId: string, commentId: number, data: UpdateCommentDto) => {
+  const response = await axiosInstance.patch(`/v1/lps/${lpId}/comments/${commentId}`, data);
+  return response.data;
+};
+
+export const deleteComment = async (lpId: string, commentId: number) => {
+  const response = await axiosInstance.delete(`/v1/lps/${lpId}/comments/${commentId}`);
+  return response.data;
+};
