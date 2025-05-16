@@ -77,7 +77,7 @@ export const LPCard = ({ lp }: LPCardProps) => {
         <div className="p-4">
           <h3 className="font-semibold truncate">{lp.title}</h3>
           <p className="text-sm text-gray-400 mt-1">
-            {lp.user?.nickname || '사용자 없음'}
+            {lp.user?.nickname || lp.author?.nickname || lp.author?.name || '알 수 없음'}
           </p>
         </div>
       )}

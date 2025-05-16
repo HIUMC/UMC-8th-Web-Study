@@ -5,33 +5,30 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getUserProfile, updateUserProfile, uploadProfileImage } from '../api/user';
 import { Camera } from 'lucide-react';
 import { QUERY_KEYS } from '../constants/queryKeys';
+import { useAuth } from '../contexts/AuthContext';
 
 const UserEditPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { user: authUser, updateUser } = useAuth();
 
   const [name, setName] = useState('');
-  const [nickname, setNickname] = useState('');
   const [bio, setBio] = useState('');
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [error, setError] = useState('');
-  const [nicknameError, setNicknameError] = useState('');
 
-  const { data: user, isLoading: isLoadingUser } = useQuery(
-    QUERY_KEYS.USER.profile(),
-    getUserProfile,
-    {
-      staleTime: 1000 * 60 * 5, // 5분간 캐싱
-      retry: 1,
-    }
-  );
+  const { data: user, isLoading: isLoadingUser } = useQuery({
+    queryKey: QUERY_KEYS.USER.profile(),
+    queryFn: getUserProfile,
+    staleTime: 1000 * 60 * 5, // 5분간 캐싱
+    retry: 1,
+  });
 
   // 초기 데이터 설정
   useEffect(() => {
     if (user) {
       setName(user.name || '');
-      setNickname(user.nickname || '');
       setBio(user.bio || '');
       setProfileImage(user.profileImage || null);
     }
@@ -50,39 +47,33 @@ const UserEditPage = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: updateUserProfile,
-    onMutate: async (newUserData) => {
-      // 이전 쿼리를 취소하여 낙관적 업데이트와 충돌하지 않도록 함
-      await queryClient.cancelQueries(QUERY_KEYS.USER.profile());
+    onMutate: async (newProfile) => {
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.USER.profile() });
+      const previousProfile = queryClient.getQueryData(QUERY_KEYS.USER.profile());
       
-      // 이전 상태를 저장
-      const previousUserData = queryClient.getQueryData(QUERY_KEYS.USER.profile());
-      
-      // 캐시 데이터 낙관적 업데이트
-      queryClient.setQueryData(QUERY_KEYS.USER.profile(), (oldData: any) => {
-        return {
-          ...oldData,
-          ...newUserData,
-          // 이미지가 변경되었으면 그 값도 업데이트
-          profileImage: profileImage || oldData.profileImage
-        };
-      });
-      
-      // 롤백을 위해 이전 데이터 반환
-      return { previousUserData };
-    },
-    onError: (error: any, _, context) => {
-      // 에러 발생 시 이전 데이터로 롤백
-      if (context?.previousUserData) {
-        queryClient.setQueryData(QUERY_KEYS.USER.profile(), context.previousUserData);
+      if (newProfile.name) {
+        queryClient.setQueryData(QUERY_KEYS.USER.profile(), (old: any) => ({
+          ...old,
+          name: newProfile.name,
+        }));
+        
+        updateUser({ 
+          name: newProfile.name, 
+          nickname: newProfile.name,
+          profileImage: newProfile.avatar
+        });
       }
+      
+      return { previousProfile };
+    },
+    onError: (error: any, _variables, context) => {
+      queryClient.setQueryData(QUERY_KEYS.USER.profile(), context?.previousProfile);
       console.error('프로필 업데이트 오류:', error);
       setError(error.response?.data?.message || '프로필 업데이트 중 오류가 발생했습니다.');
     },
-    onSuccess: () => {
-      // 서버에서 최신 데이터 가져오기
-      queryClient.invalidateQueries(QUERY_KEYS.USER.profile());
-      // AuthContext의 user 정보도 업데이트하기 위해 user 쿼리도 무효화
-      queryClient.invalidateQueries(QUERY_KEYS.USER.auth());
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.profile() });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.auth() });
       navigate('/users/me');
     },
   });
@@ -103,42 +94,26 @@ const UserEditPage = () => {
     }
   };
 
-  const validateForm = () => {
-    // 닉네임 유효성 검사
-    if (!nickname.trim()) {
-      setNicknameError('닉네임은 필수 입력 사항입니다.');
-      return false;
-    }
-    
-    setNicknameError('');
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 폼 유효성 검사
-    if (!validateForm()) {
-      return;
-    }
-    
     try {
       setError('');
+      let avatarUrl = null;
       
       // 이미지가 변경되었으면 먼저 업로드
       if (imageFile) {
-        await imageMutation.mutateAsync(imageFile);
+        const imageResult = await imageMutation.mutateAsync(imageFile);
+        avatarUrl = imageResult.url;
       }
       
       // 프로필 정보 업데이트
       await updateProfileMutation.mutateAsync({
         name,
-        nickname,
-        bio
+        bio,
+        avatar: avatarUrl || profileImage || undefined
       });
       
-      // 성공 메시지 표시 또는 리다이렉트
-      // 이미 mutation의 onSuccess에서 리다이렉트 처리함
     } catch (error: any) {
       console.error('프로필 업데이트 오류:', error);
       setError('프로필 업데이트 중 오류가 발생했습니다.');
@@ -178,7 +153,7 @@ const UserEditPage = () => {
                       {profileImage ? (
                         <img src={profileImage} alt="프로필 이미지" className="h-32 w-32 object-cover" />
                       ) : (
-                        name.charAt(0) || nickname.charAt(0) || '?'
+                        name.charAt(0) || user?.nickname?.charAt(0) || '?'
                       )}
                       <label 
                         htmlFor="profileImage"
@@ -209,33 +184,6 @@ const UserEditPage = () => {
                       className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       placeholder="이름을 입력하세요"
                     />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="nickname" className="block text-sm font-medium text-gray-300 mb-1">
-                      닉네임 <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="nickname"
-                      type="text"
-                      value={nickname}
-                      onChange={(e) => {
-                        setNickname(e.target.value);
-                        if (e.target.value.trim()) {
-                          setNicknameError('');
-                        }
-                      }}
-                      className={`w-full px-3 py-2 bg-gray-700 border ${
-                        nicknameError ? 'border-red-500' : 'border-gray-600'
-                      } rounded-md text-white focus:outline-none focus:ring-2 ${
-                        nicknameError ? 'focus:ring-red-500' : 'focus:ring-purple-500'
-                      }`}
-                      placeholder="닉네임을 입력하세요"
-                      required
-                    />
-                    {nicknameError && (
-                      <p className="mt-1 text-sm text-red-500">{nicknameError}</p>
-                    )}
                   </div>
                   
                   <div>

@@ -1,24 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LogOut } from 'lucide-react';
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '../../lib/axiosInstance';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 
 export const Header = () => {
-  const { accessToken, logout } = useAuth();
+  const { user, isAuthenticated, accessToken } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  
-  // React Query를 사용하여 사용자 정보 가져오기
-  const { data: user } = useQuery(QUERY_KEYS.USER.auth(), 
-    () => queryClient.getQueryData(QUERY_KEYS.USER.auth()) || null,
-    {
-      // auth 쿼리 데이터가 있을 때만 활성화
-      enabled: !!queryClient.getQueryData(QUERY_KEYS.USER.auth())
-    }
-  );
   
   // 로그아웃 상태 관리
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -76,8 +67,6 @@ export const Header = () => {
       window.location.reload();
     }
   };
-
-  const isAuthenticated = !!accessToken;
 
   return (
     <header className="bg-gray-800 text-white p-4 shadow-md w-full">
