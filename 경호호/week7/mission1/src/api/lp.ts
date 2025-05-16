@@ -60,14 +60,25 @@ export const deleteLP = async (lpId: string): Promise<void> => {
   try {
     await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}`);
   } catch (error: any) {
-    // 서버 에러(500) 또는 네트워크 에러에 대한 구체적인 에러 메시지를 포함
-    if (error.response && error.response.status === 500) {
-      console.error('서버 내부 오류로 인한 LP 삭제 실패:', error);
-      throw new Error('서버 내부 오류로 LP 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
-    }
+    console.error(`LP 삭제 중 오류 발생 (ID: ${lpId}):`, error);
     
-    // 그 외 에러는 그대로 던짐
-    console.error('LP 삭제 중 오류:', error);
-    throw error;
+    if (error.response) {
+      // 서버에서 응답이 왔지만 에러 상태 코드인 경우
+      if (error.response.status === 500) {
+        throw new Error('서버 내부 오류로 LP 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      } else if (error.response.status === 404) {
+        throw new Error('해당 LP를 찾을 수 없습니다. 이미 삭제되었거나 존재하지 않습니다.');
+      } else if (error.response.status === 403) {
+        throw new Error('이 LP를 삭제할 권한이 없습니다.');
+      } else {
+        throw new Error(`LP 삭제 중 오류가 발생했습니다: ${error.response.data?.message || '알 수 없는 오류'}`);
+      }
+    } else if (error.request) {
+      // 요청은 보냈지만 응답을 받지 못한 경우
+      throw new Error('서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.');
+    } else {
+      // 요청 설정 중 오류가 발생한 경우
+      throw new Error(`요청 설정 중 오류가 발생했습니다: ${error.message}`);
+    }
   }
 };

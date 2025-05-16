@@ -145,13 +145,7 @@ const LPDetailPage = () => {
     },
     onError: (error: any) => {
       console.error('LP 삭제 중 오류:', error);
-      if (error.response && error.response.status === 500) {
-        alert('서버 오류로 인해 LP 삭제에 실패했습니다. 나중에 다시 시도해주세요.');
-      } else if (error.code === 'ERR_NETWORK') {
-        alert('네트워크 연결을 확인해주세요.');
-      } else {
-        alert('LP 삭제 중 오류가 발생했습니다: ' + (error.response?.data?.message || '알 수 없는 오류'));
-      }
+      alert(error.message || 'LP 삭제 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
     }
   });
 
