@@ -17,6 +17,7 @@ export interface LP {
   createdAt: string;
   updatedAt: string;
   userId: string;
+  authorId?: string;
   thumbnail?: string;
   tags: Tag[];
   likes: Like[];
@@ -24,6 +25,11 @@ export interface LP {
     id: string;
     nickname: string;
     profileImage?: string;
+  };
+  author?: {
+    id: string;
+    name?: string;
+    nickname?: string;
   };
 }
 

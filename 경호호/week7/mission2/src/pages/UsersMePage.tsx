@@ -2,22 +2,19 @@ import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { useQuery } from '@tanstack/react-query';
 import { getUserProfile, UserProfile } from '../api/user';
-import { Edit, Trash } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { QUERY_KEYS } from '../constants/queryKeys';
 
 const UsersMePage = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  const { data: user, isLoading, isError } = useQuery(
-    QUERY_KEYS.USER.profile(),
-    getUserProfile,
-    {
-      staleTime: 1000 * 60 * 5, // 5분간 캐싱
-      retry: 1,
-    }
-  );
+  const { data: user, isLoading, isError } = useQuery<UserProfile>({
+    queryKey: ['userProfile'],
+    queryFn: getUserProfile,
+    staleTime: 1000 * 60 * 5, // 5분간 캐싱
+    retry: 1,
+  });
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '-';
@@ -65,13 +62,6 @@ const UsersMePage = () => {
                   >
                     <Edit size={20} className="text-white" />
                   </button>
-                  <button 
-                    onClick={() => navigate('/users/delete')}
-                    className="p-2 rounded-full bg-red-600 hover:bg-red-700 transition-colors"
-                    title="회원 탈퇴"
-                  >
-                    <Trash size={20} className="text-white" />
-                  </button>
                 </div>
               </div>
               
@@ -92,11 +82,8 @@ const UsersMePage = () => {
               
               <div className="bg-gray-700 p-4 rounded-md mb-6">
                 <h3 className="text-lg font-semibold mb-2">상세 정보</h3>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <p><span className="text-gray-400">ID:</span> {user.id}</p>
-                  <p><span className="text-gray-400">닉네임:</span> {user.nickname || '-'}</p>
-                  <p><span className="text-gray-400">Bio:</span> {user.bio || '-'}</p>
-                  <p><span className="text-gray-400">정보 수정일:</span> {formatDate(user.updatedAt)}</p>
+                <div>
+                  {user.bio || '-'}
                 </div>
               </div>
               

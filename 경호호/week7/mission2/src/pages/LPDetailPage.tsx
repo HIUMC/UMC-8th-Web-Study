@@ -17,6 +17,7 @@ const LPDetailPage = () => {
   const { data, isLoading, isError } = useGetLPDetail(lpId || '');
   const { isAuthenticated, user } = useAuth();
   const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const [commentOrder, setCommentOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
   const [commentText, setCommentText] = useState('');
   const [editingComment, setEditingComment] = useState<number | null>(null);
@@ -65,6 +66,7 @@ const LPDetailPage = () => {
       const lpData = data;
       const userLiked = lpData.likes?.some((like: Like) => like.userId === user.id) ?? false;
       setIsLiked(userLiked);
+      setLikeCount(lpData.likes?.length || 0);
     }
   }, [data, user]);
 
@@ -114,68 +116,64 @@ const LPDetailPage = () => {
 
   const toggleLikeMutation = useMutation({
     mutationFn: (lpId: string) => toggleLike(lpId),
-    onMutate: async (lpId) => {
-      // 진행 중인 쿼리 취소
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.LP.detail(lpId) });
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.LP.detail(lpId || '') });
+      const previousLpData = queryClient.getQueryData(QUERY_KEYS.LP.detail(lpId || ''));
       
-      // 이전 상태 저장
-      const previousLpData = queryClient.getQueryData(QUERY_KEYS.LP.detail(lpId));
+      const newIsLiked = !isLiked;
+      setIsLiked(newIsLiked);
       
-      // 현재 isLiked 상태와 반대로 업데이트 (낙관적 업데이트)
-      setIsLiked(prevIsLiked => !prevIsLiked);
+      if (newIsLiked) {
+        setLikeCount(prev => prev + 1);
+      } else {
+        setLikeCount(prev => Math.max(0, prev - 1));
+      }
       
-      // 캐시 업데이트 - 좋아요 수 증감
-      queryClient.setQueryData(QUERY_KEYS.LP.detail(lpId), (oldData: any) => {
-        if (!oldData) return oldData;
+      queryClient.setQueryData(QUERY_KEYS.LP.detail(lpId || ''), (old: any) => {
+        if (!old) return old;
         
-        // 현재 사용자 ID
         const userId = user?.id;
         
-        if (!userId) return oldData;
-        
-        // 현재 좋아요 상태
-        const liked = oldData.likes?.some((like: Like) => like.userId === userId) ?? false;
+        if (!userId) return old;
         
         let updatedLikes;
         
-        if (liked) {
-          // 좋아요가 이미 되어 있다면 제거
-          updatedLikes = oldData.likes.filter((like: Like) => like.userId !== userId);
+        if (newIsLiked) {
+          updatedLikes = [...(old.likes || []), { id: `temp-${Date.now()}`, userId }];
         } else {
-          // 좋아요가 안 되어 있다면 추가
-          const newLike = { id: `temp-${Date.now()}`, userId };
-          updatedLikes = [...(oldData.likes || []), newLike];
+          updatedLikes = (old.likes || []).filter((like: Like) => like.userId !== userId);
         }
         
         return {
-          ...oldData,
+          ...old,
           likes: updatedLikes
         };
       });
       
-      return { previousLpData };
+      return { previousLpData, previousIsLiked: isLiked };
     },
-    onError: (error, lpId, context) => {
-      // 에러 발생 시 이전 상태로 롤백
-      if (context?.previousLpData) {
-        queryClient.setQueryData(QUERY_KEYS.LP.detail(lpId), context.previousLpData);
-        
-        // isLiked 상태도 롤백
-        if (user) {
-          const lpData = context.previousLpData as any;
-          const userLiked = lpData.likes?.some((like: Like) => like.userId === user.id) ?? false;
-          setIsLiked(userLiked);
-        }
+    onError: (error: any, _variables, context) => {
+      queryClient.setQueryData(QUERY_KEYS.LP.detail(lpId || ''), context?.previousLpData);
+      setIsLiked(context?.previousIsLiked || false);
+      
+      if (data) {
+        setLikeCount(data.likes?.length || 0);
       }
       
       console.error('좋아요 처리 중 오류:', error);
-      alert('좋아요 처리 중 오류가 발생했습니다.');
-    },
-    onSuccess: (data) => {
-      if (user) {
-        const userLiked = data.likes?.some((like: Like) => like.userId === user.id) ?? false;
-        setIsLiked(userLiked);
+      
+      if (error.response && error.response.status === 409) {
+        return;
       }
+      
+      if (error.code === 'ERR_NETWORK') {
+        alert('네트워크 연결을 확인해주세요.');
+        return;
+      }
+      
+      alert('좋아요 처리 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.LP.detail(lpId || '') });
     }
   });
@@ -186,9 +184,9 @@ const LPDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.LP.lists() });
       navigate('/');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('LP 삭제 중 오류:', error);
-      alert('LP 삭제 중 오류가 발생했습니다.');
+      alert(error.message || 'LP 삭제 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
     }
   });
 
@@ -313,7 +311,7 @@ const LPDetailPage = () => {
               <div>
                 <h1 className="text-2xl font-bold mb-2">{lpData.title || '제목 없음'}</h1>
                 <div className="flex items-center text-gray-400 text-sm">
-                  <span>작성자: {lpData.user?.nickname || '알 수 없음'}</span>
+                  <span>작성자: {lpData.user?.nickname || lpData.author?.nickname || lpData.author?.name || lpData.user?.id || '알 수 없음'}</span>
                   <span className="mx-2">•</span>
                   <span>작성일: {lpData.createdAt ? formatDate(lpData.createdAt) : '날짜 정보 없음'}</span>
                 </div>
@@ -328,7 +326,7 @@ const LPDetailPage = () => {
                     <Heart size={20} className={isLiked ? 'text-white' : 'text-red-500'} />
                   </button>
                   
-                  {user && user.id === lpData.userId && (
+                  {user && (user.id === lpData.userId || user.id === lpData.authorId || user.id === lpData.user?.id) && (
                     <>
                       <button 
                         className="p-2 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors"
@@ -388,7 +386,7 @@ const LPDetailPage = () => {
               <div className="flex items-center space-x-2">
                 <div className="bg-gray-700 rounded-md p-3 inline-flex items-center">
                   <Heart size={16} className="text-red-500 mr-2" />
-                  <span className="font-semibold">{lpData.likes?.length || 0}</span>
+                  <span className="font-semibold">{likeCount}</span>
                 </div>
                 <p className="text-gray-400">명이 이 LP를 좋아합니다.</p>
               </div>

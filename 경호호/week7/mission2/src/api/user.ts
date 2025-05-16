@@ -13,8 +13,8 @@ export interface UserProfile {
 
 export interface UpdateUserProfileDto {
   name?: string;
-  nickname?: string;
   bio?: string;
+  avatar?: string;
 }
 
 export const getUserProfile = async (): Promise<UserProfile> => {

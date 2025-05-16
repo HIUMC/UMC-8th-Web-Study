@@ -10,6 +10,12 @@ interface User {
   profileImage?: string;
 }
 
+interface UpdateUserData {
+  name?: string;
+  nickname?: string;
+  profileImage?: string;
+}
+
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
@@ -19,7 +25,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   socialLogin: (tokens: { accessToken: string; refreshToken: string }) => void;
-  refreshUserData: () => Promise<void>;
+  updateUser: (userData: UpdateUserData) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -74,28 +80,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn(!!accessToken);
   }, [accessToken]);
   
-  // 사용자 정보 가져오기 함수
-  const fetchUserDataAndUpdateState = async () => {
-    if (accessToken) {
-      try {
-        const response = await axiosInstance.get('/v1/users/me');
-        const userData = response.data.data || response.data;
-        setUser(userData);
-        
-        // React Query 캐시에도 사용자 정보 저장
-        queryClient.setQueryData(QUERY_KEYS.USER.profile(), userData);
-        queryClient.setQueryData(QUERY_KEYS.USER.auth(), userData);
-      } catch (error) {
-        console.error('사용자 정보 가져오기 실패:', error);
-      }
-    } else {
-      setUser(null);
-    }
-  };
 
   useEffect(() => {
-    fetchUserDataAndUpdateState();
-  }, [accessToken]);
+    const fetchUserData = async () => {
+      if (accessToken) {
+        try {
+          const response = await axiosInstance.get('/v1/users/me');
+          const userData = response.data.data || response.data;
+          setUser(userData);
+          
+          // 인증 컨텍스트 데이터 캐시에 저장
+          queryClient.setQueryData(QUERY_KEYS.USER.auth(), userData);
+        } catch (error) {
+          console.error('사용자 정보 가져오기 실패:', error);
+        }
+      } else {
+        setUser(null);
+        queryClient.setQueryData(QUERY_KEYS.USER.auth(), null);
+      }
+    };
+
+    fetchUserData();
+  }, [accessToken, queryClient]);
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
@@ -110,9 +116,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setAccessTokenInStorage(newAccessToken);
       setRefreshTokenInStorage(newRefreshToken);
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-      
-      // 로그인 성공 후 사용자 정보 가져오기
-      fetchUserDataAndUpdateState();
     },
     onError: (error: any) => {
       console.error('로그인 실패:', error);
@@ -149,6 +152,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRefreshTokenInStorage(refreshToken);
     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
   };
+  
+  // 사용자 정보 업데이트 함수
+  const updateUser = (userData: UpdateUserData): void => {
+    if (!user) return;
+    
+    // 업데이트된 user 객체 생성
+    const updatedUser = {
+      ...user,
+      ...userData
+    };
+    
+    // 로컬 상태 업데이트
+    setUser(updatedUser);
+    
+    // 캐시에도 업데이트된 사용자 정보 저장
+    queryClient.setQueryData(QUERY_KEYS.USER.auth(), updatedUser);
+  };
 
   const value = {
     accessToken,
@@ -159,7 +179,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     socialLogin,
-    refreshUserData: fetchUserDataAndUpdateState
+    updateUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
