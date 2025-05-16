@@ -8,6 +8,7 @@ import UserDetailPage from './pages/UserDetailPage';
 import UserDeletePage from './pages/UserDeletePage';
 import UserEditPage from './pages/UserEditPage';
 import LPDetailPage from './pages/LPDetailPage';
+import LPEditPage from './pages/LPEditPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/users/delete" element={<UserDeletePage />} />
             <Route path="/users/edit" element={<UserEditPage />} />
             <Route path="/lp/:lpId" element={<LPDetailPage />} />
+            <Route path="/lp/:lpId/edit" element={<LPEditPage />} />
           </Route>
         </Routes>
       </div>

@@ -60,3 +60,11 @@ export interface LPCreateDto {
   thumbnail?: string | null;
   published?: boolean;
 }
+
+export interface LPUpdateDto {
+  title?: string;
+  content?: string;
+  tags?: string[];
+  thumbnail?: string | null;
+  published?: boolean;
+}
