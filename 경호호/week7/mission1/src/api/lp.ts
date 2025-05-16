@@ -25,20 +25,24 @@ export const updateLP = async (lpId: string, lpData: LPUpdateDto): Promise<LP> =
 };
 
 export const toggleLike = async (lpId: string): Promise<LP> => {
-  // 좋아요가 되어 있는지 먼저 확인
-  const lpData = await getLPDetail(lpId);
-  const isLiked = lpData.likes?.some(like => 
-    localStorage.getItem('accessToken') && like.userId === JSON.parse(localStorage.getItem('accessToken') || '{}')
-  );
-  
-  // 이미 좋아요가 되어 있으면 좋아요 취소 API 호출
-  if (isLiked) {
-    const response = await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}/likes`);
-    return response.data.data;
-  } else {
-    // 좋아요가 안되어 있으면 좋아요 API 호출
+  try {
+    // 좋아요 시도
     const response = await axiosInstance.post<LPDetailResponse>(`/v1/lps/${lpId}/likes`);
     return response.data.data;
+  } catch (error: any) {
+    // 409 Conflict(이미 좋아요 상태)면 좋아요 취소 API 호출
+    if (error.response && error.response.status === 409) {
+      try {
+        const response = await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}/likes`);
+        return response.data.data;
+      } catch (deleteError) {
+        console.error('좋아요 취소 중 오류:', deleteError);
+        throw deleteError;
+      }
+    }
+    // 다른 에러는 다시 throw
+    console.error('좋아요 시도 중 오류:', error);
+    throw error;
   }
 };
 
@@ -53,5 +57,17 @@ export const unlikeLP = async (lpId: string): Promise<LP> => {
 };
 
 export const deleteLP = async (lpId: string): Promise<void> => {
-  await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}`);
+  try {
+    await axiosInstance.delete<LPDetailResponse>(`/v1/lps/${lpId}`);
+  } catch (error: any) {
+    // 서버 에러(500) 또는 네트워크 에러에 대한 구체적인 에러 메시지를 포함
+    if (error.response && error.response.status === 500) {
+      console.error('서버 내부 오류로 인한 LP 삭제 실패:', error);
+      throw new Error('서버 내부 오류로 LP 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    }
+    
+    // 그 외 에러는 그대로 던짐
+    console.error('LP 삭제 중 오류:', error);
+    throw error;
+  }
 };

@@ -121,9 +121,19 @@ const LPDetailPage = () => {
       }
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.LP.detail(lpId || '') });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('좋아요 처리 중 오류:', error);
-      alert('좋아요 처리 중 오류가 발생했습니다.');
+      
+      if (error.response && error.response.status === 409) {
+        return;
+      }
+      
+      if (error.code === 'ERR_NETWORK') {
+        alert('네트워크 연결을 확인해주세요.');
+        return;
+      }
+      
+      alert('좋아요 처리 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
     }
   });
 
@@ -133,9 +143,15 @@ const LPDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.LP.lists() });
       navigate('/');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('LP 삭제 중 오류:', error);
-      alert('LP 삭제 중 오류가 발생했습니다.');
+      if (error.response && error.response.status === 500) {
+        alert('서버 오류로 인해 LP 삭제에 실패했습니다. 나중에 다시 시도해주세요.');
+      } else if (error.code === 'ERR_NETWORK') {
+        alert('네트워크 연결을 확인해주세요.');
+      } else {
+        alert('LP 삭제 중 오류가 발생했습니다: ' + (error.response?.data?.message || '알 수 없는 오류'));
+      }
     }
   });
 
@@ -260,7 +276,7 @@ const LPDetailPage = () => {
               <div>
                 <h1 className="text-2xl font-bold mb-2">{lpData.title || '제목 없음'}</h1>
                 <div className="flex items-center text-gray-400 text-sm">
-                  <span>작성자: {lpData.user?.nickname || '알 수 없음'}</span>
+                  <span>작성자: {lpData.user?.nickname || lpData.author?.nickname || lpData.author?.name || lpData.user?.id || '알 수 없음'}</span>
                   <span className="mx-2">•</span>
                   <span>작성일: {lpData.createdAt ? formatDate(lpData.createdAt) : '날짜 정보 없음'}</span>
                 </div>
@@ -275,7 +291,7 @@ const LPDetailPage = () => {
                     <Heart size={20} className={isLiked ? 'text-white' : 'text-red-500'} />
                   </button>
                   
-                  {user && user.id === lpData.userId && (
+                  {user && (user.id === lpData.userId || user.id === lpData.authorId || user.id === lpData.user?.id) && (
                     <>
                       <button 
                         className="p-2 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors"

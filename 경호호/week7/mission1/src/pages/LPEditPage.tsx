@@ -21,15 +21,13 @@ const LPEditPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   // LP 데이터 불러오기
-  const { data: lp, isLoading, isError } = useQuery(
-    QUERY_KEYS.LP.detail(lpId || ''),
-    () => getLPDetail(lpId || ''),
-    {
-      enabled: !!lpId,
-      staleTime: 1000 * 60 * 5, // 5분간 캐싱
-      retry: 1,
-    }
-  );
+  const { data: lp, isLoading, isError } = useQuery<any>({
+    queryKey: QUERY_KEYS.LP.detail(lpId || ''),
+    queryFn: () => getLPDetail(lpId || ''),
+    enabled: !!lpId,
+    staleTime: 1000 * 60 * 5, // 5분간 캐싱
+    retry: 1,
+  });
 
   // 초기 데이터 설정
   useEffect(() => {

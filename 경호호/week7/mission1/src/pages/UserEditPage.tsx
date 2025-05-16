@@ -11,27 +11,22 @@ const UserEditPage = () => {
   const queryClient = useQueryClient();
 
   const [name, setName] = useState('');
-  const [nickname, setNickname] = useState('');
   const [bio, setBio] = useState('');
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [error, setError] = useState('');
-  const [nicknameError, setNicknameError] = useState('');
 
-  const { data: user, isLoading: isLoadingUser } = useQuery(
-    QUERY_KEYS.USER.profile(),
-    getUserProfile,
-    {
-      staleTime: 1000 * 60 * 5, // 5분간 캐싱
-      retry: 1,
-    }
-  );
+  const { data: user, isLoading: isLoadingUser } = useQuery({
+    queryKey: QUERY_KEYS.USER.profile(),
+    queryFn: getUserProfile,
+    staleTime: 1000 * 60 * 5, // 5분간 캐싱
+    retry: 1,
+  });
 
   // 초기 데이터 설정
   useEffect(() => {
     if (user) {
       setName(user.name || '');
-      setNickname(user.nickname || '');
       setBio(user.bio || '');
       setProfileImage(user.profileImage || null);
     }
@@ -76,38 +71,24 @@ const UserEditPage = () => {
     }
   };
 
-  const validateForm = () => {
-    // 닉네임 유효성 검사
-    if (!nickname.trim()) {
-      setNicknameError('닉네임은 필수 입력 사항입니다.');
-      return false;
-    }
-    
-    setNicknameError('');
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 폼 유효성 검사
-    if (!validateForm()) {
-      return;
-    }
-    
     try {
       setError('');
+      let avatarUrl = null;
       
       // 이미지가 변경되었으면 먼저 업로드
       if (imageFile) {
-        await imageMutation.mutateAsync(imageFile);
+        const imageResult = await imageMutation.mutateAsync(imageFile);
+        avatarUrl = imageResult.url;
       }
       
       // 프로필 정보 업데이트
       await updateProfileMutation.mutateAsync({
         name,
-        nickname,
-        bio
+        bio,
+        avatar: avatarUrl || profileImage || undefined
       });
       
       // 성공 메시지 표시 또는 리다이렉트
@@ -151,7 +132,7 @@ const UserEditPage = () => {
                       {profileImage ? (
                         <img src={profileImage} alt="프로필 이미지" className="h-32 w-32 object-cover" />
                       ) : (
-                        name.charAt(0) || nickname.charAt(0) || '?'
+                        name.charAt(0) || user?.nickname?.charAt(0) || '?'
                       )}
                       <label 
                         htmlFor="profileImage"
@@ -182,33 +163,6 @@ const UserEditPage = () => {
                       className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                       placeholder="이름을 입력하세요"
                     />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="nickname" className="block text-sm font-medium text-gray-300 mb-1">
-                      닉네임 <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="nickname"
-                      type="text"
-                      value={nickname}
-                      onChange={(e) => {
-                        setNickname(e.target.value);
-                        if (e.target.value.trim()) {
-                          setNicknameError('');
-                        }
-                      }}
-                      className={`w-full px-3 py-2 bg-gray-700 border ${
-                        nicknameError ? 'border-red-500' : 'border-gray-600'
-                      } rounded-md text-white focus:outline-none focus:ring-2 ${
-                        nicknameError ? 'focus:ring-red-500' : 'focus:ring-purple-500'
-                      }`}
-                      placeholder="닉네임을 입력하세요"
-                      required
-                    />
-                    {nicknameError && (
-                      <p className="mt-1 text-sm text-red-500">{nicknameError}</p>
-                    )}
                   </div>
                   
                   <div>
