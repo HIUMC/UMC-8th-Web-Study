@@ -9,14 +9,12 @@ const UsersMePage = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  const { data: user, isLoading, isError } = useQuery(
-    ['userProfile'],
-    getUserProfile,
-    {
-      staleTime: 1000 * 60 * 5, // 5분간 캐싱
-      retry: 1,
-    }
-  );
+  const { data: user, isLoading, isError } = useQuery<UserProfile>({
+    queryKey: ['userProfile'],
+    queryFn: getUserProfile,
+    staleTime: 1000 * 60 * 5, // 5분간 캐싱
+    retry: 1,
+  });
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '-';

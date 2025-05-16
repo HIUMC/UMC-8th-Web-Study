@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getLPDetail, updateLP, uploadProfileImage } from '../api/lp';
+import { getLPDetail, updateLP } from '../api/lp';
+import { uploadProfileImage } from '../api/user';
 import { QUERY_KEYS } from '../constants/queryKeys';
 import { X, Image, Plus } from 'lucide-react';
 
