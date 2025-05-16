@@ -15,4 +15,9 @@ export const QUERY_KEYS = {
     infiniteLists: () => [...QUERY_KEYS.COMMENT.all, 'infiniteList'] as const,
     infiniteList: (params: Record<string, any>) => [...QUERY_KEYS.COMMENT.infiniteLists(), params] as const,
   },
+  USER: {
+    all: ['user'] as const,
+    profile: () => [...QUERY_KEYS.USER.all, 'profile'] as const,
+    auth: () => [...QUERY_KEYS.USER.all, 'auth'] as const,
+  },
 };
