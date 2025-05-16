@@ -11,7 +11,7 @@ import AddComment from './AddComment';
 const CommentList = () => {
   const { lpId } = useParams<{ lpId: string }>();
   const [sortType, setSortType] = useState<PAGINATION_ORDER>(
-    PAGINATION_ORDER.asc
+    PAGINATION_ORDER.desc
   );
   const {
     data: comments,

@@ -66,11 +66,11 @@ export type Comment = {
 
 export type ResponseCommentListDto = CursorBasedResponse<Comment[]>;
 
-export type RequestCommentListDto = {
+export type LpPaginationDto = {
   lpId: number;
-  cursor: number | null;
-  limit: number | null;
-  order: string | null;
+  cursor?: number;
+  limit?: number;
+  order?: string;
 };
 
 export type ResponseLikeLpDto = CommonResponse<{

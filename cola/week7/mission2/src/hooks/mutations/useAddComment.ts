@@ -9,7 +9,7 @@ function useAddComment() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.lpComments, data.lpId],
-        exact: false,
+        exact: true,
       });
       console.log(data);
     },

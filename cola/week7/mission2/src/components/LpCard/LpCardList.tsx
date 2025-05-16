@@ -8,7 +8,7 @@ import LpCardSkeletonList from './LpCardSkeletonList';
 const LpList = () => {
   const [search, setSearch] = useState('');
   const [sortType, setSortType] = useState<PAGINATION_ORDER>(
-    PAGINATION_ORDER.asc
+    PAGINATION_ORDER.desc
   );
   const {
     data: lps,

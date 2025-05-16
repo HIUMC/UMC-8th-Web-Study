@@ -2,7 +2,6 @@ import { PaginationDto } from '../types/common';
 import { axiosInstance } from './axios';
 import {
   RequestAddLpDto,
-  RequestCommentListDto,
   RequestLpDetailsDto,
   ResponseAddLpDto,
   ResponseCommentListDto,
@@ -15,6 +14,7 @@ import {
   ResponseUpdateCommentDto,
   ResponseDeleteCommentDto,
   ResponseMyLpListDto,
+  LpPaginationDto,
 } from '../types/lp';
 
 export const getLpList = async (
@@ -35,12 +35,15 @@ export const getLpDetails = async ({
 
 export const getCommentList = async ({
   lpId,
-}: RequestCommentListDto): Promise<ResponseCommentListDto> => {
+  cursor,
+  limit,
+  order,
+}: LpPaginationDto): Promise<ResponseCommentListDto> => {
   const { data } = await axiosInstance.get(`/v1/lps/${lpId}/comments`, {
     params: {
-      cursor: null,
-      limit: null,
-      order: null,
+      cursor,
+      limit,
+      order,
     },
   });
   return data;
