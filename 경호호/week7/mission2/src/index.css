@@ -5,3 +5,35 @@
 body {
   @apply bg-gray-100 text-gray-900;
 }
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-pulse-once {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* 하트 아이콘 애니메이션 */
+.heart-icon-liked {
+  animation: pulse 0.5s ease-in-out;
+  fill: #ef4444; /* red-500 */
+  color: #ef4444;
+}
+
+.heart-button-liked {
+  animation: pulse 0.5s ease-in-out;
+  background-color: #ef4444; /* red-500 */
+}

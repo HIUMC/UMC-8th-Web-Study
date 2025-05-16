@@ -5,7 +5,6 @@ import SigninPage from './pages/SigninPage';
 import OAuthRedirectHandler from './pages/OAuthRedirectHandler';
 import UsersMePage from './pages/UsersMePage';
 import UserDetailPage from './pages/UserDetailPage';
-import UserEditPage from './pages/UserEditPage';
 import LPDetailPage from './pages/LPDetailPage';
 import LPEditPage from './pages/LPEditPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -25,7 +24,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/users/me" element={<UsersMePage />} />
             <Route path="/users/:userId" element={<UserDetailPage />} />
-            <Route path="/users/edit" element={<UserEditPage />} />
+            <Route path="/users/edit" element={<UsersMePage />} />
             <Route path="/lp/:lpId" element={<LPDetailPage />} />
             <Route path="/lp/:lpId/edit" element={<LPEditPage />} />
           </Route>

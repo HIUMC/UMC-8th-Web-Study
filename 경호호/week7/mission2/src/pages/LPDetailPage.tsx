@@ -271,6 +271,18 @@ const LPDetailPage = () => {
       alert('로그인 후 이용 가능합니다.');
       return;
     }
+    
+    // 좋아요 버튼에 애니메이션 효과 추가
+    const heartButton = document.querySelector('.heart-button');
+    const heartIcon = document.querySelector('.heart-icon');
+    
+    if (heartButton && heartIcon) {
+      heartButton.classList.add('animate-pulse-once');
+      setTimeout(() => {
+        heartButton.classList.remove('animate-pulse-once');
+      }, 500);
+    }
+    
     toggleLikeMutation.mutate(lpId || '');
   };
 
@@ -320,10 +332,17 @@ const LPDetailPage = () => {
                 <div className="flex space-x-2">
                   <button 
                     onClick={handleLikeToggle}
-                    className={`p-2 rounded-full transition-colors ${isLiked ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                    className={`heart-button p-2 rounded-full transition-all duration-300 ${
+                      isLiked 
+                        ? 'heart-button-liked hover:bg-red-600' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
                     title="좋아요"
                   >
-                    <Heart size={20} className={isLiked ? 'text-white' : 'text-red-500'} />
+                    <Heart 
+                      size={20} 
+                      className={`heart-icon ${isLiked ? 'text-white' : 'text-red-500'}`} 
+                    />
                   </button>
                   
                   {user && (user.id === lpData.userId || user.id === lpData.authorId || user.id === lpData.user?.id) && (
@@ -385,7 +404,12 @@ const LPDetailPage = () => {
               <h3 className="text-lg font-semibold mb-2">좋아요</h3>
               <div className="flex items-center space-x-2">
                 <div className="bg-gray-700 rounded-md p-3 inline-flex items-center">
-                  <Heart size={16} className="text-red-500 mr-2" />
+                  <Heart 
+                    size={20} 
+                    className={`mr-2 transition-all duration-300 ${isLiked 
+                      ? "heart-icon-liked" 
+                      : "text-red-500"}`} 
+                  />
                   <span className="font-semibold">{likeCount}</span>
                 </div>
                 <p className="text-gray-400">명이 이 LP를 좋아합니다.</p>
