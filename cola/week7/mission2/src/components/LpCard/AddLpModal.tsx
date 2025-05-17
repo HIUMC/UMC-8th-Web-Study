@@ -4,7 +4,7 @@ import { FiX } from 'react-icons/fi';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import useAddLp from '../../hooks/mutations/useAddLp';
+import usePostLp from '../../hooks/mutations/usePostLp';
 
 interface AddLpModalProps {
   isOpen: boolean;
@@ -53,7 +53,7 @@ const AddLpModal = ({ isOpen, onClose }: AddLpModalProps) => {
     setValue('tags', updatedTags);
   };
 
-  const { mutateAsync: addLpMutate } = useAddLp();
+  const { mutateAsync: addLpMutate } = usePostLp();
   const handleAddLpMutate = async (data: FormFields) => {
     const response = await addLpMutate(data);
     console.log(response);

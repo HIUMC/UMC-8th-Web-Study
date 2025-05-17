@@ -1,18 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
-import { addLp } from '../../apis/lp';
+import { updateComment } from '../../apis/lp';
 import { queryClient } from '../../App';
 import { QUERY_KEY } from '../../constants/key';
 
-function useAddLp() {
+function usePatchComment() {
   return useMutation({
-    mutationFn: addLp,
+    mutationFn: updateComment,
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.lps, data.data.id],
+        queryKey: [QUERY_KEY.lpComments, data.data.lpId],
         exact: true,
       });
     },
   });
 }
 
-export default useAddLp;
+export default usePatchComment;

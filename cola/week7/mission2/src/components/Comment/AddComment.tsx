@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
-import useAddComment from '../../hooks/mutations/useAddComment';
+import usePostComment from '../../hooks/mutations/usePostComment';
 import { useState } from 'react';
 
 const AddComment = () => {
   const { lpId } = useParams<{ lpId: string }>();
 
-  const { mutate: addComment } = useAddComment();
+  const { mutate: addComment } = usePostComment();
 
   const [content, setContent] = useState('');
 
