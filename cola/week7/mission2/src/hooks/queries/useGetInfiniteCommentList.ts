@@ -14,6 +14,9 @@ function useGetInfiniteCommentList(
       getCommentList({ lpId, cursor: pageParam, limit, order }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
+      console.log('lastPage:', lastPage);
+      console.log('nextCursor:', lastPage.data?.nextCursor);
+      console.log('hasNext:', lastPage.data?.hasNext);
       return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
     },
   });

@@ -24,7 +24,7 @@ const LpCard = ({ lp }: LpCardProps) => {
       <img
         src={lp.thumbnail ?? '/images/Lp.svg'}
         alt={lp.title}
-        className="w-full h-full object-cover cursor-pointer"
+        className="w-full h-full object-cover cursor-pointer bg-gray-600"
         onClick={() => lpClickHandler(lp.id)}
       />
 

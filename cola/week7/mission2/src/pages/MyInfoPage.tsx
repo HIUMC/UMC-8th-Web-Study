@@ -51,7 +51,7 @@ const MyInfoPage = () => {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <div className="flex flex-col bg-gray-600 w-full items-start p-4 gap-5 text-white">
+      <div className="flex flex-col bg-black w-full items-start p-4 gap-5 text-white">
         {editMyInfoState === false ? (
           <div className="flex">
             {data.data?.avatar === null ? (
