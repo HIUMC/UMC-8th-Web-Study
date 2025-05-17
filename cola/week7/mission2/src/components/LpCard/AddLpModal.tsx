@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import usePostLp from '../../hooks/mutations/usePostLp';
+import ImageUploadButton from '../ImageUploadButton';
 
 interface AddLpModalProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ type FormFields = z.infer<typeof schema>;
 
 const AddLpModal = ({ isOpen, onClose }: AddLpModalProps) => {
   const [tagInput, setTagInput] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const { register, handleSubmit, getValues, setValue, watch } =
     useForm<FormFields>({
@@ -59,6 +62,12 @@ const AddLpModal = ({ isOpen, onClose }: AddLpModalProps) => {
     console.log(response);
   };
 
+  const handleImageChange = (file: File, previewUrl: string) => {
+    setImageFile(file);
+    setPreview(previewUrl);
+    setValue('thumbnail', previewUrl); // base64로 저장 (API 요구에 따라 조정)
+  };
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className={'relative z-50'} onClose={onClose}>
@@ -88,7 +97,14 @@ const AddLpModal = ({ isOpen, onClose }: AddLpModalProps) => {
                 onClick={onClose}
               />
               <div className="w-full flex flex-col items-center justify-center gap-10">
-                <img src="/images/Lp.svg" alt="Lp" className="w-60 h-60" />
+                {/* <img src="/images/Lp.svg" alt="Lp" className="w-60 h-60" /> */}
+                <div className="w-60 h-60">
+                  <ImageUploadButton
+                    onChange={handleImageChange}
+                    preview={preview}
+                    fallback="images/Lp.svg"
+                  />
+                </div>
 
                 <div className="flex flex-col w-full gap-2">
                   <input

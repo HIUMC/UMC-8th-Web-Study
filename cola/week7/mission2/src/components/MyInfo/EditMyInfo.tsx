@@ -3,6 +3,7 @@ import { ResponseMyInfoDto } from '../../types/auth';
 import { getMyInfo } from '../../apis/auth';
 import { FiUser } from 'react-icons/fi';
 import useEditMyInfo from '../../hooks/mutations/useEditMyInfo';
+import ImageUploadButton from '../ImageUploadButton';
 
 type EditMyInfoProps = {
   setEditMyInfoState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +16,8 @@ const EditMyInfo = ({
   myInfo,
   setMyInfo,
 }: EditMyInfoProps) => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const { mutate: editMyInfo } = useEditMyInfo();
 
   const [form, setForm] = useState({
@@ -59,17 +62,21 @@ const EditMyInfo = ({
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (file: File, previewUrl: string) => {
+    setImageFile(file);
+    setPreview(previewUrl);
+    setForm({ ...form, avatar: previewUrl });
+  };
+
   return (
-    <div className="flex p-4 gap-5 w-full bg-gray-600 text-white">
-      {myInfo.data?.avatar === null ? (
-        <FiUser className="w-20 h-20 rounded-md cursor-pointer" />
-      ) : (
-        <img
-          className="w-20 h-20 rounded-md cursor-pointer"
-          src={form.avatar}
-          alt="프로필 사진"
+    <div className="flex w-full text-white">
+      <div className="w-20 h-20">
+        <ImageUploadButton
+          onChange={handleImageChange}
+          preview={preview ?? myInfo.data?.avatar}
+          fallback={<FiUser className="w-full h-full" />}
         />
-      )}
+      </div>
       <div className="flex flex-col w-50 gap-2">
         <input
           name="name"
