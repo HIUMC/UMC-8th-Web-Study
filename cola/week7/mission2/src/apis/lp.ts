@@ -63,7 +63,7 @@ export const deleteLike = async ({
   return data;
 };
 
-export const addLp = async (
+export const postLp = async (
   body: RequestAddLpDto
 ): Promise<ResponseAddLpDto> => {
   const { data } = await axiosInstance.post('/v1/lps', body);

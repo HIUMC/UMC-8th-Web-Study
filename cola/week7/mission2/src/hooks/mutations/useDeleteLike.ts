@@ -10,6 +10,7 @@ function useDeleteLike() {
     mutationFn: deleteLike,
     // onMutate -> API 요청 이전에 호출되는 친구.
     // UI에 바로 변경을 보여주기 위해 cache 업데이트
+    // mutate를 호출할 때 그 variables를 매개변수로 받음
     onMutate: async (lp) => {
       // 1. 이 게시글에 관련된 쿼리(캐시된 데이터를 새로 불러오는 요청)을 취소
       await queryClient.cancelQueries({
