@@ -4,9 +4,8 @@ import { Heart } from "lucide-react";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 import { useAuth } from "../context/AuthContext";
 import { Likes } from "../types/lp";
-import { deleteLike, postLike } from "../apis/lp";
-import usePostLike from "../hooks/mutations/usePostLike";
 import useDeleteLike from "../hooks/mutations/useDeleteLike";
+import usePostLike from "../hooks/mutations/usePostLike";
 
 const LpDetailPage = () => {
   const {lpId} = useParams();
