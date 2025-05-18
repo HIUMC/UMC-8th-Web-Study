@@ -1,5 +1,5 @@
-
-import { RequestSigninDto, RequestSignupDto, ResponseMyInfoDto, ResponseSigninDto, ResponseSignupDto } from "../types/auth";
+import { RequestMyDto, RequestSigninDto, RequestSignupDto, ResponseMyDto, ResponseMyInfoDto, ResponseSigninDto, ResponseSignupDto } from "../types/auth";
+import { CommonResponse } from "../types/common";
 import { axiosInstance } from "./axios";
 
 export const postSignup = async (body: RequestSignupDto):Promise<ResponseSignupDto> => {
@@ -22,5 +22,20 @@ export const getMyInfo = async():Promise<ResponseMyInfoDto> => {
 
 export const postLogout = async() => {
     const { data } = await axiosInstance.post('v1/auth/signout');
+    return data;
+};
+
+export const myFix = async({ name, bio, avatar }: RequestMyDto): Promise<ResponseMyDto> => {
+    const { data } = await axiosInstance.patch(`/v1/users`, {
+        name,
+        bio,
+        avatar
+    });
+
+    return data;
+}
+
+export const deleteMy = async(): Promise<CommonResponse<null>> => {
+    const { data } = await axiosInstance.delete(`/v1/users`);
     return data;
 };

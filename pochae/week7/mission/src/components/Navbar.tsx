@@ -3,12 +3,14 @@ import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { getMyInfo } from "../apis/auth";
+import useDeleteAccount from "../hooks/mutations/useDeleteAccount";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 const Navbar = () => {
     const {accessToken, logout} = useAuth();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [userName, setUserName] = useState<string>("");
-
+    
     useEffect(() => {
         const fetch = async () => {
           const res = await getMyInfo();
@@ -19,6 +21,15 @@ const Navbar = () => {
       }, [accessToken]);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+    // 탈퇴하기 모달띄우기
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const { mutate } = useDeleteAccount();
+
+    const handleDelete = () => {
+        mutate();
+        setShowDeleteModal(false);
+    };
 
   return (
   <>
@@ -73,7 +84,18 @@ const Navbar = () => {
         </div>
     </nav>
 
-    <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    {/* 사이드바 오픈과 탈퇴하기 버튼 눌렀을 때 모달 띄우는 것과 관련 */}
+    <Sidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)} 
+        onRequestDelete={() => setShowDeleteModal(true)}
+    />
+    {showDeleteModal && (
+        <DeleteAccountModal
+            onConfirm={handleDelete}
+            onCancle={()=> setShowDeleteModal(false)}
+        />
+    )}
   </>);
     
 }
