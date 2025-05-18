@@ -41,9 +41,10 @@ const LpDetailPage = () => {
               src={lp?.data.thumbnail} 
               alt={lp?.data.title} 
               className="w-full h-full rounded-full border-3 border-black"
+              style={{ animation: "spin 9s linear infinite" }}
             />
             {/* 가운데 흰 구멍.. */}
-            <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2 border-2 border-gray-600"></div>
           </div>
       
           {/* content 글씨 */}

@@ -34,11 +34,16 @@ const MyPage = () => {
     // 프로필 수정
     const handleFix = () => {
         if (name.trim()===""){
-            alert("이름은 비워둘 수 없다!!");
+            alert("이름은 비워둘 수 없습니다");
             return;
         }
-        console.log("보내는 데이터", { name, bio, avatar });
-        mutate({name, bio, avatar});
+        mutate({name, bio, avatar},
+            {
+                onSuccess:() => {
+                    setIsEditMode(false);
+                }
+            }
+        );
     }
 
     return (
