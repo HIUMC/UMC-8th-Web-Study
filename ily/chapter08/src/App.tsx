@@ -15,6 +15,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import LPidCard from "./pages/LPidCard.tsx";
 import LpDetailPage from "./pages/LpDetailPage.tsx";
 import AddLPCardPage from "./pages/AddLPCardPage.tsx";
+import ThrottlePage from "./pages/ThrottlePage.tsx";
 // 1. 홈페이지
 // 2. 로그인 페이지
 // 3. 회원가입 페이지
@@ -83,6 +84,10 @@ const publicRoutes: RouteObject[] = [
       {
         path: "/addLp",
         element: <AddLPCardPage />,
+      },
+      {
+        path: "/throttle",
+        element: <ThrottlePage />,
       },
     ],
   },

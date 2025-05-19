@@ -26,3 +26,5 @@ export const useLocalStorage = (key: string) => {
 
   return { setItem, getItem, removeItem };
 };
+
+//throttle 프론트와 백에서 모두 기능을 막도록 수행해야 함. throttling을 통한 좋아요 취소하기.  state로 스크롤 처리하기
