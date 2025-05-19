@@ -1,0 +1,1 @@
+export const SEARCH_DBOUNCE_DELAY = 500;
