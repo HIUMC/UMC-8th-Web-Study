@@ -5,7 +5,6 @@ import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 const Navbar = () => {
   const { accessToken, logout } = useAuth();
   const navigate = useNavigate();
-
   const { data } = useGetMyInfo(accessToken);
 
   const handleLogout = async () => {
@@ -18,7 +17,7 @@ const Navbar = () => {
     <nav className="bg-white dark:bg-gray-900 shadow-md-fixed w-full z-10">
       <div className="flex items-center justify-between p-4 border-b-2 border-blue-800">
         <div className="flex items-center space-x-2 gap-3">
-          <div>ᯓ</div>
+          <div className="cursor-pointer text-2xl">ᯓ</div>
           <Link
             to="/"
             className="text-xl text-bold text-gray-900 dark:text-white "

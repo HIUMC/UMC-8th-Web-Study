@@ -47,3 +47,10 @@ export type ResponseMyInfoDto = commonResponse<{
 export type ResponseSignoutDto = commonResponse<{
   data: null;
 }>;
+
+// 유저 정보 수정
+export type RequestPatchUserInfoDto = {
+  name: string;
+  bio: string | null;
+  avatar: string | null;
+};
