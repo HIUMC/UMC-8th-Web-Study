@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
 import { PAGINATION_ORDER } from "../utils/types/enums/common";
 import { useInView } from "react-intersection-observer";
@@ -8,6 +8,7 @@ import LpCard from "../components/LpCard/LpCard";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 import useDebounce from "../hooks/useDebounce";
 import { SERVER_DELAY } from "../constants/delay";
+import { throttle } from "lodash";
 
 export default function HomePage() {
   //children을npm 설정했으므로 children을 기준으로outlet을 설정해줘야 parents 기준의 children이 제대로 렌더링이 됨.
@@ -33,12 +34,18 @@ export default function HomePage() {
   const { ref, inView } = useInView({ threshold: 0 });
   const { accessToken } = useAuth();
 
-  useEffect(() => {
-    if (inView) {
-      !isFetching && hasNextPage && fetchNextPage();
-    }
-  }, [inView, isFetching, hasNextPage, fetchNextPage]);
+  const throttledFetchNextPage = useRef(
+    throttle(() => {
+      console.log("throttling작동");
+      fetchNextPage();
+    }, 1000),
+  ).current;
 
+  useEffect(() => {
+    if (inView && !isFetching && hasNextPage) {
+      throttledFetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, throttledFetchNextPage]);
   console.log(inView);
 
   if (isError) {
