@@ -15,7 +15,7 @@ const HomePage = () => {
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList(5, search, PAGINATION_ORDER.dsec);
+  } = useGetInfiniteLpList(5, search, PAGINATION_ORDER.desc);
 
   // ref 는 useInView에서 제공하는 ref로, 이 ref가 연결된 DOM 요소가 화면에 보일 때 inView가 true로 변경됩니다.
   // inView는 ref가 연결된 DOM 요소가 화면에 보일 때 true로 변경됩니다.

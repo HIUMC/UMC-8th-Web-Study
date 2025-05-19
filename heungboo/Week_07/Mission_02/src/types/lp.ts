@@ -1,4 +1,4 @@
-import { commonResponse, CursorBasedResponse } from "./common";
+import { commonResponse, CursorBasedResponse, PageinationDto } from "./common";
 
 export type Tag = {
   id: number;
@@ -37,3 +37,8 @@ export type ResponseLikeLpDto = commonResponse<{
   userId: number;
   lpId: number;
 }>;
+
+// 특정 태그 관련 LP 조회 RequestDto
+export type RequestTagLpListDto = PageinationDto & {
+  tagNmae: string;
+};

@@ -43,4 +43,7 @@ export type ResponseMyInfoDto = commonResponse<{
   updatedAt: Date;
 }>;
 
-export type ResponseSignoutDto = commonResponse<{}>;
+// 로그아웃
+export type ResponseSignoutDto = commonResponse<{
+  data: null;
+}>;

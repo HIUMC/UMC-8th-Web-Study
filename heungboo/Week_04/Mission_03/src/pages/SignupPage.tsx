@@ -19,31 +19,35 @@ const schema = z
       .max(20, { message: "비밀번호는 최대 20자까지 가능합니다." }),
     name: z.string().min(1, { message: "이름을 입력해주세요." }),
   })
+  // refine -> 검증을 한 번 더 진행
   .refine((data) => data.password === data.passwordCheck, {
     message: "비밀번호가 일치하지 않습니다.",
     path: ["passwordCheck"],
   });
 
+// FormFields 를 통해 타입 유추
 type FormFields = z.infer<typeof schema>;
 
 const SignupPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }, // isSubmitting : 제출 중인지 여부
   } = useForm<FormFields>({
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      passwordCheck: "",
     },
+    // 위반 시 띄움?
     resolver: zodResolver(schema),
     mode: "onBlur",
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordCheck, ...rest } = data;
+    const { passwordCheck, ...rest } = data; // 역 구조분해 할당
 
     const response: ResponseSignupDto = await postSignup(rest);
     console.log(response);

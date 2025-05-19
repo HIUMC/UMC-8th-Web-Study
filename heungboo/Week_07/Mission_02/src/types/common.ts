@@ -7,17 +7,18 @@ export type commonResponse<T> = {
   data: T;
 };
 
-export type CursorBasedResponse<T> = commonResponse<{
-  data: T;
-  nextCursor: number | null;
-  hasNext: boolean;
-}>;
-
-// 보낼 때 사용하는 거
+// LP RequestDto
 export type PageinationDto = {
   // 필수 없음 모두 optional
   cursor?: number;
   limit?: number;
   search?: string;
-  order?: PAGINATION_ORDER;
+  order?: PAGINATION_ORDER; // enum 타입(ASC, DESC)
 };
+
+// LP 목록조회 response
+export type CursorBasedResponse<T> = commonResponse<{
+  data: T;
+  nextCursor: number | null;
+  hasNext: boolean;
+}>;

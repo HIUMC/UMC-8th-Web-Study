@@ -13,7 +13,7 @@ const MyPage = () => {
   useEffect(() => {
     const getData = async () => {
       const response: ResponseMyInfoDto = await getMyInfo();
-      console.log("response" + response);
+      console.log("response : " + response.data);
 
       setData(response);
     };
@@ -21,7 +21,7 @@ const MyPage = () => {
     getData();
   }, []);
 
-  console.log("data : " + data);
+  console.log("data : " + data?.data.name);
 
   const handlelogout = async () => {
     await logout();
