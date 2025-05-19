@@ -43,4 +43,14 @@ export type ResponseMyInfoDto = commonResponse<{
   updatedAt: Date;
 }>;
 
-export type ResponseSignoutDto = commonResponse<{}>;
+// 로그아웃
+export type ResponseSignoutDto = commonResponse<{
+  data: null;
+}>;
+
+// 유저 정보 수정
+export type RequestPatchUserInfoDto = {
+  name: string;
+  bio: string | null;
+  avatar: string | null;
+};

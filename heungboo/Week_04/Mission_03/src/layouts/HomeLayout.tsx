@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "../components/NavBar";
 
 const HomeLayout = () => {
   return (
     <div className="h-dvh flex flex-col justify-between">
-      <nav>nav bar 입니다.</nav>
+      <Navbar />
       <main className="flex-1">
         <Outlet />
       </main>

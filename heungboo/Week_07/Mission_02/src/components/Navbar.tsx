@@ -1,18 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 
 const Navbar = () => {
-  const { accessToken } = useAuth();
+  const { accessToken, logout } = useAuth();
+  const navigate = useNavigate();
+  const { data } = useGetMyInfo(accessToken);
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
+  console.log(data);
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-md-fixed w-full z-10">
-      <div className="flex items-center justify-between p-4">
-        <Link
-          to="/"
-          className="text-xl text-bold text-gray-900 dark:text-white border-b-2 border-blue-500"
-        >
-          돌 려 돌 려 Dolimpan
-        </Link>
+      <div className="flex items-center justify-between p-4 border-b-2 border-blue-800">
+        <div className="flex items-center space-x-2 gap-3">
+          <div className="cursor-pointer text-2xl">ᯓ</div>
+          <Link
+            to="/"
+            className="text-xl text-bold text-gray-900 dark:text-white "
+          >
+            돌 려 돌 려 Dolimpan
+          </Link>
+        </div>
+
         <div className="space-x-6">
           {!accessToken && (
             <>
@@ -31,19 +44,23 @@ const Navbar = () => {
             </>
           )}
           {accessToken && (
-            <Link
-              to={"/my"}
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
-            >
-              마이 페이지
-            </Link>
+            <div className="flex items-center space-x-6">
+              <Link
+                to={"/my"}
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+              >
+                ™️ {data?.data.name}님 반갑습니다.
+              </Link>
+              <div>|</div>
+              <button
+                onClick={handleLogout}
+                type="button"
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
+              >
+                로그아웃
+              </button>
+            </div>
           )}
-          <Link
-            to={"/search"}
-            className="text-gray-700 dark:text-gray-300 hover:text-blue-500"
-          >
-            검색
-          </Link>
         </div>
       </div>
     </nav>

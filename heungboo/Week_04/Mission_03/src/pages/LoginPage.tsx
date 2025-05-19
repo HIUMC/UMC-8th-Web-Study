@@ -31,6 +31,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4">
+      <div className="text-2xl">로그인</div>
       <div className="flex flex-col gap-3">
         <input
           {...getInputProps("email")}

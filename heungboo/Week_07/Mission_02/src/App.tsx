@@ -63,6 +63,7 @@ const protectedRoutes: RouteObject[] = [
 
 const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const queryClient = new QueryClient({
   defaultOptions: {
     // 쿼리에 관한 요청은 3번 재시도
@@ -79,7 +80,7 @@ function App() {
         <RouterProvider router={router} />
       </AuthProvider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-      {/* Dev환경일 때에만 키겠다. */}
+      {/* Dev환경일 때에만 키겠다. - 배포환경에서는 안킴 */}
       {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
