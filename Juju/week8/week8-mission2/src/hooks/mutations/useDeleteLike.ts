@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { postLike } from "../../apis/lp";
+import { deleteLike } from "../../apis/lp";
 import { queryClient } from "../../App";
 import { QUERY_KEY } from "../../constants/key";
 import { Likes, ResponseLpDto } from "../../types/lp";
 import { ResponseMyInfoDto } from "../../types/auth";
 
-function usePostLike() {
+function useDeleteLike() {
   return useMutation({
-    mutationFn: postLike,
+    mutationFn: deleteLike,
 
     onMutate: async (lp) => {
       await queryClient.cancelQueries({
@@ -52,7 +52,7 @@ function usePostLike() {
       );
     },
 
-    onSettled: async (data, error, variables/*, context*/) => {
+    onSettled: async (data, error, variables /*, context*/) => {
       await queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.lps, variables.lpid],
       });
@@ -60,4 +60,4 @@ function usePostLike() {
   });
 }
 
-export default usePostLike;
+export default useDeleteLike;
