@@ -37,7 +37,7 @@ const LpList = () => {
   if (isError) return <h1>Error...</h1>;
 
   return (
-    <div className="flex flex-col p-5">
+    <div className="flex flex-col p-5 gap-3">
       <div className="flex justify-between">
         <input
           className="border p-4 rounded-md"
@@ -59,7 +59,6 @@ const LpList = () => {
           </button>
         </div>
       </div>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} />
       <div className="grid grid-cols-3 gap-4">
         {isPending && <LpCardSkeletonList count={20} />}
         {lps?.pages
