@@ -42,11 +42,17 @@ const SignupPage = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { passwordCheck, ...rest } = data;
-
-    const response: ResponseSignupDto = await postSignup(rest);
-    console.log(response);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { passwordCheck, ...rest } = data;
+      const response: ResponseSignupDto = await postSignup(rest);
+      alert("회원가입을 성공했습니다 !");
+      console.log("회원 가입 성공 : ", response);
+      console.log(response);
+    } catch (error) {
+      console.error("회원 가입 실패 : ", error);
+      alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요 !");
+    }
   };
 
   return (

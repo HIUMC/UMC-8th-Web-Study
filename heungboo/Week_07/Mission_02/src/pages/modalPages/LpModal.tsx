@@ -22,7 +22,30 @@ const LpModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleAddLp = () => {
-    const lpData = { lpName, lpContent, tags, lpImage };
+    if (!lpName.trim() || !lpContent.trim()) {
+      alert("LP 제목과 내용을 입력해주세요!");
+      return;
+    }
+
+    // 서버에서 tag 를 한 개 이상 요구함
+    if (tags.length === 0 || tags.some((tag) => !tag.trim())) {
+      alert("태그를 최소 1개 이상 입력해주세요!");
+      return;
+    }
+
+    // lpImage 가 data:image 으로 시작하는 경우 기본 URL로 대체 => 서버가 기본 URL 을 필요로 하는 것인지..
+    const validThumbnail = lpImage.startsWith("data:image")
+      ? "https://example.com/default-thumbnail.jpg"
+      : lpImage;
+
+    const lpData = {
+      title: lpName,
+      content: lpContent,
+      thumbnail: validThumbnail,
+      tags: tags.map((tag) => tag.trim()),
+      published: true,
+    };
+    console.log("전송 데이터:", lpData);
     postLp(lpData);
     onClose();
   };

@@ -1,35 +1,39 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DeleteAccountModal from "../pages/modalPages/DeleteAccountModal";
 
-interface SidebarProps {
-  mode?: "overlay" | "inline";
-}
-
-const Sidebar = ({ mode = "overlay" }: SidebarProps) => {
+const Sidebar = () => {
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  if (mode === "inline") {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+  };
 
-    const handleDeleteAccount = () => {
-      // 탈퇴 로직 추가 (예: API 호출)
-      console.log("계정이 탈퇴되었습니다.");
-      setIsDeleteModalOpen(false);
-    };
+  return (
+    <div>
+      <button
+        className="fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded-md md:hidden hover:bg-gray-700 transition-colors"
+        onClick={() => setIsSidebarOpen(true)}
+      >
+        ☰
+      </button>
 
-    return (
-      <div className="flex flex-col justify-between w-40 min-w-30 h-full bg-gray-100 dark:bg-gray-800 shadow-md p-6">
-        {/* 위쪽 메뉴 */}
-        <div className="space-y-4">
+      {/* 블러 처리된 배경 */}
+      {/* <div
+        className={`fixed inset-0 z-40 bg-black bg-opacity-30 backdrop-blur-sm transition-opacity ${
+          isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={handleCloseSidebar}
+      ></div> */}
+
+      <div className="flex-shrink-0 h-full flex flex-col justify-between bg-gray-100 dark:bg-gray-800 shadow-md">
+        <div className="space-y-4 p-4">
           <button
             className="w-full text-left px-4 py-2 font-bold text-gray-800 dark:text-gray-200 transition duration-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700"
             onClick={() => navigate("/search")}
           >
             찾기
           </button>
-          <hr className="border-gray-300 dark:border-gray-700" />
           <button
             className="w-full text-left px-4 py-2 font-bold text-gray-800 dark:text-gray-200 transition duration-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700"
             onClick={() => navigate("/my")}
@@ -38,28 +42,17 @@ const Sidebar = ({ mode = "overlay" }: SidebarProps) => {
           </button>
         </div>
 
-        {/* 아래쪽 메뉴 */}
-        <div className="mt-6">
-          <hr className="border-gray-300 dark:border-gray-700 mb-4" />
+        <div className="p-4">
           <button
             className="w-full text-left px-4 py-2 font-bold text-red-500 transition duration-200 rounded-md hover:bg-red-600 hover:text-white"
-            onClick={() => setIsDeleteModalOpen(true)}
+            onClick={() => console.log("탈퇴하기")}
           >
             탈퇴하기
           </button>
         </div>
-
-        {/* Delete Account Modal */}
-        {isDeleteModalOpen && (
-          <DeleteAccountModal
-            onClose={() => setIsDeleteModalOpen(false)}
-            onConfirm={handleDeleteAccount}
-          />
-        )}
       </div>
-    );
-  }
-  return null;
+    </div>
+  );
 };
 
 export default Sidebar;
