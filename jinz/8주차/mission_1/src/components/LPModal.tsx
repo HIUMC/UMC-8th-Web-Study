@@ -77,7 +77,7 @@ function LPModal() {
                         className="absolute top-1 right-3"> ✖ </button>
                     
                     <img 
-                        src={'/lp.png'}
+                        src={lpImage || '/lp.png'}
                         className='w-60 h-60 object-cover mb-10 rounded-full cursor-pointer'
                         onClick={()=>fileInputRef.current?.click()} />
                     <input 
@@ -145,3 +145,4 @@ function LPModal() {
 }
 
 export default LPModal;
+
