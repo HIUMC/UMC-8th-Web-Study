@@ -16,7 +16,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SidebarProvider } from './context/SidebarContext';
 import LpDetailsPage from './pages/LpDetailsPage';
 import MyInfoEditPage from './pages/MyInfoEditPage';
-import ThrottlePage from './pages/ThrottlePage';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -28,7 +27,6 @@ const publicRoutes: RouteObject[] = [
       { path: 'signup', element: <SignUpPage /> },
       { path: 'v1/auth/google/callback', element: <GoogleLoginRedirectPage /> },
       { path: 'lp/:lpId', element: <LpDetailsPage /> },
-      { path: '/throttle', element: <ThrottlePage /> },
     ],
   },
 ];
