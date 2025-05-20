@@ -17,10 +17,9 @@ const Navbar = () => {
     <nav className="bg-white dark:bg-gray-900 shadow-md-fixed w-full z-10">
       <div className="flex items-center justify-between p-4 border-b-2 border-blue-800">
         <div className="flex items-center space-x-2 gap-3">
-          <div className="cursor-pointer text-2xl">ᯓ</div>
           <Link
             to="/"
-            className="text-xl text-bold text-gray-900 dark:text-white "
+            className="text-xl text-bold text-gray-900 dark:text-white ml-10"
           >
             돌 려 돌 려 Dolimpan
           </Link>

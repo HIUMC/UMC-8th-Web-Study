@@ -9,13 +9,10 @@ const HomeLayout = () => {
     <div className="h-dvh flex flex-col justify-between">
       <NavBar />
       <div className="flex flex-1 overflow-hidden">
-        {/* 왼쪽 사이드바 */}
-        <div className="flex-shrink-0 w-1/10">
-          <Sidebar mode="inline" />
+        <div>
+          <Sidebar />
         </div>
-
-        {/* 오른쪽 콘텐츠 영역 */}
-        <main className="flex-grow overflow-auto">
+        <main className="flex-grow overflow-auto h-full">
           <Outlet />
         </main>
       </div>

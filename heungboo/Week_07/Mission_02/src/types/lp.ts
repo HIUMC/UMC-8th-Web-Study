@@ -42,3 +42,24 @@ export type ResponseLikeLpDto = commonResponse<{
 export type RequestTagLpListDto = PageinationDto & {
   tagNmae: string;
 };
+
+// LP 생성 RequestDto
+export type RequestPostLpDto = {
+  title: string;
+  content: string;
+  thumbnail: string;
+  tags: string[];
+  published: boolean;
+};
+
+// LP 생성 ResponseDto
+export type ResponsePostLpDto = commonResponse<{
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  published: boolean;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}>;

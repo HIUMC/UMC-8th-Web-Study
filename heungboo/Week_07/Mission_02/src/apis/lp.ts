@@ -1,9 +1,11 @@
 import {
   RequestLpDto,
+  RequestPostLpDto,
   RequestTagLpListDto,
   ResponseLikeLpDto,
   ResponseLpDto,
   ResponseLpListDto,
+  ResponsePostLpDto,
 } from "../types/lp";
 import { axiosInstance } from "./axios";
 import { PageinationDto } from "../types/common";
@@ -19,8 +21,12 @@ export const getLpList = async (
 };
 
 // LP 생성
-export const postLpList = async (): Promise<ResponseLpListDto> => {
-  const { data } = await axiosInstance.post("/v1/lps", {});
+export const postLpList = async (
+  requestPostLpDto: RequestPostLpDto
+): Promise<ResponsePostLpDto> => {
+  const { data } = await axiosInstance.post("/v1/lps", {
+    PostLp: requestPostLpDto,
+  });
   return data;
 };
 

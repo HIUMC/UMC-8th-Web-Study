@@ -26,7 +26,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 mt-40">
       {/* Header */}
       <h1 className="text-3xl font-bold text-center mb-8">마이페이지</h1>
 

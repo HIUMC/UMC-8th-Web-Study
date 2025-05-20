@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
+  const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   // const { data, isPending, isError } = useGetLpList({ search, limit: 50 });
   const {
     data: lps,
@@ -15,7 +16,7 @@ const HomePage = () => {
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList(5, search, PAGINATION_ORDER.desc);
+  } = useGetInfiniteLpList(5, search, order);
 
   // ref 는 useInView에서 제공하는 ref로, 이 ref가 연결된 DOM 요소가 화면에 보일 때 inView가 true로 변경됩니다.
   // inView는 ref가 연결된 DOM 요소가 화면에 보일 때 true로 변경됩니다.
@@ -34,7 +35,7 @@ const HomePage = () => {
         fetchNextPage();
       }
     }
-  }, [inView, isFetching, hasNextPage, fetchNextPage]);
+  }, [inView, isFetching, hasNextPage, fetchNextPage, order]);
 
   if (isError) {
     return <div className={"mt-20"}>Error...</div>;
@@ -42,6 +43,30 @@ const HomePage = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-end mb-4">
+        <div className="flex border border-gray-300 rounded-md overflow-hidden">
+          <button
+            onClick={() => setOrder(PAGINATION_ORDER.asc)}
+            className={`px-4 py-2 ${
+              order === PAGINATION_ORDER.asc
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            오래된순
+          </button>
+          <button
+            onClick={() => setOrder(PAGINATION_ORDER.desc)}
+            className={`px-4 py-2 ${
+              order === PAGINATION_ORDER.desc
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            최신순
+          </button>
+        </div>
+      </div>
       <input value={search} onChange={(e) => setSearch(e.target.value)} />
       <div
         className={

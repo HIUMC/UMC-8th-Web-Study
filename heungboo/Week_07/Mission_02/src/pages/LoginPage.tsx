@@ -92,7 +92,7 @@ const LoginPage = () => {
         >
           <div>
             <img
-              src="/public/google.png"
+              src="/public/google.jpg"
               alt="Google"
               className="w-5 h-5 inline-block mr-2"
             />
