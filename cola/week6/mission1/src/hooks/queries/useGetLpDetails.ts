@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getLpDetails } from "../../apis/lp"; // Assuming you have a function to fetch LP details
 import { QUERY_KEY } from "../../constants/key";
 
-export default function useGetLpDetails({lpId}: { lpId: string }) {
+export default function useGetLpDetails({lpId}: { lpId: number }) {
     return useQuery({
         queryKey: [QUERY_KEY.lp(lpId)],
         queryFn: () => getLpDetails(lpId),
