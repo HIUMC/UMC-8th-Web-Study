@@ -18,13 +18,12 @@ const Sidebar = () => {
         ☰
       </button>
 
-      {/* 블러 처리된 배경 */}
-      {/* <div
+      <div
         className={`fixed inset-0 z-40 bg-black bg-opacity-30 backdrop-blur-sm transition-opacity ${
           isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={handleCloseSidebar}
-      ></div> */}
+      ></div>
 
       <div className="flex-shrink-0 h-full flex flex-col justify-between bg-gray-100 dark:bg-gray-800 shadow-md">
         <div className="space-y-4 p-4">

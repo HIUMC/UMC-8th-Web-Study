@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResponseSignupDto } from "../types/auth";
 import { postSignup } from "../apis/auth";
-import React from "react";
 
 const schema = z
   .object({
