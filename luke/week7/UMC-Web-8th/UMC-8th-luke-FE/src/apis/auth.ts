@@ -60,3 +60,14 @@ export const refreshAccessToken = async (): Promise<{
   // 4) 새 토큰 반환
   return { accessToken, refreshToken };
 };
+
+
+export const updateMyName = async (payload: { name: string }): Promise<ResponseMyInfoDto> => {
+  const token = localStorage.getItem("accessToken")?.replace(/"/g, "");
+  const { data } = await axiosInstance.patch(
+    "/v1/users",
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  return data.data;
+};
