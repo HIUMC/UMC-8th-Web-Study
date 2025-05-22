@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LP } from '../types/lp';
 import { useAuth } from '../contexts/AuthContext';
+import { useThrottle } from '../hooks/useThrottle';
 
 interface LPCardProps {
   lp: LP;
@@ -31,12 +32,15 @@ export const LPCard = ({ lp }: LPCardProps) => {
     });
   };
 
+  const throttledSetIsHoveredTrue = useThrottle(() => setIsHovered(true), 100);
+  const throttledSetIsHoveredFalse = useThrottle(() => setIsHovered(false), 100);
+
   return (
     <div
       className="relative rounded-lg overflow-hidden cursor-pointer transition-transform duration-300 bg-gray-800"
       style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={throttledSetIsHoveredTrue}
+      onMouseLeave={throttledSetIsHoveredFalse}
       onClick={handleClick}
     >
       <div className="aspect-video bg-gray-700 flex items-center justify-center overflow-hidden">
