@@ -5,9 +5,13 @@ import { LPCard } from '../components/LPCard';
 import { PaginationOrder } from '../types/lp';
 import SkeletonCard from '../components/LPSkeletonCard';
 import LPCreateModal from '../components/LPCreateModal';
+import { useDebounce } from '../hooks/useDebounce';
+import { Search, X } from 'lucide-react';
 
 const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const observerTarget = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -17,17 +21,25 @@ const HomePage = () => {
     hasNextPage, 
     isFetchingNextPage, 
     isLoading, 
-    isError 
+    isError,
+    refetch
   } = useInfiniteLPList({ 
     initialCursor: "0",
     order,
     limit: 8,
-    search: ""
+    search: debouncedSearchTerm
   });
   
   const toggleOrder = () => {
     setOrder(order === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
   };
+
+  // 검색어가 변경될 때마다 데이터 다시 불러오기
+  useEffect(() => {
+    if (debouncedSearchTerm !== undefined) {
+      refetch();
+    }
+  }, [debouncedSearchTerm, refetch]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -50,6 +62,10 @@ const HomePage = () => {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
+
   const allLPs = data?.pages.flatMap(page => page.items) || [];
 
   return (
@@ -64,13 +80,42 @@ const HomePage = () => {
             >
               LP 작성
             </button>
-          <button
-            onClick={toggleOrder}
-            className="bg-purple-600 px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
-          >
-            {order === PaginationOrder.DESC ? '최신순' : '오래된순'}
-          </button>
+            <button
+              onClick={toggleOrder}
+              className="bg-purple-600 px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
+            >
+              {order === PaginationOrder.DESC ? '최신순' : '오래된순'}
+            </button>
           </div>
+        </div>
+
+        {/* 검색창 추가 */}
+        <div className="relative mb-6">
+          <div className="flex items-center bg-gray-700 rounded-lg overflow-hidden">
+            <span className="pl-3 text-gray-400">
+              <Search size={18} />
+            </span>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="LP 검색..."
+              className="w-full py-2 px-3 bg-transparent border-none outline-none text-white"
+            />
+            {searchTerm && (
+              <button 
+                onClick={handleClearSearch}
+                className="pr-3 text-gray-400 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+            )}
+          </div>
+          {debouncedSearchTerm && debouncedSearchTerm !== searchTerm && (
+            <div className="absolute right-0 mt-1 text-xs text-gray-400">
+              검색 중...
+            </div>
+          )}
         </div>
 
         {isLoading && (
@@ -97,7 +142,11 @@ const HomePage = () => {
 
         {data && allLPs.length === 0 && (
           <div className="text-center py-10">
-            <p className="text-gray-400">LP가 없습니다.</p>
+            {debouncedSearchTerm ? (
+              <p className="text-gray-400">검색 결과가 없습니다.</p>
+            ) : (
+              <p className="text-gray-400">LP가 없습니다.</p>
+            )}
           </div>
         )}
 
