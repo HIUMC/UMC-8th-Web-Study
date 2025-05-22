@@ -22,7 +22,3 @@ export const postLogout = async () => {
     const {data} = await axiosInstance.post(`/v1/auth/signout`)
     return data;
 };
-export const patchMyInfo = async (body: { name: string; bio?: string; avatar?: string }) => {
-    const { data } = await axiosInstance.patch("/v1/users", body);
-    return data;
-  };
