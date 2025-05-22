@@ -50,38 +50,3 @@ export function useThrottle<T extends (...args: any[]) => any>(
   return throttledCallback;
 }
 
-// 값 자체를 스로틀링하기 위한 훅 (필요시 사용)
-export function useThrottleValue<T>(value: T, delay: number = 300): T {
-  const [throttledValue, setThrottledValue] = useState<T>(value);
-  const lastUpdateTimeRef = useRef<number>(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    const now = Date.now();
-    const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
-
-    const updateValue = () => {
-      lastUpdateTimeRef.current = Date.now();
-      setThrottledValue(value);
-    };
-
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-
-    if (timeSinceLastUpdate >= delay) {
-      updateValue();
-    } else {
-      timerRef.current = setTimeout(updateValue, delay - timeSinceLastUpdate);
-    }
-    
-    // 컴포넌트 언마운트 시 타이머 정리
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [value, delay]);
-
-  return throttledValue;
-} 
