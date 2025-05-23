@@ -1,5 +1,4 @@
-//useThrottle: 주어잔 값이 자주 변경될떄
-//최소 간격으로만 업데이트해서 성능을 개선
+//useThrottle: 주어진 값이 자주 변경될 때 최소 간격으로만 업데이트해서 성능 개선
 
 import { useEffect, useRef, useState } from "react";
 
