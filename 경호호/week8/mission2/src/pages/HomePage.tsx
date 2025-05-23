@@ -7,6 +7,7 @@ import SkeletonCard from '../components/LPSkeletonCard';
 import LPCreateModal from '../components/LPCreateModal';
 import { useDebounce } from '../hooks/useDebounce';
 import { Search, X } from 'lucide-react';
+import { useThrottle } from '../hooks/useThrottle';
 
 const HomePage = () => {
   const [order, setOrder] = useState<PaginationOrder>(PaginationOrder.DESC);
@@ -30,6 +31,8 @@ const HomePage = () => {
     search: debouncedSearchTerm
   });
   
+  const throttledFetchNextPage = useThrottle(fetchNextPage, 3000);
+  
   const toggleOrder = () => {
     setOrder(order === PaginationOrder.DESC ? PaginationOrder.ASC : PaginationOrder.DESC);
   };
@@ -45,7 +48,7 @@ const HomePage = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
+          throttledFetchNextPage();
         }
       },
       { threshold: 0.1 }
@@ -60,7 +63,7 @@ const HomePage = () => {
         observer.unobserve(observerTarget.current);
       }
     };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [throttledFetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const handleClearSearch = () => {
     setSearchTerm('');
