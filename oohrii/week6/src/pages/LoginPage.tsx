@@ -199,15 +199,17 @@ const ErrorMessage = styled.p`
 
 const LoginButton = styled.button<{ disabled: boolean }>`
   padding: 12px;
-  background: ${props => props.disabled ? '#cccccc' : '#00C2B3'};
-  color: white;
   border: none;
   border-radius: 8px;
+  background-color: ${props => props.disabled ? '#ccc' : '#00C2B3'};
+  color: white;
+  font-weight: bold;
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   width: 100%;
-  
+  transition: background-color 0.2s;
+
   &:hover {
-    background: ${props => props.disabled ? '#cccccc' : '#00A99E'};
+    background-color: ${props => props.disabled ? '#ccc' : '#00A99C'};
   }
 `;
 
