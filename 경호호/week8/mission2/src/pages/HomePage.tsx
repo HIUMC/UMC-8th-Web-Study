@@ -16,6 +16,39 @@ const HomePage = () => {
   const observerTarget = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // 화면 크기에 따른 카드 개수 계산
+  const [cardsPerRow, setCardsPerRow] = useState(4);
+  const [dynamicLimit, setDynamicLimit] = useState(8);
+
+  // 화면 크기 감지 및 카드 개수 계산
+  useEffect(() => {
+    const calculateCardsPerRow = () => {
+      const width = window.innerWidth;
+      let cards = 1;
+      
+      if (width >= 1024) { // lg: 4개
+        cards = 4;
+      } else if (width >= 768) { // md: 3개
+        cards = 3;
+      } else if (width >= 640) { // sm: 2개
+        cards = 2;
+      } else { // 기본: 1개
+        cards = 1;
+      }
+      
+      setCardsPerRow(cards);
+      // 한 줄의 2배수로 로딩 (최소 한 줄, 최대 3줄씩)
+      setDynamicLimit(cards * 2);
+    };
+
+    calculateCardsPerRow();
+    window.addEventListener('resize', calculateCardsPerRow);
+
+    return () => {
+      window.removeEventListener('resize', calculateCardsPerRow);
+    };
+  }, []);
+  
   const { 
     data, 
     fetchNextPage, 
@@ -27,7 +60,7 @@ const HomePage = () => {
   } = useInfiniteLPList({ 
     initialCursor: "0",
     order,
-    limit: 8,
+    limit: dynamicLimit,
     search: debouncedSearchTerm
   });
   
@@ -123,7 +156,7 @@ const HomePage = () => {
 
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, index) => (
+            {Array.from({ length: dynamicLimit }).map((_, index) => (
               <SkeletonCard key={index} />
             ))}
           </div>
@@ -155,7 +188,7 @@ const HomePage = () => {
 
         {hasNextPage && (
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, index) => (
+            {Array.from({ length: cardsPerRow }).map((_, index) => (
               <SkeletonCard key={`loading-${index}`} />
             ))}
           </div>
