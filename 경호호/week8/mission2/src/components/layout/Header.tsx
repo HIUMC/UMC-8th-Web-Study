@@ -71,7 +71,7 @@ export const Header = () => {
   return (
     <header className="bg-gray-800 text-white p-4 shadow-md w-full">
       <div className="flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold">UMC Week 7</Link>
+        <Link to="/" className="text-xl font-bold">UMC Week 8</Link>
         
         <div className="flex items-center space-x-4">
           {isAuthenticated ? (
