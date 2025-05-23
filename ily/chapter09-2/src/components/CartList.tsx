@@ -1,12 +1,10 @@
-import type { CartState } from "../slices/cartSlices";
-import type { RootState } from "../store/store";
 import CartItem from "./CartItem";
-import { useSelector } from "../hooks/useCustomRedux";
+import { useCartActions, useCartInfo } from "../hooks/useCartStore";
 
 const CartList = () => {
-  const { cartItems, amount, total } = useSelector(
-    (state: RootState): CartState => state.cart,
-  ); //state만 찍어도 cart가 담겨있다는 type을 넣기 위해서,,,
+  const { cartItems } = useCartInfo();
+  const { clearCart } = useCartActions();
+  //state만 찍어도 cart가 담겨있다는 type을 넣기 위해서,,,
   //type명시를 위해 redux-toolkit의 사용법을 통해서 명시화.
 
   console.log(cartItems);
