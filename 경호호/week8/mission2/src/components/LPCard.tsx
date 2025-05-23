@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LP } from '../types/lp';
 import { useAuth } from '../contexts/AuthContext';
@@ -32,8 +32,8 @@ export const LPCard = ({ lp }: LPCardProps) => {
     });
   };
 
-  const throttledSetIsHoveredTrue = useThrottle(() => setIsHovered(true), 100);
-  const throttledSetIsHoveredFalse = useThrottle(() => setIsHovered(false), 100);
+  const throttledSetIsHoveredTrue = useThrottle(() => setIsHovered(true), 0);
+  const throttledSetIsHoveredFalse = useThrottle(() => setIsHovered(false), 0);
 
   return (
     <div
