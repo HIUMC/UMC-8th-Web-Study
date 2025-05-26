@@ -12,3 +12,9 @@ function useGetMyInfo(accessToken: string | null) {
 }
 
 export default useGetMyInfo;
+
+// 사용법
+// 내 정보 조회
+// const { accessToken } = useAuth();
+// const {data: me} = useGetMyInfo(accessToken);
+// console.log(me);

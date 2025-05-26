@@ -4,11 +4,14 @@ import { PAGINATION_ORDER } from "../enums/commons";
 import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import useDebounce from "../hooks/useDebounce";
+import { SEARCH_DEBOUNCE_DELAY } from "../constants/delay";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   // const { data, isPending, isError } = useGetLpList({ search, limit: 50 });
+  const debounceValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
   const {
     data: lps,
     isFetching,
@@ -16,7 +19,7 @@ const HomePage = () => {
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList(5, search, order);
+  } = useGetInfiniteLpList(5, debounceValue, order);
 
   // ref 는 useInView에서 제공하는 ref로, 이 ref가 연결된 DOM 요소가 화면에 보일 때 inView가 true로 변경됩니다.
   // inView는 ref가 연결된 DOM 요소가 화면에 보일 때 true로 변경됩니다.
@@ -67,7 +70,12 @@ const HomePage = () => {
           </button>
         </div>
       </div>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} />
+      <input
+        className="border p-4 rounded-sm mb-6 "
+        placeholder="검색어를 입력하세요."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <div
         className={
           "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"

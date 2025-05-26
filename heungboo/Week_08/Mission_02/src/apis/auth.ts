@@ -3,6 +3,7 @@ import {
   RequestSigninDto,
   RequestSignupDto,
   ResponseMyInfoDto,
+  ResponsePatchUserInfoDto,
   ResponseSigninDto,
   ResponseSignoutDto,
   ResponseSignupDto,
@@ -41,10 +42,10 @@ export const postLogout = async (): Promise<ResponseSignoutDto> => {
   return data;
 };
 
-// 유저 정보 수정 ( 일단 Promise 는 SignoutDto 와 같길래 통일함 .. 이름 바꿔야할듯 )
+// 유저 정보 수정
 export const patchUserInfo = async (body: {
   body: RequestPatchUserInfoDto;
-}): Promise<ResponseSignupDto> => {
+}): Promise<ResponsePatchUserInfoDto> => {
   const { data } = await axiosInstance.patch("/v1/users", body);
   return data;
 };

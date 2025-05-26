@@ -29,12 +29,14 @@ const EditProfileModal = ({ onClose }: { onClose: () => void }) => {
       return;
     }
 
-    patchUserInfo({
+    const updateData = {
       name,
       bio: bio || null,
       avatar: profileImage || null,
-    });
+    };
 
+    patchUserInfo(updateData);
+    onSave(updateData);
     onClose();
   };
 

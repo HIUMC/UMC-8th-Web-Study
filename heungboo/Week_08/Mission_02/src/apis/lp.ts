@@ -58,6 +58,15 @@ export const deleteLp = async ({
   return data;
 };
 
+// 특정 태그 관련 LP 목록 조회
+export const getTagLpList = async (
+  tagName: RequestTagLpListDto
+): Promise<ResponseLpListDto> => {
+  const { data } = await axiosInstance.delete(`/v1/lps/tag/${tagName}`, {});
+  return data;
+};
+
+// **************************** 좋아요 관련 API **************************** //
 // 게시글 좋아요
 export const postLike = async ({
   lpId,
@@ -71,13 +80,5 @@ export const deleteLike = async ({
   lpId,
 }: RequestLpDto): Promise<ResponseLikeLpDto> => {
   const { data } = await axiosInstance.delete(`/v1/lps/${lpId}/likes`);
-  return data;
-};
-
-// 특정 태그 관련 LP 목록 조회
-export const getTagLpList = async (
-  tagName: RequestTagLpListDto
-): Promise<ResponseLpListDto> => {
-  const { data } = await axiosInstance.delete(`/v1/lps/tag/${tagName}`, {});
   return data;
 };

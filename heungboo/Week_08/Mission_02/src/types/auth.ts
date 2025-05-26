@@ -54,3 +54,13 @@ export type RequestPatchUserInfoDto = {
   bio: string | null;
   avatar: string | null;
 };
+
+export type ResponsePatchUserInfoDto = commonResponse<{
+  id: number;
+  name: string;
+  email: string;
+  bio: string | null;
+  avatar: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}>;

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteLike, postLike } from "../../apis/lp";
+import { deleteLike } from "../../apis/lp";
 import { queryClient } from "../../App";
 import { QUERY_KEY } from "../../constants/key";
 import { Likes, ResponseLpDto } from "../../types/lp";
@@ -7,7 +7,7 @@ import { ResponseMyInfoDto } from "../../types/auth";
 
 function useDeleteLike() {
   return useMutation({
-    mutationFn: postLike,
+    mutationFn: deleteLike,
 
     // onMutate -> API 요청 이전에 호출 됨 => UI에 바로 변경을 보여주기 위해 API 요청 전에 Cache 업데이트
     onMutate: async (lp) => {
@@ -70,3 +70,8 @@ function useDeleteLike() {
 }
 
 export default useDeleteLike;
+
+// const {mutate:deleteLike} = useDeleteLike();
+// const handleDisLike = async () => {
+//     await deleteLike({ lpId: Number(lpId) });
+//   };
