@@ -16,6 +16,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import LpDetailPage from "./pages/LpDetailPage";
 import ThrottlePage from "./pages/ThrottlePage";
+import { UserProvider } from "./context/UserContext";
 // 1. 홈페이지
 // 2. 로그인
 // 3. 회원가입
@@ -44,10 +45,10 @@ const publicRoutes: RouteObject[] = [
         path: "throttle",
         element: <ThrottlePage />,
       },
-      // {
-      //   path: "lps/:lpId",
-      //   element: <LpDetailPage />,
-      // },
+      {
+        path: "lps/:lpId",
+        element: <LpDetailPage />,
+      },
     ],
   },
 ];
@@ -86,7 +87,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
       </AuthProvider>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       {/* Dev환경일 때에만 키겠다. - 배포환경에서는 안킴 */}

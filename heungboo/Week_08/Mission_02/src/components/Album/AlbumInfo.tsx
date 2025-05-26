@@ -4,6 +4,9 @@ import useGetMyInfo from "../../hooks/queries/useGetMyInfo";
 import useGetLpDetail from "../../hooks/queries/useGetLpDetail";
 import { useAuth } from "../../context/AuthContext";
 
+import useDeleteLike from "../../hooks/mutations/useDeleteLike";
+import usePostLike from "../../hooks/mutations/usePostLike";
+
 interface AlbumInfoProps {
   lpId: number;
 }
@@ -25,6 +28,23 @@ const AlbumInfo: React.FC<AlbumInfoProps> = ({ lpId }) => {
   } = useGetLpDetail({
     lpId,
   });
+
+  const { mutate: PostDeleteLike } = useDeleteLike();
+  const { mutate: PostLike } = usePostLike();
+
+  const handleDisLike = async () => {
+    await PostDeleteLike({
+      lpId: Number(lpId),
+    });
+  };
+
+  const handleLike = async () => {
+    await PostLike({
+      lpId: Number(lpId),
+    });
+  };
+
+  const isLiked = lp?.data.likes.some((like) => like.userId === me?.data.id);
 
   // 로딩 상태 처리
   if (isUserPending || isLpPending) return <div>Loading...</div>;
@@ -90,8 +110,16 @@ const AlbumInfo: React.FC<AlbumInfoProps> = ({ lpId }) => {
 
         {/* 좋아요 */}
         <div className="flex justify-center items-center">
-          <button className="flex items-center space-x-2 text-red-500">
-            <Heart className="w-8 h-8" />
+          <button
+            className="flex items-center space-x-2 text-red-500"
+            onClick={isLiked ? handleDisLike : handleLike}
+          >
+            {/* Heart 이모지 => lucide-react */}
+            <Heart
+              className="w-8 h-8"
+              color={isLiked ? "red" : "black"}
+              fill={isLiked ? "red" : "transparent"}
+            />
             <span className="text-xl font-bold">{lp.data.likes.length}</span>
           </button>
         </div>

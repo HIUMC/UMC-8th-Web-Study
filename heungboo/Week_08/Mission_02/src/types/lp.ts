@@ -5,12 +5,6 @@ export type Tag = {
   name: string;
 };
 
-export type Likes = {
-  id: number;
-  userId: number;
-  lpId: number;
-};
-
 export type Lp = {
   id: number;
   title: string;
@@ -26,23 +20,37 @@ export type Lp = {
 
 export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
-export type RequestLpDto = {
-  lpId: number;
-};
+// *********************** LP 좋아요 관련 ***************** //
 
-export type ResponseLpDto = commonResponse<Lp>;
-
+// LP 좋아요 ResponseDto
 export type ResponseLikeLpDto = commonResponse<{
   id: number;
   userId: number;
   lpId: number;
 }>;
 
+export type Likes = {
+  id: number;
+  userId: number;
+  lpId: number;
+};
+
+// *********************** LP 목록 조회 RequestDto *************** //
+
+// LP 상세 조회 타입
+export type RequestLpDto = {
+  lpId: number;
+};
+
+// LP 상세 조회 타입
+export type ResponseLpDto = commonResponse<Lp>;
+
 // 특정 태그 관련 LP 조회 RequestDto
 export type RequestTagLpListDto = PageinationDto & {
   tagNmae: string;
 };
 
+// *********************** LP 생성 관련 *********************** //
 // LP 생성 RequestDto
 export type RequestPostLpDto = {
   title: string;

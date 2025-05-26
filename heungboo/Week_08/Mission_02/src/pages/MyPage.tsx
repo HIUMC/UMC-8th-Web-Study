@@ -4,10 +4,13 @@ import { useAuth } from "../context/AuthContext";
 import { getMyInfo } from "../apis/auth";
 import EditProfileModal from "./modalPages/EditProfileModal";
 import { ResponseMyInfoDto } from "../types/auth";
+import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, accessToken } = useAuth();
+  // const { user } = useGetMyInfo(accessToken);
+
   const [data, setData] = useState<ResponseMyInfoDto | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -41,7 +44,7 @@ const MyPage = () => {
 
         {/* Name */}
         <h2 className="text-xl font-semibold mb-2">
-          이름: {data?.data.name || "이름 없음"}
+          이름: {user.|| "이름 없음"}
         </h2>
 
         {/* Bio */}
