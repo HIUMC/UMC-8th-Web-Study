@@ -14,7 +14,7 @@ const CartItems = ({ lp }: CartItemProps) => {
 
   const handleDecreaseCount = () => {
     // 1보다 작아진다면, 장바구니 목록에서 자동으로 제거
-    if (lp.amount === 1) {
+    if (lp.amount === 0) {
       removeItem(lp.id);
       return;
     }
