@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
-      <h1 className="text-2xl font-semibold">Ohtani Ahn</h1>
+      <h1 className="text-2xl font-semibold">Oohrii</h1>
       <div className="flex items-center">
         <FaShoppingCart className="text-2xl" />
         <span className="ml-2">{total}</span>

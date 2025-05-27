@@ -1,10 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../store/store';
 import { increment, decrement, removeItem, clearCart, calculateTotals } from '../store/cartSlice';
+import { openModal } from '../store/modalSlice';
 import { useEffect } from 'react';
+import ConfirmModal from './ConfirmModal';
 
 const CartList = () => {
   const { items, totalAmount, totalPrice } = useSelector((state: RootState) => state.cart);
+  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,11 +22,14 @@ const CartList = () => {
 
   return (
     <div className="container mx-auto p-4">
+      {isModalOpen && (
+        <ConfirmModal onConfirm={() => dispatch(clearCart())} />
+      )}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">장바구니</h2>
         <button
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          onClick={() => dispatch(clearCart())}
+          onClick={() => dispatch(openModal())}
         >전체 삭제</button>
       </div>
       <div>
