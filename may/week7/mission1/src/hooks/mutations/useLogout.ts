@@ -21,7 +21,3 @@ function useLogout() {
 
 export default useLogout;
 
-export const patchMyInfo = async (body: { name: string; bio?: string; avatar?: string }) => {
-  const { data } = await axiosInstance.patch("/v1/users/me", body);
-  return data;
-};

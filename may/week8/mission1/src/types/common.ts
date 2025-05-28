@@ -5,6 +5,9 @@ export type commonResponse<T> = {
   statusCode: number;
   message: string;
   data:{
+    avatar: string;
+    email: ReactNode;
+    name: ReactNode;
     data: T;
     nextCursor: number|null;
     hasNext: boolean;
