@@ -22,3 +22,7 @@ export const postLogout = async () => {
     const {data} = await axiosInstance.post(`/v1/auth/signout`)
     return data;
 };
+export const updateMyInfo = async (data: { name: string; intro: string }) => {
+    const response = await axiosInstance.put("/v1/users", data); // 백엔드 엔드포인트에 맞춰서 수정
+    return response.data;
+};
