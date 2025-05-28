@@ -43,8 +43,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    const authUrl = getGoogleAuthUrl();
-    window.location.href = authUrl;
+    window.location.href = 'http://localhost:8000/v1/auth/google/login';
   };
 
   return (
