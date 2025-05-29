@@ -1,7 +1,7 @@
 import axiosInstance from './axios';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI || 'http://localhost:5174/auth/google/callback';
+const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI || 'http://localhost:8000/v1/auth/google/callback';
 
 // 환경 변수 로드 확인
 console.log('Google Client ID:', GOOGLE_CLIENT_ID);
@@ -16,7 +16,7 @@ export const getGoogleAuthUrl = () => {
 
 export const handleGoogleCallback = async (code: string) => {
   try {
-    const response = await axiosInstance.post('/auth/google', { code });
+    const response = await axiosInstance.post('/v1/auth/google/login', { code });
     return response.data;
   } catch (error) {
     console.error('Google 로그인 처리 중 오류 발생:', error);

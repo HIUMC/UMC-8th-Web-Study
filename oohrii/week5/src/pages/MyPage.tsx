@@ -1,9 +1,15 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <Container>
@@ -11,7 +17,7 @@ const MyPage = () => {
         <Title>마이페이지</Title>
       </Header>
       <Content>
-        <LogoutButton onClick={logout}>
+        <LogoutButton onClick={handleLogout}>
           로그아웃
         </LogoutButton>
       </Content>
