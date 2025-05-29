@@ -1,9 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { CartState } from '../types';
-import { albumItems } from '../constants/albumItems';
+import { cartItems } from '../constants/cartItems';
 
 const initialState: CartState = {
-  cartItems: albumItems,
+  cartItems: cartItems,
   amount: 0,
   total: 0,
 };
