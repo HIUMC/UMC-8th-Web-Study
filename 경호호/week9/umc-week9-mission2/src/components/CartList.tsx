@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { calculateTotals, clearCart } from '../slices/cartSlice';
+import { calculateTotals } from '../slices/cartSlice';
+import { openModal } from '../slices/modalSlice';
 import CartItem from './CartItem';
 import type { LP } from '../types';
 
@@ -13,7 +14,8 @@ const CartList = () => {
   }, [cartItems, dispatch]);
 
   const handleClearCart = () => {
-    dispatch(clearCart());
+    console.log('Clear cart button clicked!'); // 디버깅용
+    dispatch(openModal({ modalType: 'clearCart' }));
   };
 
   if (cartItems.length === 0) {

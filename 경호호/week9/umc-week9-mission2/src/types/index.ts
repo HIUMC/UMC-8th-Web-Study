@@ -18,3 +18,8 @@ export interface CartState {
 export interface CartItemProps {
   lp: LP;
 }
+
+export interface ModalState {
+  isOpen: boolean;
+  modalType: string | null;
+}
