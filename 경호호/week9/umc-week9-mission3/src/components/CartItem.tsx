@@ -1,20 +1,19 @@
 import type { CartItemProps } from '../types';
-import { useAppDispatch } from '../hooks';
-import { increase, decrease, removeItem } from '../slices/cartSlice';
+import { usePlaylistStore } from '../store/playlistStore';
 
 const CartItem = ({ lp }: CartItemProps) => {
-  const dispatch = useAppDispatch();
+  const { increase, decrease, removeItem } = usePlaylistStore();
 
   const handleIncrease = () => {
-    dispatch(increase({ id: lp.id }));
+    increase(lp.id);
   };
 
   const handleDecrease = () => {
     if (lp.amount === 1) {
-      dispatch(removeItem({ id: lp.id }));
+      removeItem(lp.id);
       return;
     }
-    dispatch(decrease({ id: lp.id }));
+    decrease(lp.id);
   };
 
   return (

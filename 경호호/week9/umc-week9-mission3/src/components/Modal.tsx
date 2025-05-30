@@ -1,20 +1,19 @@
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { closeModal } from '../slices/modalSlice';
-import { clearCart } from '../slices/cartSlice';
+import { useModalStore } from '../store/modalStore';
+import { usePlaylistStore } from '../store/playlistStore';
 
 const Modal = () => {
-  const { isOpen, modalType } = useAppSelector(state => state.modal);
-  const dispatch = useAppDispatch();
+  const { isOpen, modalType, closeModal } = useModalStore();
+  const clearCart = usePlaylistStore((state) => state.clearCart);
 
   console.log('Modal state:', { isOpen, modalType }); // 디버깅용
 
   const handleCloseModal = () => {
-    dispatch(closeModal());
+    closeModal();
   };
 
   const handleConfirmClearCart = () => {
-    dispatch(clearCart());
-    dispatch(closeModal());
+    clearCart();
+    closeModal();
   };
 
   if (!isOpen) {

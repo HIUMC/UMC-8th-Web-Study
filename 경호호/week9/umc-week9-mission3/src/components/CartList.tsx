@@ -1,21 +1,20 @@
 import { useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { calculateTotals } from '../slices/cartSlice';
-import { openModal } from '../slices/modalSlice';
+import { usePlaylistStore } from '../store/playlistStore';
+import { useModalStore } from '../store/modalStore';
 import CartItem from './CartItem';
 import type { LP } from '../types';
 
 const CartList = () => {
-  const { cartItems, total } = useAppSelector(state => state.cart);
-  const dispatch = useAppDispatch();
+  const { cartItems, total, initializeCart } = usePlaylistStore();
+  const openModal = useModalStore((state) => state.openModal);
 
   useEffect(() => {
-    dispatch(calculateTotals());
-  }, [cartItems, dispatch]);
+    initializeCart();
+  }, [initializeCart]);
 
   const handleClearCart = () => {
     console.log('Clear cart button clicked!'); // 디버깅용
-    dispatch(openModal({ modalType: 'clearCart' }));
+    openModal('clearCart');
   };
 
   if (cartItems.length === 0) {
