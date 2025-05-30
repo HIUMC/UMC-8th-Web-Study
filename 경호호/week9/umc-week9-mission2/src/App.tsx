@@ -6,7 +6,9 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <CartList />
+      <div className="py-8">
+        <CartList />
+      </div>
       <Modal />
     </div>
   );
