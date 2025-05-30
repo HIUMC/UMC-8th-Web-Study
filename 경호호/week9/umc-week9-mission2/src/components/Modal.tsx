@@ -9,10 +9,13 @@ const Modal = () => {
   console.log('Modal state:', { isOpen, modalType }); // 디버깅용
 
   const handleCloseModal = () => {
+    console.log('🖱️ [USER ACTION] Modal close button clicked');
     dispatch(closeModal());
   };
 
   const handleConfirmClearCart = () => {
+    console.log('🖱️ [USER ACTION] Confirm clear cart button clicked');
+    console.log('⚠️ About to clear entire cart');
     dispatch(clearCart());
     dispatch(closeModal());
   };

@@ -5,13 +5,16 @@ const Modal = () => {
   const { isOpen, modalType, closeModal } = useModalStore();
   const clearCart = usePlaylistStore((state) => state.clearCart);
 
-  console.log('Modal state:', { isOpen, modalType }); // 디버깅용
+  console.log('🔔 [MODAL RENDER] Modal state:', { isOpen, modalType }); // 디버깅용
 
   const handleCloseModal = () => {
+    console.log('🖱️ [USER ACTION] Modal close button clicked (Zustand)');
     closeModal();
   };
 
   const handleConfirmClearCart = () => {
+    console.log('🖱️ [USER ACTION] Confirm clear cart button clicked (Zustand)');
+    console.log('⚠️ About to clear entire cart');
     clearCart();
     closeModal();
   };

@@ -6,11 +6,17 @@ const CartItem = ({ lp }: CartItemProps) => {
   const dispatch = useAppDispatch();
 
   const handleIncrease = () => {
+    console.log('🖱️ [USER ACTION] Increase button clicked');
+    console.log('💿 Item:', { id: lp.id, title: lp.title, currentAmount: lp.amount });
     dispatch(increase({ id: lp.id }));
   };
 
   const handleDecrease = () => {
+    console.log('🖱️ [USER ACTION] Decrease button clicked');
+    console.log('💿 Item:', { id: lp.id, title: lp.title, currentAmount: lp.amount });
+    
     if (lp.amount === 1) {
+      console.log('⚠️ Item will be removed (amount = 1)');
       dispatch(removeItem({ id: lp.id }));
       return;
     }

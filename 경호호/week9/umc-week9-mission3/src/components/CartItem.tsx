@@ -5,11 +5,17 @@ const CartItem = ({ lp }: CartItemProps) => {
   const { increase, decrease, removeItem } = usePlaylistStore();
 
   const handleIncrease = () => {
+    console.log('🖱️ [USER ACTION] Increase button clicked (Zustand)');
+    console.log('💿 Item:', { id: lp.id, title: lp.title, currentAmount: lp.amount });
     increase(lp.id);
   };
 
   const handleDecrease = () => {
+    console.log('🖱️ [USER ACTION] Decrease button clicked (Zustand)');
+    console.log('💿 Item:', { id: lp.id, title: lp.title, currentAmount: lp.amount });
+    
     if (lp.amount === 1) {
+      console.log('⚠️ Item will be removed (amount = 1)');
       removeItem(lp.id);
       return;
     }

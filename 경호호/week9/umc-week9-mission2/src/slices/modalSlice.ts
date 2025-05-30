@@ -11,12 +11,25 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     openModal: (state, action: PayloadAction<{ modalType: string }>) => {
+      console.group('🔔 [MODAL] Open Modal');
+      console.log('📝 Action payload:', action.payload);
+      console.log('🔄 Previous state:', { isOpen: state.isOpen, modalType: state.modalType });
+      
       state.isOpen = true;
       state.modalType = action.payload.modalType;
+      
+      console.log('✅ New state:', { isOpen: state.isOpen, modalType: state.modalType });
+      console.groupEnd();
     },
     closeModal: (state) => {
+      console.group('🔔 [MODAL] Close Modal');
+      console.log('🔄 Previous state:', { isOpen: state.isOpen, modalType: state.modalType });
+      
       state.isOpen = false;
       state.modalType = null;
+      
+      console.log('✅ New state:', { isOpen: state.isOpen, modalType: state.modalType });
+      console.groupEnd();
     },
   },
 });

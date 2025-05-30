@@ -9,11 +9,13 @@ const CartList = () => {
   const openModal = useModalStore((state) => state.openModal);
 
   useEffect(() => {
+    console.log('🎵 [COMPONENT] CartList mounted - initializing cart');
     initializeCart();
   }, [initializeCart]);
 
   const handleClearCart = () => {
-    console.log('Clear cart button clicked!'); // 디버깅용
+    console.log('🖱️ [USER ACTION] Clear cart button clicked (Zustand)');
+    console.log('📊 Current cart state:', { itemCount: cartItems.length, total });
     openModal('clearCart');
   };
 
