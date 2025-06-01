@@ -8,13 +8,14 @@ const TotalPrice = () => {
   const { clearCart } = useCartActions();
 
   const handleClearCart = () => {
-    if (!isOpen) {
-      openModal();
-    } else {
-      clearCart();
-      closeModal();
-    }
+    openModal();
   };
+
+  const handleClearModal = () => {
+    closeModal();
+    clearCart();
+  };
+
   return (
     <div className="flex p-12 w-full gap-10 items-center justify-center">
       <button onClick={handleClearCart} className="border p-4 rounded-md cursor-pointer">
@@ -32,7 +33,7 @@ const TotalPrice = () => {
               <div className="flex gap-4">
                 <button
                   className="p-4 bg-red-500 text-white cursor-pointer rounded hover:bg-red-600 flex-1"
-                  onClick={handleClearCart}
+                  onClick={handleClearModal}
                 >
                   네
                 </button>
