@@ -1,3 +1,4 @@
+import React from 'react';
 import type { MovieLanguage } from '../types/movie';
 
 interface languageOption {
@@ -7,9 +8,10 @@ interface languageOption {
 
 interface LanguageSelectorProps {
     value: string;
-    onChange: (value: string) => void;
+    onChange: (value: MovieLanguage) => void;
     options: languageOption[];
     className?: string;
+    id?: string;
 }
 
 const LanguageSelector = ({
@@ -17,9 +19,11 @@ const LanguageSelector = ({
     onChange, 
     options, 
     className = "",
+    id
 }: LanguageSelectorProps) : React.ReactElement => {
     return (
         <select
+            id={id}
             value={value}
             onChange={(e) : void=> onChange(e.target.value as MovieLanguage)}
             className={`w-full rounded-lg border border-gray-300 px-4 py-2
