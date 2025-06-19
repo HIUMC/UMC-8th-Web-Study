@@ -48,10 +48,16 @@ const HomePage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">로딩 중입니다...</p>
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-slate-200 border-t-slate-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <div 
+              className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-slate-400 rounded-full animate-spin mx-auto opacity-30" 
+              style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}
+            ></div>
+          </div>
+          <p className="text-slate-600 font-medium">영화를 불러오는 중입니다...</p>
         </div>
       </div>
     );
@@ -59,31 +65,62 @@ const HomePage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-600 text-lg">오류가 발생했습니다: {error}</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 flex items-center justify-center">
+        <div className="text-center bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-slate-200/50">
+          <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <p className="text-slate-700 text-lg font-medium">오류가 발생했습니다</p>
+          <p className="text-slate-500 text-sm mt-1">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          Hello 용코딩 🎬
-        </h1>
-        
-        <MovieFilter onChange={handleChangeFilters} />
-        
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            검색 결과 ({data?.total_results || 0}개)
-          </h2>
-          <MovieList 
-            movies={data?.results || []} 
-            onMovieClick={handleMovieClick}
-          />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+      {/* 배경 패턴 */}
+      <div 
+        className="absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f1f5f9' fill-opacity='0.3'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}
+      ></div>
+      
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-12 max-w-7xl">
+          {/* 헤더 */}
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 bg-clip-text text-transparent mb-4">
+              Cinema Search
+            </h1>
+            <p className="text-slate-500 text-lg font-light">Discover your next favorite movie</p>
+          </div>
+          
+          {/* 필터 섹션 */}
+          <div className="mb-8">
+            <MovieFilter onChange={handleChangeFilters} />
+          </div>
+          
+          {/* 결과 섹션 */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-slate-200/50">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-semibold text-slate-800">
+                검색 결과
+              </h2>
+              <div className="bg-gradient-to-r from-slate-100 to-slate-200 px-4 py-2 rounded-full">
+                <span className="text-slate-600 font-medium text-sm">
+                  {data?.total_results?.toLocaleString() || 0}개의 영화
+                </span>
+              </div>
+            </div>
+            <MovieList 
+              movies={data?.results || []} 
+              onMovieClick={handleMovieClick}
+            />
+          </div>
         </div>
       </div>
 
