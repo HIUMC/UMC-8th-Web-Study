@@ -1,3 +1,5 @@
+import { CursorBasedResponse } from "./common";
+
 export type Tag = {
     id: number;
     name: string;

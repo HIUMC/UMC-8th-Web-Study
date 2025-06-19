@@ -1,4 +1,4 @@
-export enum PAGINATION {
+export enum PAGINATION_ORDER {
     "asc" = "asc",
     "desc" = "desc",
 }
