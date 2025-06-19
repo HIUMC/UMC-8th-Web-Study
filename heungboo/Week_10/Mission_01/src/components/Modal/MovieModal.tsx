@@ -14,6 +14,8 @@ const MovieModal = ({
 }: MovieModalProps): React.ReactElement | null => {
   if (!isOpen) return null;
 
+  /************************** 사진 받아오기 **************************/
+
   const backdropUrl = movie.backdrop_path
     ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`
     : "https://via.placeholder.com/1280x720?text=No+Backdrop";
@@ -27,23 +29,24 @@ const MovieModal = ({
     : null;
 
   return (
+    /************************** 전체 스타일 **************************/
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         className="relative w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 닫기 버튼 */}
+        {/******************* 오른쪽 상단 X 버튼 *************************/}
         <button
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          className="absolute z-60 cursor-pointer font-bold size-6 w-10 h-10 bg-gray-700 rounded-2xl top-4 right-4 text-gray-500 hover:text-white"
           onClick={onClose}
         >
-          ✖
+          X
         </button>
 
-        {/* 배경 이미지 */}
+        {/******************* 배경 화면 *************************/}
         <div
           className="relative h-80 bg-cover bg-center"
           style={{
@@ -51,16 +54,16 @@ const MovieModal = ({
             filter: "blur(0.5px)", // 배경을 뿌옇게 처리
           }}
         >
-          {/* 제목과 원제목 */}
+          {/******************* 제목 / original 제목  *************************/}
           <div className="absolute bottom-4 left-4 text-white">
             <h2 className="text-3xl font-bold">{movie.title}</h2>
             <p className="text-lg text-gray-300">{movie.original_title}</p>
           </div>
         </div>
 
-        {/* 내용 */}
+        {/******************** 내용 *************************/}
         <div className="p-6 flex">
-          {/* 왼쪽: 포스터 */}
+          {/******************** 왼쪽 포스터터 *************************/}
           <div className="w-1/3">
             <img
               src={posterUrl}
@@ -69,7 +72,7 @@ const MovieModal = ({
             />
           </div>
 
-          {/* 오른쪽: 상세 정보 */}
+          {/******************** 오른쪽 상세 정보보 *************************/}
           <div className="w-2/3 pl-6">
             {/* <h2 className="text-2xl font-bold mb-4">{movie.title}</h2> */}
             <div className="flex flex-row items-center">
@@ -103,6 +106,8 @@ const MovieModal = ({
                 </p>
               </div>
             </div>
+
+            {/******************** TMDB 사이트 들어가기 & 닫기 버튼 *************************/}
             <div className="flex justify-end gap-4 mt-6">
               {imdbUrl && (
                 <a

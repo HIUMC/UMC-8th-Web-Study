@@ -1,3 +1,13 @@
 .bg-black.bg-opacity-50 {
   backdrop-filter: blur(4px);
 }
+
+/* 중앙 정렬을 위한 스타일 */
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* 화면 전체 높이 */
+  padding: 20px; /* 여백 추가 */
+  background-color: #f9f9f9; /* 배경색 설정 (선택 사항) */
+}
