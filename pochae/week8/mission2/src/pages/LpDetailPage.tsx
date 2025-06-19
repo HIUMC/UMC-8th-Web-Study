@@ -5,6 +5,7 @@ import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 import { useAuth } from "../context/AuthContext";
 import usePostLike from "../hooks/mutations/usePostLike";
 import useDeleteLike from "../hooks/mutations/useDeleteLike";
+import LpComment from "./LpComment";
 
 const LpDetailPage = () => {
     const { lpId } = useParams();
@@ -57,6 +58,10 @@ const LpDetailPage = () => {
               <Heart color={isLiked? "red" : "black"} fill={isLiked ? "red" : "transparent"}/>
             </button>
           </div>
+
+          {/* LP 상세 내부 */}
+          <LpComment lpId={Number(lpId)} />
+
         </div>
       )
       
