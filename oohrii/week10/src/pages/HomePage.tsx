@@ -14,25 +14,21 @@ export default function HomePage(): React.ReactElement {
         language: 'ko-KR',
     });
 
-    const AxiosRequestConfig = useMemo(
-        () : {params: MovieFilters} => ({
+    const requestConfig = useMemo(
+        (): AxiosRequestConfig => ({
             params: filters,
         }), 
         [filters], 
     );
 
-    const {data, error, isLoading} = 
-    useFetch<MovieResponse>(
-        '/search/movie', {
-        params: filters,
-    });
+    const {data, error, isLoading} = useFetch<MovieResponse>('/search/movie', requestConfig);
 
-    const handleMovieFilters = useCallback((filters: MovieFilters) : void => {
-        setFilters(filters);
-    }, [setFilters]);
+    const handleMovieFilters = useCallback((newFilters: MovieFilters): void => {
+        setFilters(newFilters);
+    }, []);
 
     if (error) {
-        return <div>에러가 발생했습니다.</div>;
+        return <div>에러가 발생했습니다: {error.message}</div>;
     }
 
     return (
@@ -41,7 +37,7 @@ export default function HomePage(): React.ReactElement {
             {isLoading ? (
                 <div>로딩중입니다...</div>
             ) : (
-            <MovieList movies={data?.results || []} />
+                <MovieList movies={data?.results || []} />
             )}
         </div>
     );
