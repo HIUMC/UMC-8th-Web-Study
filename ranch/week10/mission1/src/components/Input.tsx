@@ -8,7 +8,7 @@ interface InputProps {
 export const Input = ({
     value,
     onChange,
-    placeholder = "검색어를 입력하f세요",
+    placeholder = "검색어를 입력하세요",
     className, 
 }: InputProps) => {
     return (
