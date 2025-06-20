@@ -80,7 +80,7 @@ const MovieDetailModal = ({ isOpen, onClose, movie, isLoading, error }: MovieDet
                   <img
                     src={posterUrl}
                     alt={movie.title}
-                    className="w-full max-w-sm mx-auto lg:mx-0 rounded-2xl shadow-2xl object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-auto min-w-full mx-auto lg:mx-0 rounded-2xl shadow-2xl object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
@@ -152,10 +152,10 @@ const MovieDetailModal = ({ isOpen, onClose, movie, isLoading, error }: MovieDet
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-slate-200/50">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 pt-6 border-t border-slate-200/50">
                   {movie.budget > 0 && (
-                    <div className="bg-slate-50/50 rounded-xl p-4 text-center">
-                      <div className="text-2xl font-bold text-slate-700 mb-1">
+                    <div className="bg-slate-50/50 rounded-xl p-4 text-center min-w-0">
+                      <div className="text-lg lg:text-xl font-bold text-slate-700 mb-1 truncate">
                         {formatCurrency(movie.budget)}
                       </div>
                       <div className="text-sm text-slate-500 font-medium">제작비</div>
@@ -163,23 +163,23 @@ const MovieDetailModal = ({ isOpen, onClose, movie, isLoading, error }: MovieDet
                   )}
                   
                   {movie.revenue > 0 && (
-                    <div className="bg-slate-50/50 rounded-xl p-4 text-center">
-                      <div className="text-2xl font-bold text-slate-700 mb-1">
+                    <div className="bg-slate-50/50 rounded-xl p-4 text-center min-w-0">
+                      <div className="text-lg lg:text-xl font-bold text-slate-700 mb-1 truncate">
                         {formatCurrency(movie.revenue)}
                       </div>
                       <div className="text-sm text-slate-500 font-medium">수익</div>
                     </div>
                   )}
                   
-                  <div className="bg-slate-50/50 rounded-xl p-4 text-center">
-                    <div className="text-2xl font-bold text-slate-700 mb-1">
+                  <div className="bg-slate-50/50 rounded-xl p-4 text-center min-w-0">
+                    <div className="text-lg lg:text-xl font-bold text-slate-700 mb-1 truncate">
                       {movie.popularity.toFixed(1)}
                     </div>
                     <div className="text-sm text-slate-500 font-medium">인기도</div>
                   </div>
                   
-                  <div className="bg-slate-50/50 rounded-xl p-4 text-center">
-                    <div className="text-2xl font-bold text-slate-700 mb-1">
+                  <div className="bg-slate-50/50 rounded-xl p-4 text-center min-w-0">
+                    <div className="text-lg lg:text-xl font-bold text-slate-700 mb-1 truncate">
                       {movie.vote_count.toLocaleString()}
                     </div>
                     <div className="text-sm text-slate-500 font-medium">투표 수</div>

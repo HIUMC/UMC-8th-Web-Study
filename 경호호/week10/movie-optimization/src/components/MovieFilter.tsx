@@ -38,7 +38,6 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
   return (
     <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-slate-200/50 mb-8">
       <div className="flex items-center mb-6">
-        <div className="w-2 h-8 bg-gradient-to-b from-slate-600 to-slate-400 rounded-full mr-4"></div>
         <h2 className="text-2xl font-semibold text-slate-800">필터 설정</h2>
       </div>
       
@@ -85,7 +84,7 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
           </div>
         </div>
         
-        <div className="pt-4 border-t border-slate-200/50">
+        <div className="pt-4 border-t border-slate-200/50 flex justify-end">
           <button
             type="submit"
             className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-slate-700 to-slate-600 text-white font-medium rounded-xl hover:from-slate-800 hover:to-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-[1.02] shadow-lg"

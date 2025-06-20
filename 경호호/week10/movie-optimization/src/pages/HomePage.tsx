@@ -94,9 +94,8 @@ const HomePage = () => {
           {/* 헤더 */}
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 bg-clip-text text-transparent mb-4">
-              Cinema Search
+              영화 검색
             </h1>
-            <p className="text-slate-500 text-lg font-light">Discover your next favorite movie</p>
           </div>
           
           {/* 필터 섹션 */}
