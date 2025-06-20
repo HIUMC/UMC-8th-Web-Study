@@ -6,7 +6,7 @@ interface MovieListProps {
 };
 
 const MovieList = ({ movies } : MovieListProps) => {
-    if (movies.length !== 0) {
+    if (movies.length === 0) {
         return (
             <div className="flex items-center h-60">
                 <p className="font-bold text-gray-500">검색결과X</p>
