@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useRef } from 'react';
 
 import type { MovieFilters, MovieLanguage } from '../types/movie';
 import { Input } from './Input';
@@ -14,6 +14,10 @@ const MovieFilter = ({onChange}: MovieFilterProps) : React.ReactElement => {
     const [query, setQuery] = useState<string>('');
     const [includeAdult, setIncludeAdult] = useState<boolean>(false);
     const [language, setLanguage] = useState<MovieLanguage>('ko-KR');
+
+    const renderCount = useRef(0);
+    renderCount.current++;
+    console.log('MovieFilter렌더링', renderCount.current);
 
     const handleSubmit = () : void => {
         const filters : MovieFilters = {
