@@ -42,9 +42,9 @@ const HomePage = () => {
   const handleOpenModal = (movie: Movie) => {
     setSelectedMovie(movie);
   };
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setSelectedMovie(null);
-  };
+  }, []);
 
   return (
     <div className="container mt-20 mx-auto items-center flex flex-col">
