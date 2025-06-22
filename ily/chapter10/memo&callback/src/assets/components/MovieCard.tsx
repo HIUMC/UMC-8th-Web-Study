@@ -1,13 +1,19 @@
 import type { Movie } from "../types/movies";
+import { useEffect, useState } from "react";
 interface MovieCardProps {
   movie: Movie;
+  onClick?: () => void;
 }
-const MovieCard = ({ movie }: MovieCardProps) => {
+const MovieCard = ({ movie, onClick }: MovieCardProps) => {
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
   const fallbackImageUrl = "https://via.placeholder.com/500x750";
+  console.log("MovieCard내부에서 작성된 :", movie);
 
   return (
-    <div className="rounded-lg bg-white shadow-md transition-all hover:shadow-lg w-full h-fulls">
+    <div
+      className="rounded-lg bg-white shadow-md transition-all hover:shadow-lg w-full h-full cursor-pointer"
+      onClick={onClick}
+    >
       <div className="relative h-80 overflow-hidden">
         <img
           className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105 "
